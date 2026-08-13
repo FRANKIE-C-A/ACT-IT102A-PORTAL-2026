@@ -470,11 +470,20 @@ function showView(viewId) {
     }
 }
 
+function isMobile() {
+    return window.innerWidth <= 768;
+}
+
 function resetChatMobileView() {
-    if (window.innerWidth <= 768) {
+    if (isMobile()) {
         chatListContainer.style.display = 'flex';
         chatMessagesContainer.style.display = 'none';
         chatBackToListBtn.style.display = 'none';
+    } else {
+        chatListContainer.style.display = 'flex';
+        chatMessagesContainer.style.display = 'flex';
+        chatBackToListBtn.style.display = 'none';
+        chatMessagesContainer.classList.remove('active');
     }
 }
 
@@ -496,6 +505,7 @@ chatBackToListBtn.addEventListener('click', () => {
     chatListContainer.style.display = 'flex';
     chatMessagesContainer.style.display = 'none';
     chatBackToListBtn.style.display = 'none';
+    chatMessagesContainer.classList.remove('active');
     chatHeader.innerHTML = '';
     messagesList.innerHTML = '';
     chatInputArea.style.display = 'none';
@@ -1345,10 +1355,16 @@ function openGeneralChat() {
     chatHeader.innerHTML = `<strong><i class="fas fa-globe" style="color:#fbbf24;"></i> General Chat</strong> <span style="font-size:0.7rem;color:#64748b;">Everyone</span>`;
     chatInputArea.style.display = 'flex';
 
-    if (window.innerWidth <= 768) {
+    if (isMobile()) {
         chatListContainer.style.display = 'none';
         chatMessagesContainer.style.display = 'flex';
         chatBackToListBtn.style.display = 'block';
+        chatMessagesContainer.classList.add('active');
+    } else {
+        chatListContainer.style.display = 'flex';
+        chatMessagesContainer.style.display = 'flex';
+        chatBackToListBtn.style.display = 'none';
+        chatMessagesContainer.classList.add('active');
     }
 
     if (window._unsubscribeMessages) {
@@ -1415,10 +1431,16 @@ function openPrivateChat(chatId, otherUid) {
     `;
     chatInputArea.style.display = 'flex';
 
-    if (window.innerWidth <= 768) {
+    if (isMobile()) {
         chatListContainer.style.display = 'none';
         chatMessagesContainer.style.display = 'flex';
         chatBackToListBtn.style.display = 'block';
+        chatMessagesContainer.classList.add('active');
+    } else {
+        chatListContainer.style.display = 'flex';
+        chatMessagesContainer.style.display = 'flex';
+        chatBackToListBtn.style.display = 'none';
+        chatMessagesContainer.classList.add('active');
     }
 
     if (window._unsubscribeMessages) {
