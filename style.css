@@ -1,6 +1,3 @@
-/* ============================================================
-   ROOT / BASE – DARK HACKER THEME
-   ============================================================ */
 *,
 *::before,
 *::after {
@@ -38,54 +35,74 @@ body {
     background: #7c3aed;
 }
 
-/* ============================================================
-   AUTH CONTAINER
-   ============================================================ */
 .auth-container {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.5rem;
+    padding: 1rem;
     background: radial-gradient(ellipse at 50% 20%, rgba(139, 92, 246, 0.06), transparent 70%), #0a0e17;
 }
 
 .auth-box {
     background: #111827;
     border-radius: 16px;
-    padding: 2.8rem 2.5rem;
-    max-width: 440px;
+    padding: 2rem 1.5rem;
+    max-width: 400px;
     width: 100%;
     border: 1px solid rgba(139, 92, 246, 0.1);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-    transition: box-shadow 0.3s ease;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
 }
 
-.auth-box:hover {
-    box-shadow: 0 30px 60px rgba(139, 92, 246, 0.03);
+@media (max-width: 480px) {
+    .auth-box {
+        padding: 1.5rem 1rem;
+        max-width: 100%;
+        margin: 0 0.5rem;
+        border-radius: 12px;
+    }
+    .auth-box .auth-logo .logo-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 1.6rem;
+    }
+    .auth-box .auth-logo h1 {
+        font-size: 1.2rem;
+    }
+    .auth-box .auth-logo p {
+        font-size: 0.7rem;
+    }
+    .auth-box .form-group input {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    .auth-box .btn-auth {
+        padding: 0.6rem;
+        font-size: 0.85rem;
+    }
 }
 
 .auth-box .auth-logo {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .auth-box .auth-logo .logo-icon {
-    width: 72px;
-    height: 72px;
+    width: 64px;
+    height: 64px;
     background: linear-gradient(135deg, #f472b6, #a78bfa, #60a5fa);
-    border-radius: 18px;
+    border-radius: 16px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.2rem;
+    font-size: 2rem;
     color: #000000;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
 }
 
 .auth-box .auth-logo h1 {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     font-weight: 700;
     background: linear-gradient(135deg, #f472b6, #a78bfa, #60a5fa);
     -webkit-background-clip: text;
@@ -95,76 +112,75 @@ body {
 
 .auth-box .auth-logo p {
     color: #94a3b8;
-    font-size: 0.9rem;
-    margin-top: 0.2rem;
+    font-size: 0.8rem;
+    margin-top: 0.1rem;
 }
 
 .auth-box .form-group {
-    margin-bottom: 1.2rem;
+    margin-bottom: 1rem;
 }
 
 .auth-box .form-group label {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
     color: #94a3b8;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.2rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.3px;
 }
 
 .auth-box .form-group input {
     width: 100%;
-    padding: 0.7rem 1rem;
-    border: 1.5px solid rgba(139, 92, 246, 0.1);
+    padding: 0.6rem 1rem;
+    border: 1.5px solid rgba(139, 92, 246, 0.12);
     border-radius: 10px;
-    font-size: 1rem;
-    background: #0f172a;
-    color: #c8d6e5;
-    transition: border 0.3s, box-shadow 0.3s;
+    font-size: 0.9rem;
+    background: rgba(15, 23, 42, 0.6);
+    color: #e2e8f0;
+    transition: border 0.25s, box-shadow 0.25s;
     outline: none;
 }
 
 .auth-box .form-group input:focus {
     border-color: #8b5cf6;
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.06);
-    background: #0f172a;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    background: rgba(15, 23, 42, 0.8);
 }
 
 .auth-box .form-group input::placeholder {
-    color: #334155;
+    color: #475569;
 }
 
 .auth-box .btn-auth {
     width: 100%;
-    padding: 0.8rem;
+    padding: 0.7rem;
     border: none;
     border-radius: 10px;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
     background: linear-gradient(135deg, #8b5cf6, #7c3aed);
     color: #fff;
-    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.15);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.25);
 }
 
 .auth-box .btn-auth:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(139, 92, 246, 0.25);
-    background: #7c3aed;
+    box-shadow: 0 6px 30px rgba(139, 92, 246, 0.4);
 }
 
 .auth-box .btn-auth:disabled {
-    opacity: 0.5;
+    opacity: 0.6;
     cursor: not-allowed;
     transform: none;
 }
 
 .auth-box .auth-toggle {
     text-align: center;
-    margin-top: 1.2rem;
-    font-size: 0.85rem;
+    margin-top: 1rem;
+    font-size: 0.8rem;
     color: #94a3b8;
 }
 
@@ -180,12 +196,12 @@ body {
 }
 
 .auth-box .auth-error {
-    background: rgba(239, 68, 68, 0.04);
-    border: 1px solid rgba(239, 68, 68, 0.06);
+    background: rgba(244, 114, 182, 0.1);
+    border: 1px solid rgba(244, 114, 182, 0.15);
     color: #f472b6;
-    padding: 0.6rem 1rem;
+    padding: 0.5rem 1rem;
     border-radius: 8px;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     margin-bottom: 1rem;
     display: none;
 }
@@ -195,12 +211,12 @@ body {
 }
 
 .auth-box .auth-success {
-    background: rgba(52, 211, 153, 0.04);
-    border: 1px solid rgba(52, 211, 153, 0.06);
+    background: rgba(52, 211, 153, 0.1);
+    border: 1px solid rgba(52, 211, 153, 0.15);
     color: #34d399;
-    padding: 0.6rem 1rem;
+    padding: 0.5rem 1rem;
     border-radius: 8px;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     margin-bottom: 1rem;
     display: none;
 }
@@ -212,8 +228,8 @@ body {
 .auth-box .auth-loading {
     display: none;
     text-align: center;
-    padding: 0.4rem 0;
-    font-size: 0.85rem;
+    padding: 0.3rem 0;
+    font-size: 0.8rem;
     color: #94a3b8;
 }
 
@@ -222,14 +238,14 @@ body {
 }
 
 .auth-box .auth-loading .spinner-small {
-    width: 22px;
-    height: 22px;
-    border: 2px solid rgba(139, 92, 246, 0.08);
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(139, 92, 246, 0.1);
     border-top: 2px solid #8b5cf6;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
     display: inline-block;
-    margin-right: 0.6rem;
+    margin-right: 0.5rem;
     vertical-align: middle;
 }
 
@@ -239,9 +255,6 @@ body {
     }
 }
 
-/* ============================================================
-   MAIN APP CONTAINER
-   ============================================================ */
 #appContent {
     display: none;
 }
@@ -250,7 +263,6 @@ body {
     display: block;
 }
 
-/* ----- HEADER – COMPACT ----- */
 .header {
     background: #0f172a;
     padding: 0.4rem 0.8rem;
@@ -283,7 +295,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 0.9rem;
-    color: #000000;
+    color: #0b0707;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     flex-shrink: 0;
 }
@@ -353,58 +365,34 @@ body {
     color: #94a3b8;
 }
 
-.header-right .header-btn {
-    background: rgba(139, 92, 246, 0.1);
-    border: 1px solid rgba(139, 92, 246, 0.15);
-    color: #a78bfa;
-    padding: 0.15rem 0.5rem;
-    border-radius: 6px;
-    font-size: 0.55rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-weight: 700;
-    display: none;
-}
-
-.header-right .header-btn:hover {
-    background: rgba(139, 92, 246, 0.2);
-}
-
-/* ----- RESPONSIVE HEADER ----- */
 @media (max-width: 768px) {
     .header {
         padding: 0.3rem 0.5rem;
         min-height: 40px;
         gap: 0.3rem;
     }
-
     .header-left .logo-icon {
         width: 22px;
         height: 22px;
         font-size: 0.7rem;
         border-radius: 6px;
     }
-
     .header-left .header-title h1 {
         font-size: 0.6rem;
         max-width: 140px;
     }
-
     .header-right .user-info {
         padding: 0.05rem 0.35rem 0.05rem 0.15rem;
         gap: 0.15rem;
         border-radius: 12px;
     }
-
     .header-right .user-info .name {
         font-size: 0.55rem;
         max-width: 70px;
     }
-
     .header-right .user-info .fa-user-circle {
         font-size: 1rem !important;
     }
-
     .header-right .user-info .header-avatar {
         width: 18px;
         height: 18px;
@@ -416,23 +404,19 @@ body {
         font-size: 0.5rem;
         max-width: 100px;
     }
-
     .header-right .user-info .name {
         font-size: 0.5rem;
         max-width: 50px;
     }
-
     .header-right .user-info {
         padding: 0.05rem 0.25rem 0.05rem 0.1rem;
         border-radius: 10px;
     }
-
     .header-right .user-info .fa-user-circle {
         font-size: 0.85rem !important;
     }
 }
 
-/* ----- ABOUT BAR ----- */
 .about-bar {
     background: #111827;
     padding: 0.3rem 0.8rem;
@@ -442,24 +426,21 @@ body {
     justify-content: center;
     gap: 0.4rem;
     flex-wrap: wrap;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #94a3b8;
     text-align: center;
 }
 
 .about-bar i {
     color: #8b5cf6;
-    font-size: 0.8rem;
 }
 
-/* ----- CONTAINER ----- */
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0.6rem;
 }
 
-/* ----- CLOCK ROW ----- */
 .clock-row {
     text-align: center;
     font-size: 0.75rem;
@@ -474,7 +455,6 @@ body {
     color: #8b5cf6;
 }
 
-/* ----- SECTION HEADERS ----- */
 .section-header {
     display: flex;
     align-items: center;
@@ -512,7 +492,6 @@ body {
     border: 1px solid rgba(139, 92, 246, 0.1);
 }
 
-/* ----- SUBJECT GRID ----- */
 .subject-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -586,7 +565,6 @@ body {
 .subject-card .subject-teacher i {
     margin-right: 0.15rem;
     color: #f472b6;
-    font-size: 0.6rem;
 }
 
 .subject-card .subject-types {
@@ -634,7 +612,6 @@ body {
     border-color: rgba(139, 92, 246, 0.3);
 }
 
-/* ----- DETAIL VIEW ----- */
 .detail-header {
     display: flex;
     align-items: center;
@@ -695,7 +672,6 @@ body {
     justify-content: center;
 }
 
-/* ----- LOADING SPINNER ----- */
 .loading-container {
     display: flex;
     flex-direction: column;
@@ -719,7 +695,6 @@ body {
     font-weight: 600;
 }
 
-/* ----- PROJECT LIST ----- */
 .project-list-full {
     display: flex;
     flex-direction: column;
@@ -757,7 +732,6 @@ body {
 
 .project-item-full .project-title i {
     color: #f472b6;
-    font-size: 0.8rem;
 }
 
 .project-item-full .project-type-badge {
@@ -802,7 +776,6 @@ body {
     font-weight: 700;
 }
 
-/* ----- FILE & LINK BADGES ----- */
 .file-tag {
     display: inline-block;
     background: rgba(139, 92, 246, 0.1);
@@ -876,7 +849,6 @@ body {
     border-color: rgba(244, 114, 182, 0.1);
 }
 
-/* ----- BUTTONS ----- */
 .btn {
     padding: 0.3rem 0.8rem;
     border: none;
@@ -968,9 +940,6 @@ body {
     background: rgba(52, 211, 153, 0.25);
 }
 
-/* ============================================================
-   CHAT STYLES – DARK/PURPLE THEME
-   ============================================================ */
 #chatContainer {
     display: flex;
     gap: 1rem;
@@ -1032,7 +1001,6 @@ body {
     top: 50%;
     transform: translateY(-50%);
     color: #475569;
-    font-size: 0.8rem;
 }
 
 #chatUserList {
@@ -1258,31 +1226,25 @@ body {
         flex-direction: column;
         height: 80vh;
     }
-
     #chatListContainer {
         flex: 0 0 auto;
         max-height: 100%;
     }
-
     #chatMessagesContainer {
         flex: 1;
         display: none;
     }
-
     #chatMessagesContainer.active {
         display: flex;
     }
-
     #chatBackToListBtn {
         display: none !important;
     }
-
     #chatBackToListBtn.visible {
         display: inline-flex !important;
     }
 }
 
-/* ----- FLOATING CHAT BUTTON ----- */
 .fab-chat {
     position: fixed;
     bottom: 2rem;
@@ -1308,13 +1270,6 @@ body {
     box-shadow: 0 6px 30px rgba(139, 92, 246, 0.6);
 }
 
-.fab-chat i {
-    margin: 0;
-}
-
-/* ============================================================
-   MODALS
-   ============================================================ */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -1394,7 +1349,6 @@ body {
     }
 }
 
-/* ----- Form inside Modal ----- */
 .modal-content .form-group {
     margin-bottom: 0.6rem;
 }
@@ -1480,7 +1434,6 @@ body {
     font-weight: 700;
 }
 
-/* ----- MEMBER SELECTION ----- */
 .member-list-item {
     display: flex;
     align-items: center;
@@ -1510,14 +1463,6 @@ body {
     color: #64748b;
     margin-left: auto;
     font-weight: 600;
-}
-
-.member-list-item .member-avatar {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    object-fit: cover;
-    background: #141b2b;
 }
 
 .selected-members-container {
@@ -1551,7 +1496,6 @@ body {
     color: #ec4899;
 }
 
-/* ----- SLIDESHOW ----- */
 .slideshow-container {
     position: relative;
     margin: 0.5rem 0;
@@ -1644,7 +1588,6 @@ body {
     font-weight: 700;
 }
 
-/* ----- COMMENT MODAL ----- */
 #commentModalContent {
     max-width: 560px;
 }
@@ -1764,7 +1707,6 @@ body {
     color: #ec4899;
 }
 
-/* ----- NEW CHAT MODAL ----- */
 #newChatModalContent {
     max-width: 480px;
 }
@@ -1799,9 +1741,6 @@ body {
     font-weight: 700;
 }
 
-/* ============================================================
-   TOAST
-   ============================================================ */
 .toast-container {
     position: fixed;
     bottom: 0.8rem;
@@ -1861,7 +1800,6 @@ body {
     }
 }
 
-/* ----- EMPTY STATE ----- */
 .empty-state {
     text-align: center;
     padding: 1.2rem;
@@ -1910,7 +1848,6 @@ body {
     font-weight: 600;
 }
 
-/* ----- PROFILE ----- */
 #profileContent .form-group {
     margin-bottom: 0.8rem;
 }
@@ -1943,11 +1880,6 @@ body {
     box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
 }
 
-/* ============================================================
-   ADMIN / OWNER PANEL SPECIFIC STYLES
-   ============================================================ */
-
-/* ----- STATS BAR ----- */
 .stats-bar {
     display: flex;
     gap: 1.5rem;
@@ -1981,7 +1913,6 @@ body {
     font-size: 1.1rem;
 }
 
-/* ----- SEARCH BAR ----- */
 .search-bar {
     display: flex;
     gap: 0.6rem;
@@ -2025,14 +1956,12 @@ body {
     box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
 }
 
-/* ----- USER GRID ----- */
 .user-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 0.8rem;
 }
 
-/* ----- USER CARD ----- */
 .user-card {
     background: #111827;
     border-radius: 10px;
@@ -2135,7 +2064,6 @@ body {
     color: #94a3b8;
 }
 
-/* ----- PROJECT GRID (admin) ----- */
 .project-grid,
 .message-grid,
 .manage-grid {
@@ -2198,7 +2126,6 @@ body {
     font-weight: 700;
 }
 
-/* ----- VIEW TOGGLE ----- */
 .view-toggle {
     display: flex;
     gap: 0.5rem;
@@ -2240,7 +2167,6 @@ body {
     font-weight: 400;
 }
 
-/* ----- ROLE SELECT ----- */
 .role-select {
     background: #0f172a;
     color: #e2e8f0;
@@ -2292,7 +2218,6 @@ body {
     color: #94a3b8;
 }
 
-/* ----- TEACHER ACTIVITY FORM ----- */
 .activity-form {
     background: #0f172a;
     border-radius: 10px;
@@ -2364,7 +2289,6 @@ body {
     transition: 0.3s;
 }
 
-/* ----- OWNER PANEL DETAIL MODAL EXTRAS ----- */
 .modal-content .detail-section {
     margin-bottom: 1.2rem;
 }
@@ -2537,9 +2461,6 @@ body {
     color: #e2e8f0;
 }
 
-/* ============================================================
-   CONFIRMATION POPUP – SKULL MODAL
-   ============================================================ */
 .confirm-overlay {
     position: fixed;
     inset: 0;
@@ -2692,127 +2613,126 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
 @media (max-width: 768px) {
     .header {
         flex-direction: row;
         flex-wrap: nowrap;
-        padding: 0.5rem 0.6rem;
+        padding: 0.3rem 0.5rem;
         gap: 0.3rem;
         justify-content: space-between;
+        min-height: 40px;
     }
-
     .header-left .header-title h1 {
-        font-size: 0.65rem;
+        font-size: 0.6rem;
+        max-width: 140px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
-
     .header-left .header-title small {
         font-size: 0.35rem;
     }
-
     .header-right .user-info {
-        padding: 0.1rem 0.4rem 0.1rem 0.2rem;
-        gap: 0.2rem;
-        border-radius: 14px;
+        padding: 0.05rem 0.35rem 0.05rem 0.15rem;
+        gap: 0.15rem;
+        border-radius: 12px;
     }
-
     .header-right .user-info .name {
-        font-size: 0.6rem;
+        font-size: 0.55rem;
+        max-width: 70px;
     }
-
     .header-right .user-info .header-avatar {
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
     }
-
     .header-right .user-info .fa-user-circle {
         font-size: 1rem !important;
     }
-
     .stats-bar {
         flex-direction: column;
         gap: 0.5rem;
         align-items: center;
     }
-
     .user-grid,
     .project-grid,
     .message-grid,
     .manage-grid {
         grid-template-columns: 1fr 1fr;
     }
-
     .modal-content {
         padding: 1rem;
         margin: 0.4rem;
         max-height: 95vh;
     }
-
     .modal-content .detail-section .detail-row {
         flex-direction: column;
     }
-
     .modal-content .detail-section .detail-row .label {
         width: auto;
     }
-
     .search-bar {
         flex-wrap: wrap;
     }
-
     .search-bar .btn {
         flex: 1;
     }
-
     .view-toggle .btn {
         font-size: 0.7rem;
         padding: 0.3rem 0.6rem;
         min-width: 60px;
     }
-
     .auth-box {
-        padding: 2rem 1.5rem;
+        padding: 1.5rem 1rem;
+        max-width: 100%;
+        margin: 0 0.5rem;
+        border-radius: 12px;
     }
-
+    .auth-box .auth-logo .logo-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 1.6rem;
+    }
+    .auth-box .auth-logo h1 {
+        font-size: 1.2rem;
+    }
+    .auth-box .auth-logo p {
+        font-size: 0.7rem;
+    }
+    .auth-box .form-group input {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    .auth-box .btn-auth {
+        padding: 0.6rem;
+        font-size: 0.85rem;
+    }
     .confirm-box {
         padding: 1.5rem 1rem 1.2rem;
         max-width: 100%;
         margin: 0 0.5rem;
     }
-
     .confirm-box .skull-icon {
         font-size: 3rem;
     }
-
     .confirm-box .confirm-title {
         font-size: 0.95rem;
     }
-
     .confirm-box .confirm-subtitle {
         font-size: 0.75rem;
     }
-
     .confirm-box .confirm-details {
         font-size: 0.7rem;
         max-height: 80px;
         padding: 0.4rem;
     }
-
     .confirm-box .confirm-actions .btn {
         font-size: 0.7rem;
         padding: 0.4rem 0.6rem;
         min-width: 60px;
     }
-
     .activity-form .form-row {
         grid-template-columns: 1fr;
     }
-
     .subject-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 0.5rem;
@@ -2826,16 +2746,12 @@ body {
     .manage-grid {
         grid-template-columns: 1fr;
     }
-
     .subject-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 0.4rem;
     }
 }
 
-/* ============================================================
-   UTILITY
-   ============================================================ */
 .hidden {
     display: none !important;
 }

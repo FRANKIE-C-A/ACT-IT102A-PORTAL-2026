@@ -13,6 +13,7 @@ try {
 } catch (e) {
     console.warn('Firebase init warning:', e);
 }
+
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
