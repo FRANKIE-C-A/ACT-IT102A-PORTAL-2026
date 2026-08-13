@@ -19,13 +19,12 @@
 </head>
 <body>
 
-    <!-- ===== AUTH CONTAINER ===== -->
     <div id="authContainer" class="auth-container">
         <div class="auth-box">
             <div class="auth-logo">
                 <div class="logo-icon"><i class="fas fa-user-secret"></i></div>
-                <h1>IT102A Portal</h1>
-                <p>Student Access</p>
+                <h1>BSIT PORTAL </h1>
+                <p>ACCOUNT</p>
             </div>
 
             <div id="authError" class="auth-error"></div>
@@ -34,10 +33,9 @@
                 <span class="spinner-small"></span> Processing...
             </div>
 
-            <!-- Login Form -->
             <div id="loginForm">
                 <div class="form-group">
-                    <label><i class="fas fa-id-card"></i> Student ID (##-anything)</label>
+                    <label><i class="fas fa-id-card"></i>ID Number</label>
                     <input type="text" id="loginStudentId" placeholder="e.g., 12-34567890" />
                 </div>
                 <div class="form-group">
@@ -50,10 +48,9 @@
                 </div>
             </div>
 
-            <!-- Signup Form -->
             <div id="signupForm" style="display:none;">
                 <div class="form-group">
-                    <label><i class="fas fa-id-card"></i> Student ID (##-anything)</label>
+                    <label><i class="fas fa-id-card"></i>ID Number</label>
                     <input type="text" id="signupStudentId" placeholder="e.g., 12-34567890" />
                 </div>
                 <div class="form-group">
@@ -65,7 +62,7 @@
                     <input type="text" id="signupLastName" placeholder="Dela Cruz" />
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-lock"></i> Password (min 6 chars)</label>
+                    <label><i class="fas fa-lock"></i> Password</label>
                     <input type="password" id="signupPassword" placeholder="Create a password" />
                 </div>
                 <button class="btn-auth" id="signupBtn">Create Account</button>
@@ -76,15 +73,13 @@
         </div>
     </div>
 
-    <!-- ===== MAIN APP ===== -->
     <div id="appContent">
-        <!-- Header -->
         <header class="header">
             <div class="header-left">
                 <div class="logo-icon"><i class="fas fa-user-secret"></i></div>
                 <div class="header-title">
-                    <h1>IT102A Portal</h1>
-                    <small><i class="fas fa-globe"></i> ACCESS ANYWHERE</small>
+                    <h1>ACT IT102A 2026 PORTAL</h1>
+                    <small><i class="fas fa-globe"></i>Access Anywhere, Anytime... </small>
                 </div>
             </div>
 
@@ -105,7 +100,6 @@
 
         <div class="container">
 
-            <!-- Subject List View -->
             <div id="subjectListView">
                 <div class="section-header">
                     <h2><i class="fas fa-list-ul"></i> Your Subjects</h2>
@@ -115,7 +109,6 @@
                 <div id="subjectList" class="subject-grid"></div>
             </div>
 
-            <!-- Project Detail View -->
             <div id="projectDetailView" style="display:none;">
                 <div class="detail-header">
                     <div class="detail-center">
@@ -135,7 +128,6 @@
                 </div>
             </div>
 
-            <!-- Chat View -->
             <div id="chatView" style="display:none;">
                 <div class="detail-header">
                     <div class="detail-center">
@@ -143,11 +135,10 @@
                         <p class="detail-meta">Message your classmates</p>
                     </div>
                     <button class="btn btn-outline" id="chatBackToListBtn" style="display:none;"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="btn btn-outline" id="backFromChatBtn"><i class="fas fa-arrow-left"></i> Back to Subjects</button>
+                    <button class="btn btn-outline" id="backFromChatBtn"><i class="fas fa-arrow-left"></i> Back</button>
                 </div>
 
                 <div id="chatContainer">
-                    <!-- LEFT: Contacts -->
                     <div id="chatListContainer">
                         <div class="chat-search-wrapper">
                             <input type="text" id="chatSearchInput" placeholder="Search users..." />
@@ -156,7 +147,6 @@
                         <div id="chatUserList"></div>
                     </div>
 
-                    <!-- RIGHT: Messages -->
                     <div id="chatMessagesContainer">
                         <div id="chatHeader"></div>
                         <div id="messagesList"></div>
@@ -216,7 +206,6 @@
         <button class="fab-chat" id="fabChatBtn"><i class="fas fa-comment-dots"></i></button>
     </div>
 
-    <!-- ===== MODALS ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content" id="modalContent">
             <button class="modal-close" id="modalCloseBtn">&times;</button>
