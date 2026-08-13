@@ -1,11 +1,11 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyC3JbrOoBXTtDNH-7tDbCzT6tECKJCtdjE",
-    authDomain: "hacked-wifi-3d8ac.firebaseapp.com",
-    projectId: "hacked-wifi-3d8ac",
-    storageBucket: "hacked-wifi-3d8ac.firebasestorage.app",
-    messagingSenderId: "893227799683",
-    appId: "1:893227799683:web:8e556a16a23c21ce4a77b6",
-    measurementId: "G-1DXKC8TQQ7"
+  apiKey: "AIzaSyC3JbrOoBXTtDNH-7tDbCzT6tECKJCtdjE",
+  authDomain: "hacked-wifi-3d8ac.firebaseapp.com",
+  projectId: "hacked-wifi-3d8ac",
+  storageBucket: "hacked-wifi-3d8ac.firebasestorage.app",
+  messagingSenderId: "893227799683",
+  appId: "1:893227799683:web:8e556a16a23c21ce4a77b6",
+  measurementId: "G-1DXKC8TQQ7"
 };
 
 try {
