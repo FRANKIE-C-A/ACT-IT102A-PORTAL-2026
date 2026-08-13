@@ -15,6 +15,18 @@ try {
 }
 
 const auth = firebase.auth();
+
+// ============================================================
+// FIX: Force login every time – no session persistence
+// ============================================================
+auth.setPersistence(firebase.auth.Auth.Persistence.NONE)
+    .then(() => {
+        console.log('✅ Auth persistence set to NONE – login required every time');
+    })
+    .catch((error) => {
+        console.error('❌ Error setting persistence:', error);
+    });
+
 const db = firebase.firestore();
 const storage = firebase.storage();
 
@@ -269,6 +281,12 @@ document.getElementById('logoutFromProfileBtn').addEventListener('click', async 
     try {
         await auth.signOut();
         showToast('Logged out successfully.', 'success');
+        // Force logout by clearing any lingering state
+        authContainer.style.display = 'flex';
+        appContent.classList.remove('show');
+        toggleForms(true);
+        loginStudentId.value = '';
+        loginPassword.value = '';
     } catch (error) {
         showToast('Logout failed: ' + error.message, 'error');
     }
@@ -734,8 +752,8 @@ uploadBtn.addEventListener('click', () => {
         <div class="form-group">
             <label><i class="fas fa-eye"></i> Visibility</label>
             <select id="uploadVisibility">
-                <option value="personal">🔒 Personal</option>
-                <option value="general">🌐 General</option>
+                <option value="personal">🔒 Personal (only you can see)</option>
+                <option value="general">🌐 General (everyone can see)</option>
             </select>
         </div>
 
