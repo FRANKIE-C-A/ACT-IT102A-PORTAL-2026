@@ -1,11 +1,11 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyC3JbrOoBXTtDNH-7tDbCzT6tECKJCtdjE",
-  authDomain: "hacked-wifi-3d8ac.firebaseapp.com",
-  projectId: "hacked-wifi-3d8ac",
-  storageBucket: "hacked-wifi-3d8ac.firebasestorage.app",
-  messagingSenderId: "893227799683",
-  appId: "1:893227799683:web:8e556a16a23c21ce4a77b6",
-  measurementId: "G-1DXKC8TQQ7"
+    apiKey: "AIzaSyC3JbrOoBXTtDNH-7tDbCzT6tECKJCtdjE",
+    authDomain: "hacked-wifi-3d8ac.firebaseapp.com",
+    projectId: "hacked-wifi-3d8ac",
+    storageBucket: "hacked-wifi-3d8ac.firebasestorage.app",
+    messagingSenderId: "893227799683",
+    appId: "1:893227799683:web:8e556a16a23c21ce4a77b6",
+    measurementId: "G-1DXKC8TQQ7"
 };
 
 try {
@@ -42,6 +42,7 @@ const showLogin = document.getElementById('showLogin');
 const userDisplayName = document.getElementById('userDisplayName');
 const headerProfilePic = document.getElementById('headerProfilePic');
 const headerProfilePlaceholder = document.getElementById('headerProfilePlaceholder');
+const userInfo = document.getElementById('userInfo');
 
 const subjectListView = document.getElementById('subjectListView');
 const projectDetailView = document.getElementById('projectDetailView');
@@ -258,6 +259,16 @@ function updateHeaderUI() {
     }
 }
 
+userInfo.addEventListener('click', () => {
+    showView('profileView');
+    loadProfile();
+});
+
+document.getElementById('profileBtn').addEventListener('click', () => {
+    showView('profileView');
+    loadProfile();
+});
+
 document.getElementById('logoutFromProfileBtn').addEventListener('click', async () => {
     try {
         await auth.signOut();
@@ -346,8 +357,8 @@ const projectListEl = document.getElementById('projectList');
 const backBtn = document.getElementById('backToSubjectsBtn');
 const uploadBtn = document.getElementById('uploadProjectBtn');
 const backFromChatBtn = document.getElementById('backFromChatBtn');
+const chatBackToListBtn = document.getElementById('chatBackToListBtn');
 const backFromProfileBtn = document.getElementById('backFromProfileBtn');
-const profileBtn = document.getElementById('profileBtn');
 
 const modalOverlay = document.getElementById('modalOverlay');
 const modalBody = document.getElementById('modalBody');
@@ -365,13 +376,14 @@ const addMembersModalOverlay = document.getElementById('addMembersModalOverlay')
 const addMembersModalBody = document.getElementById('addMembersModalBody');
 const addMembersModalCloseBtn = document.getElementById('addMembersModalCloseBtn');
 
-const chatListContainer = document.getElementById('chatList');
+const chatListContainer = document.getElementById('chatListContainer');
+const chatMessagesContainer = document.getElementById('chatMessagesContainer');
+const chatUserList = document.getElementById('chatUserList');
 const messagesList = document.getElementById('messagesList');
 const chatHeader = document.getElementById('chatHeader');
 const chatInputArea = document.getElementById('chatInputArea');
 const chatMessageInput = document.getElementById('chatMessageInput');
 const sendMessageBtn = document.getElementById('sendMessageBtn');
-const newChatBtn = document.getElementById('newChatBtn');
 
 const profilePictureImg = document.getElementById('profilePictureImg');
 const profilePicturePlaceholder = document.getElementById('profilePicturePlaceholder');
@@ -457,6 +469,17 @@ function showView(viewId) {
     if (viewId) {
         document.getElementById(viewId).style.display = 'block';
     }
+    if (viewId !== 'chatView') {
+        resetChatMobileView();
+    }
+}
+
+function resetChatMobileView() {
+    if (window.innerWidth <= 768) {
+        chatListContainer.style.display = 'flex';
+        chatMessagesContainer.style.display = 'none';
+        chatBackToListBtn.style.display = 'none';
+    }
 }
 
 backBtn.addEventListener('click', () => {
@@ -470,20 +493,30 @@ backFromChatBtn.addEventListener('click', () => {
         window._unsubscribeMessages();
         window._unsubscribeMessages = null;
     }
+    resetChatMobileView();
+});
+
+chatBackToListBtn.addEventListener('click', () => {
+    chatListContainer.style.display = 'flex';
+    chatMessagesContainer.style.display = 'none';
+    chatBackToListBtn.style.display = 'none';
+    chatHeader.innerHTML = '';
+    messagesList.innerHTML = '';
+    chatInputArea.style.display = 'none';
+    if (window._unsubscribeMessages) {
+        window._unsubscribeMessages();
+        window._unsubscribeMessages = null;
+    }
 });
 
 backFromProfileBtn.addEventListener('click', () => {
     showView('subjectListView');
 });
 
-profileBtn.addEventListener('click', () => {
-    showView('profileView');
-    loadProfile();
-});
-
 fabChatBtn.addEventListener('click', () => {
     if (chatView.style.display === 'none') {
         showView('chatView');
+        resetChatMobileView();
         renderChatList();
     } else {
         showView('subjectListView');
@@ -491,6 +524,7 @@ fabChatBtn.addEventListener('click', () => {
             window._unsubscribeMessages();
             window._unsubscribeMessages = null;
         }
+        resetChatMobileView();
     }
 });
 
@@ -1155,8 +1189,15 @@ async function loadAllStudents() {
         const snapshot = await db.collection('users').get();
         allStudents = [];
         snapshot.forEach(doc => {
-            if (doc.id !== currentUser.uid) {
-                allStudents.push({ uid: doc.id, ...doc.data() });
+            const data = doc.data();
+            const firstName = data.firstName || '';
+            const lastName = data.lastName || '';
+            const fullName = data.fullName || '';
+            const nameValid = (firstName && firstName !== 'Unknown') ||
+                              (lastName && lastName !== 'Unknown') ||
+                              (fullName && fullName !== 'Unknown');
+            if (nameValid && doc.id !== currentUser.uid) {
+                allStudents.push({ uid: doc.id, ...data });
             }
         });
         allStudents.sort((a, b) => (a.firstName || '').localeCompare(b.firstName || ''));
@@ -1171,45 +1212,148 @@ let currentChatType = 'private';
 
 function renderChatList() {
     if (!currentUser) return;
-    chatListContainer.innerHTML = '<div class="loading-container" style="padding:1rem;"><div class="spinner" style="width:24px;height:24px;"></div><p style="font-size:0.7rem;">Loading chats...</p></div>';
-
-    let html = `
-        <div class="chat-item ${currentChatId === 'general' ? 'active' : ''}" onclick="openGeneralChat()">
-            <div class="chat-name"><i class="fas fa-globe" style="color:#fbbf24;"></i> General Chat</div>
-            <div class="chat-last-msg">Chat with everyone</div>
+    
+    const container = chatUserList;
+    container.innerHTML = '';
+    
+    const generalItem = document.createElement('div');
+    generalItem.className = `chat-user-item ${currentChatId === 'general' ? 'active' : ''}`;
+    generalItem.innerHTML = `
+        <div class="chat-avatar-placeholder" style="background:rgba(251,191,36,0.2);">
+            <i class="fas fa-globe" style="color:#fbbf24;font-size:1.2rem;"></i>
+        </div>
+        <div class="chat-user-info">
+            <div class="chat-user-name">General Chat</div>
+            <div class="chat-user-id">Chat with everyone</div>
         </div>
     `;
-
-    db.collection('chats')
-        .where('participants', 'array-contains', currentUser.uid)
-        .orderBy('lastUpdated', 'desc')
-        .onSnapshot((snapshot) => {
-            let privateChatsHtml = '';
-            snapshot.forEach(doc => {
-                const chat = doc.data();
-                const otherUid = chat.participants.find(uid => uid !== currentUser.uid);
-                const otherStudent = allStudents.find(s => s.uid === otherUid);
-                const name = otherStudent ? (otherStudent.firstName || 'Unknown') : 'Unknown';
-                const lastMsg = chat.lastMessage || 'No messages yet';
-                const isActive = currentChatId === doc.id && currentChatType === 'private';
-
-                privateChatsHtml += `
-                    <div class="chat-item ${isActive ? 'active' : ''}" onclick="openPrivateChat('${doc.id}','${otherUid}')">
-                        <div class="chat-name">${escapeHtml(name)}</div>
-                        <div class="chat-last-msg">${escapeHtml(lastMsg)}</div>
-                    </div>
-                `;
-            });
-            chatListContainer.innerHTML = html + privateChatsHtml;
+    generalItem.addEventListener('click', () => openGeneralChat());
+    container.appendChild(generalItem);
+    
+    const divider = document.createElement('div');
+    divider.className = 'chat-divider';
+    divider.textContent = 'Students';
+    container.appendChild(divider);
+    
+    const userList = allStudents;
+    
+    if (userList.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'empty-state';
+        empty.style.padding = '1rem';
+        empty.innerHTML = '<p style="font-size:0.8rem;color:#64748b;">No other students found.</p>';
+        container.appendChild(empty);
+        return;
+    }
+    
+    userList.forEach(user => {
+        const item = document.createElement('div');
+        item.className = `chat-user-item ${currentChatParticipant === user.uid ? 'active' : ''}`;
+        item.dataset.uid = user.uid;
+        
+        const initial = (user.firstName || 'U')[0].toUpperCase();
+        const avatar = user.profilePicture ?
+            `<img src="${user.profilePicture}" alt="${user.firstName}" class="chat-avatar-img" />` :
+            `<div class="chat-avatar-placeholder" style="background:linear-gradient(135deg, rgba(139,92,246,0.2), rgba(244,114,182,0.2));">${initial}</div>`;
+        
+        const name = user.fullName || user.firstName + ' ' + user.lastName || 'Unknown';
+        const id = user.studentId || '';
+        
+        item.innerHTML = `
+            ${avatar}
+            <div class="chat-user-info">
+                <div class="chat-user-name">${escapeHtml(name)}</div>
+                <div class="chat-user-id">${escapeHtml(id)}</div>
+            </div>
+        `;
+        item.addEventListener('click', () => {
+            startChat(user.uid);
         });
+        container.appendChild(item);
+    });
+    
+    const searchInput = document.getElementById('chatSearchInput');
+    if (searchInput) {
+        const newSearch = searchInput.cloneNode(true);
+        searchInput.parentNode.replaceChild(newSearch, searchInput);
+        newSearch.addEventListener('input', function() {
+            filterChatUsers(this.value);
+        });
+        window._chatSearchInput = newSearch;
+    }
+}
+
+function filterChatUsers(query) {
+    const items = document.querySelectorAll('#chatUserList .chat-user-item');
+    const q = query.toLowerCase().trim();
+    let visibleCount = 0;
+    
+    items.forEach(item => {
+        if (item.classList.contains('chat-divider')) return;
+        
+        const name = item.querySelector('.chat-user-name')?.textContent?.toLowerCase() || '';
+        const id = item.querySelector('.chat-user-id')?.textContent?.toLowerCase() || '';
+        const isGeneral = item.querySelector('.fa-globe') !== null;
+        
+        if (isGeneral) {
+            item.style.display = 'flex';
+            return;
+        }
+        
+        if (name.includes(q) || id.includes(q)) {
+            item.style.display = 'flex';
+            visibleCount++;
+        } else {
+            item.style.display = 'none';
+        }
+    });
+    
+    const divider = document.querySelector('#chatUserList .chat-divider');
+    if (divider) {
+        divider.style.display = visibleCount > 0 ? 'block' : 'none';
+    }
+    
+    let noResult = document.querySelector('#chatUserList .no-results');
+    if (q && visibleCount === 0) {
+        if (!noResult) {
+            noResult = document.createElement('div');
+            noResult.className = 'empty-state no-results';
+            noResult.style.padding = '1rem';
+            noResult.innerHTML = '<p style="font-size:0.8rem;color:#64748b;">No users match your search.</p>';
+            const divider2 = document.querySelector('#chatUserList .chat-divider');
+            if (divider2) {
+                divider2.parentNode.insertBefore(noResult, divider2.nextSibling);
+            } else {
+                document.querySelector('#chatUserList').appendChild(noResult);
+            }
+        }
+        noResult.style.display = 'block';
+    } else if (noResult) {
+        noResult.style.display = 'none';
+    }
 }
 
 function openGeneralChat() {
     currentChatType = 'general';
     currentChatId = 'general';
     currentChatParticipant = null;
-    chatHeader.innerHTML = `<strong><i class="fas fa-globe" style="color:#fbbf24;"></i> General Chat</strong> <span style="font-size:0.7rem;color:#4a6a5a;">Everyone</span>`;
+    
+    document.querySelectorAll('#chatUserList .chat-user-item').forEach(el => el.classList.remove('active'));
+    const items = document.querySelectorAll('#chatUserList .chat-user-item');
+    items.forEach(el => {
+        if (el.querySelector('.fa-globe')) {
+            el.classList.add('active');
+        }
+    });
+    
+    chatHeader.innerHTML = `<strong><i class="fas fa-globe" style="color:#fbbf24;"></i> General Chat</strong> <span style="font-size:0.7rem;color:#64748b;">Everyone</span>`;
     chatInputArea.style.display = 'flex';
+
+    if (window.innerWidth <= 768) {
+        chatListContainer.style.display = 'none';
+        chatMessagesContainer.style.display = 'flex';
+        chatBackToListBtn.style.display = 'block';
+    }
 
     if (window._unsubscribeMessages) {
         window._unsubscribeMessages();
@@ -1256,14 +1400,30 @@ function openPrivateChat(chatId, otherUid) {
     currentChatId = chatId;
     currentChatParticipant = otherUid;
 
-    document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
-    const activeEl = document.querySelector(`.chat-item[onclick*="openPrivateChat('${chatId}','${otherUid}')"]`);
-    if (activeEl) activeEl.classList.add('active');
+    document.querySelectorAll('#chatUserList .chat-user-item').forEach(el => el.classList.remove('active'));
+    const items = document.querySelectorAll('#chatUserList .chat-user-item');
+    items.forEach(el => {
+        if (el.dataset.uid === otherUid) {
+            el.classList.add('active');
+        }
+    });
 
     const otherStudent = allStudents.find(s => s.uid === otherUid);
-    const name = otherStudent ? (otherStudent.firstName || 'Unknown') : 'Unknown';
-    chatHeader.innerHTML = `<strong>${escapeHtml(name)}</strong> <span style="font-size:0.7rem;color:#4a6a5a;">(${otherStudent?.studentId || ''})</span>`;
+    const name = otherStudent ? (otherStudent.fullName || otherStudent.firstName + ' ' + otherStudent.lastName || 'Unknown') : 'Unknown';
+    const id = otherStudent?.studentId || '';
+    chatHeader.innerHTML = `
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+            <strong>${escapeHtml(name)}</strong>
+            <span style="font-size:0.65rem;color:#64748b;">${escapeHtml(id)}</span>
+        </div>
+    `;
     chatInputArea.style.display = 'flex';
+
+    if (window.innerWidth <= 768) {
+        chatListContainer.style.display = 'none';
+        chatMessagesContainer.style.display = 'flex';
+        chatBackToListBtn.style.display = 'block';
+    }
 
     if (window._unsubscribeMessages) {
         window._unsubscribeMessages();
@@ -1304,6 +1464,45 @@ function openPrivateChat(chatId, otherUid) {
             messagesList.scrollTop = messagesList.scrollHeight;
         });
 }
+
+window.startChat = async function(otherUid) {
+    if (otherUid === currentUser.uid) {
+        showToast('You cannot chat with yourself.', 'error');
+        return;
+    }
+    
+    const uid = currentUser.uid;
+    try {
+        const snapshot = await db.collection('chats')
+            .where('participants', 'array-contains', uid)
+            .get();
+
+        let existingChat = null;
+        snapshot.forEach(doc => {
+            const chat = doc.data();
+            if (chat.participants.includes(otherUid)) {
+                existingChat = doc.id;
+            }
+        });
+
+        if (existingChat) {
+            openPrivateChat(existingChat, otherUid);
+            renderChatList();
+            return;
+        }
+
+        const chatRef = await db.collection('chats').add({
+            participants: [uid, otherUid],
+            lastMessage: '',
+            lastUpdated: firebase.firestore.Timestamp.now()
+        });
+        openPrivateChat(chatRef.id, otherUid);
+        renderChatList();
+    } catch (error) {
+        console.error('Start chat error:', error);
+        showToast('Failed to start chat: ' + error.message, 'error');
+    }
+};
 
 window.deleteGeneralMessage = async function(messageId) {
     if (!confirm('Delete this message?')) return;
@@ -1380,60 +1579,6 @@ sendMessageBtn.addEventListener('click', async () => {
 chatMessageInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') sendMessageBtn.click();
 });
-
-newChatBtn.addEventListener('click', () => {
-    newChatModalBody.innerHTML = `
-        <div class="modal-title"><i class="fas fa-user-plus"></i> Start a New Private Chat</div>
-        <div style="max-height:300px;overflow-y:auto;">
-            ${allStudents.map(s => `
-                <div class="student-list-item" onclick="startChat('${s.uid}')">
-                    <div>
-                        <div class="student-name">${escapeHtml(s.firstName || '')} ${escapeHtml(s.lastName || '')}</div>
-                        <div class="student-id">${escapeHtml(s.studentId || '')}</div>
-                    </div>
-                    <button class="btn btn-primary btn-sm"><i class="fas fa-comment"></i> Chat</button>
-                </div>
-            `).join('')}
-            ${allStudents.length === 0 ? '<p style="color:#4a6a5a;text-align:center;padding:1rem;">No other students found.</p>' : ''}
-        </div>
-        <div class="modal-actions">
-            <button class="btn btn-outline" onclick="closeNewChatModal()">Cancel</button>
-        </div>
-    `;
-    newChatModalOverlay.classList.add('active');
-});
-
-window.startChat = async function(otherUid) {
-    closeNewChatModal();
-    const uid = currentUser.uid;
-    try {
-        const snapshot = await db.collection('chats')
-            .where('participants', 'array-contains', uid)
-            .get();
-
-        let existingChat = null;
-        snapshot.forEach(doc => {
-            const chat = doc.data();
-            if (chat.participants.includes(otherUid)) {
-                existingChat = doc.id;
-            }
-        });
-
-        if (existingChat) {
-            openPrivateChat(existingChat, otherUid);
-            return;
-        }
-
-        const chatRef = await db.collection('chats').add({
-            participants: [uid, otherUid],
-            lastMessage: '',
-            lastUpdated: firebase.firestore.Timestamp.now()
-        });
-        openPrivateChat(chatRef.id, otherUid);
-    } catch (error) {
-        showToast('Failed to start chat: ' + error.message, 'error');
-    }
-};
 
 function loadProfile() {
     if (!currentUserProfile) return;

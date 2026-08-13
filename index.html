@@ -19,6 +19,7 @@
 </head>
 <body>
 
+    <!-- ===== AUTH CONTAINER ===== -->
     <div id="authContainer" class="auth-container">
         <div class="auth-box">
             <div class="auth-logo">
@@ -33,9 +34,10 @@
                 <span class="spinner-small"></span> Processing...
             </div>
 
+            <!-- Login Form -->
             <div id="loginForm">
                 <div class="form-group">
-                    <label><i class="fas fa-id-card"></i> ID NUMBER</label>
+                    <label><i class="fas fa-id-card"></i> Student ID (##-anything)</label>
                     <input type="text" id="loginStudentId" placeholder="e.g., 12-34567890" />
                 </div>
                 <div class="form-group">
@@ -48,9 +50,10 @@
                 </div>
             </div>
 
+            <!-- Signup Form -->
             <div id="signupForm" style="display:none;">
                 <div class="form-group">
-                    <label><i class="fas fa-id-card"></i> ID NUMBER</label>
+                    <label><i class="fas fa-id-card"></i> Student ID (##-anything)</label>
                     <input type="text" id="signupStudentId" placeholder="e.g., 12-34567890" />
                 </div>
                 <div class="form-group">
@@ -73,7 +76,9 @@
         </div>
     </div>
 
+    <!-- ===== MAIN APP ===== -->
     <div id="appContent">
+        <!-- Header -->
         <header class="header">
             <div class="header-left">
                 <div class="logo-icon"><i class="fas fa-user-secret"></i></div>
@@ -84,8 +89,8 @@
             </div>
 
             <div class="header-right">
-                <div class="user-info" id="userInfo">
-                    <img id="headerProfilePic" src="" alt="Profile" class="header-avatar" style="display:none; width:28px; height:28px; border-radius:50%; object-fit:cover; border:2px solid rgba(139,92,246,0.3);" />
+                <div class="user-info" id="userInfo" style="cursor:pointer;">
+                    <img id="headerProfilePic" src="" alt="Profile" class="header-avatar" style="display:none;" />
                     <i id="headerProfilePlaceholder" class="fas fa-user-circle" style="font-size:1.4rem; color:#94a3b8; display:block;"></i>
                     <span class="name" id="userDisplayName">Student</span>
                 </div>
@@ -100,6 +105,7 @@
 
         <div class="container">
 
+            <!-- Subject List View -->
             <div id="subjectListView">
                 <div class="section-header">
                     <h2><i class="fas fa-list-ul"></i> Your Subjects</h2>
@@ -109,6 +115,7 @@
                 <div id="subjectList" class="subject-grid"></div>
             </div>
 
+            <!-- Project Detail View -->
             <div id="projectDetailView" style="display:none;">
                 <div class="detail-header">
                     <div class="detail-center">
@@ -128,37 +135,40 @@
                 </div>
             </div>
 
+            <!-- Chat View -->
             <div id="chatView" style="display:none;">
                 <div class="detail-header">
                     <div class="detail-center">
                         <h2><i class="fas fa-comment-dots"></i> Chat</h2>
                         <p class="detail-meta">Message your classmates</p>
                     </div>
-                    <button class="btn btn-outline" id="backFromChatBtn"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="btn btn-outline" id="chatBackToListBtn" style="display:none;"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="btn btn-outline" id="backFromChatBtn"><i class="fas fa-arrow-left"></i> Back to Subjects</button>
                 </div>
-                <div id="chatContainer" style="display:flex; gap:1rem; height:70vh; min-height:400px;">
 
-                    <div id="chatListContainer" style="flex:0 0 300px; background:rgba(15,23,42,0.3); border-radius:10px; padding:0.6rem; overflow-y:auto; border:1px solid rgba(139,92,246,0.06);">
-                        <div class="section-header" style="margin-bottom:0.5rem;">
-                            <h3 style="font-size:0.85rem;">Contacts</h3>
-                            <button class="btn btn-primary btn-sm" id="newChatBtn"><i class="fas fa-plus"></i> New</button>
+                <div id="chatContainer">
+                    <!-- LEFT: Contacts -->
+                    <div id="chatListContainer">
+                        <div class="chat-search-wrapper">
+                            <input type="text" id="chatSearchInput" placeholder="Search users..." />
+                            <i class="fas fa-search"></i>
                         </div>
-                        <div id="chatList"></div>
+                        <div id="chatUserList"></div>
                     </div>
 
-                    <div id="chatMessagesContainer" style="flex:1; background:rgba(15,23,42,0.3); border-radius:10px; padding:0.6rem; display:flex; flex-direction:column; border:1px solid rgba(139,92,246,0.06);">
-                        <div id="chatHeader" style="border-bottom:1px solid rgba(139,92,246,0.06); padding-bottom:0.4rem; margin-bottom:0.4rem;">
-                            <span style="color:#94a3b8; font-size:0.8rem;">Select a contact to start chatting</span>
-                        </div>
-                        <div id="messagesList" style="flex:1; overflow-y:auto; padding:0.3rem; display:flex; flex-direction:column; gap:0.3rem;"></div>
-                        <div id="chatInputArea" style="display:none; gap:0.3rem; margin-top:0.3rem; border-top:1px solid rgba(139,92,246,0.06); padding-top:0.4rem;">
-                            <input type="text" id="chatMessageInput" placeholder="Type a message..." style="flex:1; padding:0.4rem 0.6rem; border-radius:6px; border:1px solid rgba(139,92,246,0.15); background:rgba(15,23,42,0.6); color:#e2e8f0; outline:none; font-size:0.8rem;" />
-                            <button class="btn btn-primary btn-sm" id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
+                    <!-- RIGHT: Messages -->
+                    <div id="chatMessagesContainer">
+                        <div id="chatHeader"></div>
+                        <div id="messagesList"></div>
+                        <div id="chatInputArea" style="display:none;">
+                            <input type="text" id="chatMessageInput" placeholder="Type a message..." />
+                            <button class="btn btn-primary" id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Profile View -->
             <div id="profileView" style="display:none;">
                 <div class="detail-header">
                     <div class="detail-center">
@@ -166,7 +176,7 @@
                     </div>
                     <button class="btn btn-outline" id="backFromProfileBtn"><i class="fas fa-arrow-left"></i> Back</button>
                 </div>
-                <div id="profileContent" style="max-width:600px; margin:0 auto; background:rgba(15,23,42,0.3); border-radius:12px; padding:1.5rem; border:1px solid rgba(139,92,246,0.06);">
+                <div id="profileContent">
                     <div style="display:flex; flex-direction:column; align-items:center; margin-bottom:1rem;">
                         <div id="profilePictureContainer" style="width:120px; height:120px; border-radius:50%; overflow:hidden; border:3px solid rgba(139,92,246,0.2); background:#141b2b; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem;">
                             <img id="profilePictureImg" src="" alt="Profile" style="width:100%; height:100%; object-fit:cover; display:none;" />
@@ -192,7 +202,7 @@
                     </div>
                     <div class="form-group">
                         <label>Bio</label>
-                        <textarea id="profileBio" rows="3" placeholder="Tell us about yourself..." style="width:100%; padding:0.4rem 0.6rem; border-radius:6px; border:1px solid rgba(139,92,246,0.15); background:rgba(15,23,42,0.6); color:#e2e8f0; outline:none; font-size:0.8rem; resize:vertical;"></textarea>
+                        <textarea id="profileBio" rows="3" placeholder="Tell us about yourself..."></textarea>
                     </div>
                     <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:1rem;">
                         <button class="btn btn-primary" id="saveProfileBtn"><i class="fas fa-save"></i> Save Profile</button>
@@ -206,7 +216,7 @@
         <button class="fab-chat" id="fabChatBtn"><i class="fas fa-comment-dots"></i></button>
     </div>
 
-
+    <!-- ===== MODALS ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content" id="modalContent">
             <button class="modal-close" id="modalCloseBtn">&times;</button>
