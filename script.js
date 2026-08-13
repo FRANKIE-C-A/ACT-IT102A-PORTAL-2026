@@ -723,8 +723,8 @@ uploadBtn.addEventListener('click', () => {
         <div class="form-group">
             <label><i class="fas fa-eye"></i> Visibility</label>
             <select id="uploadVisibility">
-                <option value="personal">🔒 Personal (only you can see)</option>
-                <option value="general">🌐 General (everyone can see)</option>
+                <option value="personal">🔒 Personal</option>
+                <option value="general">🌐 General</option>
             </select>
         </div>
 
