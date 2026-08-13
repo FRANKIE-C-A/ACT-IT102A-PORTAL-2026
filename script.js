@@ -264,11 +264,6 @@ userInfo.addEventListener('click', () => {
     loadProfile();
 });
 
-document.getElementById('profileBtn').addEventListener('click', () => {
-    showView('profileView');
-    loadProfile();
-});
-
 document.getElementById('logoutFromProfileBtn').addEventListener('click', async () => {
     try {
         await auth.signOut();
