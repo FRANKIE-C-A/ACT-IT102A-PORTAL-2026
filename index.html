@@ -82,14 +82,7 @@
                     <small><i class="fas fa-globe"></i> Access Anywhere, Anytime...</small>
                 </div>
             </div>
-
-            <div class="header-right">
-                <div class="user-info" id="userInfo">
-                    <img id="headerProfilePic" src="" alt="Profile" class="header-avatar" />
-                    <i id="headerProfilePlaceholder" class="fas fa-user-circle"></i>
-                    <span class="name" id="userDisplayName">Student</span>
-                </div>
-            </div>
+            <!-- Profile removed from header – now in subject section -->
         </header>
 
         <div class="about-bar">
@@ -102,7 +95,12 @@
             <div id="subjectListView">
                 <div class="section-header">
                     <h2><i class="fas fa-list-ul"></i> Your Subjects</h2>
-                    <span class="count" id="subjectCount">0 subjects</span>
+                    <!-- Profile replaces subject count -->
+                    <div class="user-info" id="userInfo">
+                        <img id="headerProfilePic" src="" alt="Profile" class="header-avatar" />
+                        <i id="headerProfilePlaceholder" class="fas fa-user-circle"></i>
+                        <span class="name" id="userDisplayName">Student</span>
+                    </div>
                 </div>
                 <div class="clock-row" id="headerClock"><i class="far fa-clock"></i> loading...</div>
                 <div id="subjectList" class="subject-grid"></div>
