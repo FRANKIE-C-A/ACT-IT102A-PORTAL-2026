@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>IT102A Student Portal</title>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js">
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <div id="authContainer" class="auth-container">
+        <div class="auth-box">
+            <div class="auth-logo">
+                <div class="logo-icon"><i class="fas fa-user-secret"></i></div>
+                <h1>IT102A Portal</h1>
+                <p>Student Access</p>
+            </div>
+
+            <div id="authError" class="auth-error"></div>
+            <div id="authSuccess" class="auth-success"></div>
+            <div id="authLoading" class="auth-loading">
+                <span class="spinner-small"></span> Processing...
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm">
+                <div class="form-group">
+                    <label><i class="fas fa-id-card"></i> Student ID (##-anything)</label>
+                    <input type="text" id="loginStudentId" placeholder="e.g., 12-34567890" />
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" />
+                </div>
+                <button class="btn-auth" id="loginBtn">Sign In</button>
+                <div class="auth-toggle">
+                    Don't have an account? <a id="showSignup">Sign Up</a>
+                </div>
+            </div>
+
+            <!-- Signup Form -->
+            <div id="signupForm" style="display:none;">
+                <div class="form-group">
+                    <label><i class="fas fa-id-card"></i> Student ID (##-anything)</label>
+                    <input type="text" id="signupStudentId" placeholder="e.g., 12-34567890" />
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> First Name</label>
+                    <input type="text" id="signupFirstName" placeholder="Juan" />
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-user-tag"></i> Last Name</label>
+                    <input type="text" id="signupLastName" placeholder="Dela Cruz" />
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Password (min 6 chars)</label>
+                    <input type="password" id="signupPassword" placeholder="Create a password" />
+                </div>
+                <button class="btn-auth" id="signupBtn">Create Account</button>
+                <div class="auth-toggle">
+                    Already have an account? <a id="showLogin">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN APP ===== -->
+    <div id="appContent">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-icon"><i class="fas fa-user-secret"></i></div>
+                <div class="header-title">
+                    <h1>IT102A Portal</h1>
+                    <small><i class="fas fa-globe"></i> ACCESS ANYWHERE</small>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div class="user-info" id="userInfo">
+                    <img id="headerProfilePic" src="" alt="Profile" class="header-avatar" style="display:none; width:28px; height:28px; border-radius:50%; object-fit:cover; border:2px solid rgba(139,92,246,0.3);" />
+                    <i id="headerProfilePlaceholder" class="fas fa-user-circle" style="font-size:1.4rem; color:#94a3b8; display:block;"></i>
+                    <span class="name" id="userDisplayName">Student</span>
+                </div>
+                <button class="header-btn" id="profileBtn"><i class="fas fa-user-edit"></i> Profile</button>
+            </div>
+        </header>
+
+        <div class="about-bar">
+            <i class="fas fa-code"></i>
+            <span>Developed By : Frankie Core Adaro</span>
+        </div>
+
+        <div class="container">
+
+            <!-- Subject List View -->
+            <div id="subjectListView">
+                <div class="section-header">
+                    <h2><i class="fas fa-list-ul"></i> Your Subjects</h2>
+                    <span class="count" id="subjectCount">0 subjects</span>
+                </div>
+                <div class="clock-row" id="headerClock"><i class="far fa-clock"></i> loading...</div>
+                <div id="subjectList" class="subject-grid"></div>
+            </div>
+
+            <!-- Project Detail View -->
+            <div id="projectDetailView" style="display:none;">
+                <div class="detail-header">
+                    <div class="detail-center">
+                        <h2 id="detailSubjectTitle">Subject</h2>
+                        <p id="detailTeacherTime" class="detail-meta">Teacher • Schedule</p>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="uploadProjectBtn"><i class="fas fa-upload"></i> Upload Project</button>
+                    <button class="btn btn-outline" id="backToSubjectsBtn"><i class="fas fa-arrow-left"></i> Back</button>
+                </div>
+                <div id="projectList" class="project-list-full">
+                    <div class="loading-container" id="projectLoadingSpinner">
+                        <div class="spinner"></div>
+                        <p>Loading projects...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat View -->
+            <div id="chatView" style="display:none;">
+                <div class="detail-header">
+                    <div class="detail-center">
+                        <h2><i class="fas fa-comment-dots"></i> Chat</h2>
+                        <p class="detail-meta">Message your classmates</p>
+                    </div>
+                    <button class="btn btn-outline" id="backFromChatBtn"><i class="fas fa-arrow-left"></i> Back</button>
+                </div>
+                <div id="chatContainer" style="display:flex; gap:1rem; height:70vh; min-height:400px;">
+
+                    <div id="chatListContainer" style="flex:0 0 300px; background:rgba(15,23,42,0.3); border-radius:10px; padding:0.6rem; overflow-y:auto; border:1px solid rgba(139,92,246,0.06);">
+                        <div class="section-header" style="margin-bottom:0.5rem;">
+                            <h3 style="font-size:0.85rem;">Contacts</h3>
+                            <button class="btn btn-primary btn-sm" id="newChatBtn"><i class="fas fa-plus"></i> New</button>
+                        </div>
+                        <div id="chatList"></div>
+                    </div>
+
+                    <div id="chatMessagesContainer" style="flex:1; background:rgba(15,23,42,0.3); border-radius:10px; padding:0.6rem; display:flex; flex-direction:column; border:1px solid rgba(139,92,246,0.06);">
+                        <div id="chatHeader" style="border-bottom:1px solid rgba(139,92,246,0.06); padding-bottom:0.4rem; margin-bottom:0.4rem;">
+                            <span style="color:#94a3b8; font-size:0.8rem;">Select a contact to start chatting</span>
+                        </div>
+                        <div id="messagesList" style="flex:1; overflow-y:auto; padding:0.3rem; display:flex; flex-direction:column; gap:0.3rem;"></div>
+                        <div id="chatInputArea" style="display:none; gap:0.3rem; margin-top:0.3rem; border-top:1px solid rgba(139,92,246,0.06); padding-top:0.4rem;">
+                            <input type="text" id="chatMessageInput" placeholder="Type a message..." style="flex:1; padding:0.4rem 0.6rem; border-radius:6px; border:1px solid rgba(139,92,246,0.15); background:rgba(15,23,42,0.6); color:#e2e8f0; outline:none; font-size:0.8rem;" />
+                            <button class="btn btn-primary btn-sm" id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile View -->
+            <div id="profileView" style="display:none;">
+                <div class="detail-header">
+                    <div class="detail-center">
+                        <h2><i class="fas fa-user-circle"></i> My Profile</h2>
+                    </div>
+                    <button class="btn btn-outline" id="backFromProfileBtn"><i class="fas fa-arrow-left"></i> Back</button>
+                </div>
+                <div id="profileContent" style="max-width:600px; margin:0 auto; background:rgba(15,23,42,0.3); border-radius:12px; padding:1.5rem; border:1px solid rgba(139,92,246,0.06);">
+                    <!-- Profile Picture -->
+                    <div style="display:flex; flex-direction:column; align-items:center; margin-bottom:1rem;">
+                        <div id="profilePictureContainer" style="width:120px; height:120px; border-radius:50%; overflow:hidden; border:3px solid rgba(139,92,246,0.2); background:#141b2b; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem;">
+                            <img id="profilePictureImg" src="" alt="Profile" style="width:100%; height:100%; object-fit:cover; display:none;" />
+                            <i id="profilePicturePlaceholder" class="fas fa-user" style="font-size:3rem; color:#64748b;"></i>
+                        </div>
+                        <label class="btn btn-primary btn-sm" style="cursor:pointer;">
+                            <i class="fas fa-camera"></i> Upload Photo
+                            <input type="file" id="profilePictureInput" accept="image/*" style="display:none;" />
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Student ID</label>
+                        <input type="text" id="profileStudentId" disabled style="opacity:0.7;" />
+                    </div>
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" id="profileFirstName" />
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" id="profileLastName" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bio</label>
+                        <textarea id="profileBio" rows="3" placeholder="Tell us about yourself..." style="width:100%; padding:0.4rem 0.6rem; border-radius:6px; border:1px solid rgba(139,92,246,0.15); background:rgba(15,23,42,0.6); color:#e2e8f0; outline:none; font-size:0.8rem; resize:vertical;"></textarea>
+                    </div>
+                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:1rem;">
+                        <button class="btn btn-primary" id="saveProfileBtn"><i class="fas fa-save"></i> Save Profile</button>
+                        <button class="btn btn-danger" id="logoutFromProfileBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Floating Chat Button -->
+        <button class="fab-chat" id="fabChatBtn"><i class="fas fa-comment-dots"></i></button>
+    </div>
+
+    <!-- ===== MODALS ===== -->
+    <!-- Main Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent">
+            <button class="modal-close" id="modalCloseBtn">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Comment Modal -->
+    <div class="modal-overlay" id="commentModalOverlay">
+        <div class="modal-content" id="commentModalContent">
+            <button class="modal-close" id="commentModalCloseBtn">&times;</button>
+            <div id="commentModalBody"></div>
+        </div>
+    </div>
+
+    <!-- New Chat Modal -->
+    <div class="modal-overlay" id="newChatModalOverlay">
+        <div class="modal-content" id="newChatModalContent">
+            <button class="modal-close" id="newChatModalCloseBtn">&times;</button>
+            <div id="newChatModalBody"></div>
+        </div>
+    </div>
+
+    <!-- Add Members Modal -->
+    <div class="modal-overlay" id="addMembersModalOverlay">
+        <div class="modal-content" id="addMembersModalContent">
+            <button class="modal-close" id="addMembersModalCloseBtn">&times;</button>
+            <div id="addMembersModalBody"></div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
