@@ -245,11 +245,11 @@ body {
 }
 
 /* ============================================================
-   HEADER – BIGGER TITLE, FULL VISIBLE ON MOBILE
+   HEADER – LOGO + TITLE ON ONE ROW, SUBTITLE UNDERNEATH
    ============================================================ */
 .header {
     background: #0f172a;
-    padding: 0.6rem 1.5rem;
+    padding: 0.8rem 1.5rem;
     display: flex;
     align-items: center;
     border-bottom: 1px solid rgba(139, 92, 246, 0.06);
@@ -257,144 +257,129 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
-    min-height: 70px;
+    width: 100%;
 }
 
 .header-left {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
-    flex: 1;
-    min-width: 0;
+    gap: 1rem;
+    width: 100%;
+    flex: 1 1 100%;
 }
 
+/* ---- LOGO ICON - BIGGER ---- */
 .header-left .logo-icon {
-    width: 42px;
-    height: 42px;
+    width: 56px;
+    height: 56px;
     background: #000000;
-    border-radius: 10px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
+    font-size: 1.8rem;
     color: #fff;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.4), 0 0 60px rgba(139, 92, 246, 0.05);
     flex-shrink: 0;
+    transition: transform 0.3s ease;
 }
 
+.header-left .logo-icon:hover {
+    transform: scale(1.05);
+}
+
+/* ---- TITLE CONTAINER - STACKS TITLE + SUBTITLE ---- */
 .header-left .header-title {
-    flex: 1;
+    flex: 1 1 auto;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
 }
 
+/* ---- MAIN TITLE - BIGGER, FULL WIDTH ---- */
 .header-left .header-title h1 {
-    font-size: 1.6rem;
-    font-weight: 700;
+    font-size: 2.4rem;
+    font-weight: 800;
     background: linear-gradient(135deg, #f472b6, #a78bfa, #60a5fa);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    line-height: 1.2;
+    line-height: 1.1;
+    margin: 0;
     display: block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+    letter-spacing: 0.5px;
 }
 
+/* ---- SUBTITLE - UNDER THE TITLE, FULL WIDTH ---- */
 .header-left .header-title small {
     display: block;
-    font-size: 0.6rem;
+    font-size: 0.75rem;
     font-weight: 600;
     -webkit-text-fill-color: #94a3b8;
     color: #94a3b8;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
-    margin-top: -3px;
+    margin-top: 0px;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+    width: 100%;
+}
+
+.header-left .header-title small i {
+    color: #8b5cf6;
+    margin-right: 0.3rem;
 }
 
 /* ============================================================
-   RESPONSIVE HEADER – FULL TITLE VISIBLE ON PHONE
+   HEADER – RESPONSIVE: BIGGER ON LARGE SCREENS
    ============================================================ */
-@media (max-width: 768px) {
+@media (min-width: 1200px) {
     .header {
-        padding: 0.4rem 0.6rem;
-        min-height: 54px;
-    }
-    .header-left {
-        gap: 0.4rem;
+        padding: 1rem 2.5rem;
     }
     .header-left .logo-icon {
-        width: 32px;
-        height: 32px;
+        width: 72px;
+        height: 72px;
+        font-size: 2.4rem;
+        border-radius: 18px;
+    }
+    .header-left .header-title h1 {
+        font-size: 3rem;
+    }
+    .header-left .header-title small {
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 1600px) {
+    .header-left .logo-icon {
+        width: 84px;
+        height: 84px;
+        font-size: 2.8rem;
+        border-radius: 20px;
+    }
+    .header-left .header-title h1 {
+        font-size: 3.6rem;
+    }
+    .header-left .header-title small {
         font-size: 1rem;
-        flex-shrink: 0;
-    }
-    .header-left .header-title h1 {
-        font-size: 1.2rem;
-        white-space: normal;
-        word-wrap: break-word;
-        line-height: 1.1;
-        max-width: none;
-    }
-    .header-left .header-title small {
-        font-size: 0.45rem;
-        display: block;
-        -webkit-text-fill-color: #94a3b8;
-        color: #94a3b8;
-        letter-spacing: 0.3px;
-        white-space: normal;
+        letter-spacing: 1px;
     }
 }
 
-@media (max-width: 420px) {
+/* ============================================================
+   HEADER – TABLET (1024px and below)
+   ============================================================ */
+@media (max-width: 1024px) {
     .header {
-        padding: 0.3rem 0.5rem;
-        min-height: 48px;
-    }
-    .header-left .logo-icon {
-        width: 28px;
-        height: 28px;
-        font-size: 0.85rem;
-    }
-    .header-left .header-title h1 {
-        font-size: 1rem;
-        white-space: normal;
-        word-wrap: break-word;
-        line-height: 1.1;
-    }
-    .header-left .header-title small {
-        font-size: 0.4rem;
-        display: block;
-        white-space: normal;
-    }
-}
-
-@media (max-width: 350px) {
-    .header-left .header-title h1 {
-        font-size: 0.85rem;
-    }
-    .header-left .header-title small {
-        font-size: 0.35rem;
-    }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-    .header {
-        padding: 0.5rem 1.2rem;
-        min-height: 60px;
-    }
-    .header-left .logo-icon {
-        width: 36px;
-        height: 36px;
-        font-size: 1.1rem;
-    }
-    .header-left .header-title h1 {
-        font-size: 1.3rem;
-        white-space: nowrap;
-    }
-}
-
-@media (min-width: 1025px) {
-    .header {
-        padding: 0.8rem 2rem;
-        min-height: 80px;
+        padding: 0.6rem 1.2rem;
     }
     .header-left .logo-icon {
         width: 48px;
@@ -405,9 +390,138 @@ body {
     .header-left .header-title h1 {
         font-size: 1.8rem;
         white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
     }
     .header-left .header-title small {
         font-size: 0.65rem;
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
+    }
+}
+
+/* ============================================================
+   HEADER – MOBILE (768px and below)
+   ============================================================ */
+@media (max-width: 768px) {
+    .header {
+        padding: 0.5rem 0.8rem;
+        min-height: auto;
+        flex-wrap: wrap;
+    }
+    .header-left {
+        gap: 0.6rem;
+        flex-wrap: nowrap;
+        width: 100%;
+    }
+    .header-left .logo-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+        border-radius: 10px;
+        flex-shrink: 0;
+    }
+    .header-left .header-title {
+        flex: 1 1 auto;
+        min-width: 0;
+        width: auto;
+        max-width: none;
+    }
+    .header-left .header-title h1 {
+        font-size: 1.3rem;
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
+        line-height: 1.1;
+        width: auto;
+        max-width: none;
+        display: inline-block;
+        -webkit-text-fill-color: transparent;
+    }
+    .header-left .header-title small {
+        font-size: 0.5rem;
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
+        width: auto;
+        max-width: none;
+        display: block;
+        margin-top: 0px;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* ============================================================
+   HEADER – SMALL MOBILE (480px and below)
+   ============================================================ */
+@media (max-width: 480px) {
+    .header {
+        padding: 0.4rem 0.5rem;
+    }
+    .header-left {
+        gap: 0.4rem;
+    }
+    .header-left .logo-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+        border-radius: 8px;
+    }
+    .header-left .header-title h1 {
+        font-size: 1.0rem;
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
+        line-height: 1;
+        display: inline-block;
+        -webkit-text-fill-color: transparent;
+    }
+    .header-left .header-title small {
+        font-size: 0.4rem;
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
+        display: block;
+        width: auto;
+        max-width: none;
+        margin-top: 0px;
+        letter-spacing: 0.3px;
+    }
+}
+
+/* ============================================================
+   HEADER – TINY MOBILE (380px and below)
+   ============================================================ */
+@media (max-width: 380px) {
+    .header {
+        padding: 0.3rem 0.4rem;
+    }
+    .header-left .logo-icon {
+        width: 26px;
+        height: 26px;
+        font-size: 0.8rem;
+        border-radius: 6px;
+    }
+    .header-left .header-title h1 {
+        font-size: 0.8rem;
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
+        display: inline-block;
+        -webkit-text-fill-color: transparent;
+        line-height: 1;
+    }
+    .header-left .header-title small {
+        font-size: 0.35rem;
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
+        display: block;
+        width: auto;
+        max-width: none;
+        margin-top: 0px;
+        letter-spacing: 0.2px;
     }
 }
 
@@ -430,12 +544,24 @@ body {
 
 .about-bar i {
     color: #8b5cf6;
+    font-size: 0.8rem;
+}
+
+.about-bar span {
+    font-weight: 600;
 }
 
 @media (min-width: 1025px) {
     .about-bar {
         padding: 0.4rem 2rem;
         font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-bar {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.6rem;
     }
 }
 
@@ -513,7 +639,11 @@ body {
     background-clip: text;
 }
 
-/* ----- SUBJECT SECTION HEADER – PROFILE IN PLACE OF COUNT ----- */
+.section-header .count {
+    display: none;
+}
+
+/* ----- PROFILE IN SECTION HEADER ----- */
 .section-header .user-info {
     display: flex;
     align-items: center;
@@ -524,6 +654,7 @@ body {
     border: 1.5px solid rgba(139, 92, 246, 0.15);
     background: rgba(15, 23, 42, 0.3);
     transition: all 0.2s;
+    flex-shrink: 0;
 }
 
 .section-header .user-info:hover {
@@ -544,6 +675,10 @@ body {
     color: #e2e8f0;
     font-weight: 600;
     font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
 }
 
 .section-header .user-info .fa-user-circle {
@@ -551,14 +686,10 @@ body {
     color: #94a3b8;
 }
 
-/* ----- REMOVE OLD SUBJECT COUNT (replaced by profile) ----- */
-.section-header .count {
-    display: none;
-}
-
 @media (max-width: 768px) {
     .section-header .user-info .name {
         font-size: 0.7rem;
+        max-width: 80px;
     }
     .section-header .user-info .header-avatar {
         width: 26px;
@@ -573,6 +704,20 @@ body {
     }
 }
 
+@media (max-width: 420px) {
+    .section-header .user-info .name {
+        font-size: 0.6rem;
+        max-width: 60px;
+    }
+    .section-header .user-info {
+        padding: 0.05rem 0.3rem 0.05rem 0.15rem;
+        border-radius: 14px;
+    }
+    .section-header .user-info .fa-user-circle {
+        font-size: 1rem;
+    }
+}
+
 @media (min-width: 1025px) {
     .section-header h2 {
         font-size: 1.3rem;
@@ -583,6 +728,7 @@ body {
     }
     .section-header .user-info .name {
         font-size: 1rem;
+        max-width: 180px;
     }
     .section-header .user-info .header-avatar {
         width: 36px;
@@ -631,7 +777,7 @@ body {
 }
 
 /* ============================================================
-   SUBJECT CARD
+   SUBJECT CARD – WITH TEXT WRAPPING
    ============================================================ */
 .subject-card {
     background: #111827;
@@ -644,6 +790,9 @@ body {
     text-align: center;
     position: relative;
     overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .subject-card::before {
@@ -669,17 +818,23 @@ body {
     color: #e2e8f0;
     letter-spacing: 0.3px;
     margin-bottom: 0.05rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .subject-card .subject-teacher {
     font-size: 0.65rem;
     color: #a78bfa;
     font-weight: 600;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .subject-card .subject-teacher i {
     margin-right: 0.15rem;
     color: #f472b6;
+    font-size: 0.6rem;
 }
 
 .subject-card .subject-types {
@@ -698,6 +853,8 @@ body {
     border-radius: 8px;
     border: 1px solid rgba(148, 163, 184, 0.05);
     font-weight: 600;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .subject-card .subject-schedule {
@@ -708,6 +865,8 @@ body {
     gap: 0.2rem;
     flex-wrap: wrap;
     margin-bottom: 0.2rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .subject-card .subject-badge {
@@ -720,11 +879,62 @@ body {
     color: #a78bfa;
     border: 1px solid rgba(139, 92, 246, 0.1);
     transition: all 0.2s ease;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .subject-card:hover .subject-badge {
     background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(244, 114, 182, 0.2));
     border-color: rgba(139, 92, 246, 0.3);
+}
+
+@media (max-width: 768px) {
+    .subject-card {
+        padding: 0.5rem 0.4rem 0.4rem;
+        border-radius: 10px;
+    }
+    .subject-card .subject-code {
+        font-size: 0.85rem;
+        letter-spacing: 0;
+    }
+    .subject-card .subject-teacher {
+        font-size: 0.55rem;
+    }
+    .subject-card .subject-types {
+        font-size: 0.5rem;
+        gap: 0.15rem;
+    }
+    .subject-card .subject-schedule {
+        font-size: 0.5rem;
+        gap: 0.15rem;
+    }
+    .subject-card .subject-badge {
+        font-size: 0.5rem;
+        padding: 0.05rem 0.4rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .subject-card {
+        padding: 0.4rem 0.3rem 0.3rem;
+        border-radius: 8px;
+    }
+    .subject-card .subject-code {
+        font-size: 0.75rem;
+    }
+    .subject-card .subject-teacher {
+        font-size: 0.5rem;
+    }
+    .subject-card .subject-types {
+        font-size: 0.45rem;
+    }
+    .subject-card .subject-schedule {
+        font-size: 0.45rem;
+    }
+    .subject-card .subject-badge {
+        font-size: 0.45rem;
+        padding: 0.05rem 0.3rem;
+    }
 }
 
 @media (min-width: 1025px) {
@@ -747,18 +957,6 @@ body {
     .subject-card .subject-badge {
         font-size: 0.65rem;
         padding: 0.1rem 1rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .subject-card {
-        padding: 0.5rem 0.4rem 0.4rem;
-    }
-    .subject-card .subject-code {
-        font-size: 0.85rem;
-    }
-    .subject-card .subject-teacher {
-        font-size: 0.55rem;
     }
 }
 
@@ -1111,14 +1309,10 @@ body {
         font-size: 0.85rem;
         border-radius: 8px;
     }
-    .btn-sm {
-        padding: 0.2rem 0.7rem;
-        font-size: 0.7rem;
-    }
 }
 
 /* ============================================================
-   CHAT STYLES – FULLY RESPONSIVE
+   CHAT STYLES
    ============================================================ */
 #chatContainer {
     display: flex;
@@ -1401,7 +1595,6 @@ body {
     box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
 }
 
-/* ----- PHONE CHAT ----- */
 @media (max-width: 768px) {
     #chatContainer {
         flex-direction: column;
@@ -1491,29 +1684,6 @@ body {
     }
 }
 
-/* ----- TABLET CHAT ----- */
-@media (min-width: 769px) and (max-width: 1024px) {
-    #chatContainer {
-        height: 70vh;
-        min-height: 400px;
-        gap: 0.8rem;
-    }
-    #chatListContainer {
-        flex: 0 0 280px;
-    }
-    #chatMessagesContainer {
-        flex: 1;
-        display: flex !important;
-    }
-    .chat-user-item {
-        padding: 0.4rem 0.6rem !important;
-    }
-    .chat-user-name {
-        font-size: 0.8rem !important;
-    }
-}
-
-/* ----- DESKTOP CHAT ----- */
 @media (min-width: 1025px) {
     #chatContainer {
         height: 75vh;
@@ -1675,11 +1845,6 @@ body {
     .modal-content .modal-title {
         font-size: 0.9rem;
     }
-    .modal-content .modal-close {
-        width: 26px;
-        height: 26px;
-        font-size: 1.2rem;
-    }
 }
 
 @media (min-width: 1025px) {
@@ -1693,7 +1858,6 @@ body {
     }
 }
 
-/* ----- FORM INSIDE MODAL ----- */
 .modal-content .form-group {
     margin-bottom: 0.6rem;
 }
@@ -1779,7 +1943,6 @@ body {
     font-weight: 700;
 }
 
-/* ----- MEMBER SELECTION ----- */
 .member-list-item {
     display: flex;
     align-items: center;
@@ -1842,7 +2005,6 @@ body {
     color: #ec4899;
 }
 
-/* ----- SLIDESHOW ----- */
 .slideshow-container {
     position: relative;
     margin: 0.5rem 0;
@@ -1935,7 +2097,6 @@ body {
     font-weight: 700;
 }
 
-/* ----- COMMENT MODAL ----- */
 #commentModalContent {
     max-width: 560px;
 }
@@ -2055,7 +2216,6 @@ body {
     color: #ec4899;
 }
 
-/* ----- NEW CHAT MODAL ----- */
 #newChatModalContent {
     max-width: 480px;
 }
@@ -2084,10 +2244,6 @@ body {
     font-size: 0.7rem;
     color: #64748b;
     font-weight: 600;
-}
-
-#newChatModalBody .student-list-item .btn {
-    font-weight: 700;
 }
 
 /* ============================================================
@@ -2211,7 +2367,60 @@ body {
 }
 
 /* ============================================================
-   PROFILE
+   PROFILE – CONTAINER
+   ============================================================ */
+#profileContent {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0.5rem 0;
+}
+
+/* ============================================================
+   PROFILE – PICTURE CONTAINER
+   ============================================================ */
+#profilePictureContainer {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid rgba(139, 92, 246, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0f172a;
+    margin: 0 auto 0.5rem auto;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    flex-shrink: 0;
+    position: relative;
+}
+
+#profilePictureContainer:hover {
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.1);
+}
+
+/* ---- PROFILE IMAGE ---- */
+#profilePictureImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+/* ---- PROFILE PLACEHOLDER ICON ---- */
+#profilePicturePlaceholder {
+    font-size: 4.5rem;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.6);
+}
+
+/* ============================================================
+   PROFILE – FORM FIELDS
    ============================================================ */
 #profileContent .form-group {
     margin-bottom: 0.8rem;
@@ -2230,26 +2439,85 @@ body {
 #profileContent .form-group input,
 #profileContent .form-group textarea {
     width: 100%;
-    padding: 0.4rem 0.6rem;
+    padding: 0.5rem 0.7rem;
     border: 1px solid rgba(139, 92, 246, 0.15);
-    border-radius: 6px;
-    font-size: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
     background: rgba(15, 23, 42, 0.6);
     color: #e2e8f0;
     outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+    font-family: inherit;
 }
 
 #profileContent .form-group input:focus,
 #profileContent .form-group textarea:focus {
     border-color: #8b5cf6;
     box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+    background: rgba(15, 23, 42, 0.8);
+}
+
+#profileContent .form-group input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#profileContent .form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* ============================================================
+   PROFILE – RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+    #profilePictureContainer {
+        width: 110px;
+        height: 110px;
+    }
+    #profilePicturePlaceholder {
+        font-size: 3.5rem;
+    }
+    #profileContent .form-group input,
+    #profileContent .form-group textarea {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #profilePictureContainer {
+        width: 90px;
+        height: 90px;
+        border-width: 2px;
+    }
+    #profilePicturePlaceholder {
+        font-size: 2.8rem;
+    }
+    #profileContent .form-group input,
+    #profileContent .form-group textarea {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.5rem;
+    }
+    #profileContent .form-group label {
+        font-size: 0.55rem;
+    }
+}
+
+@media (min-width: 1025px) {
+    #profilePictureContainer {
+        width: 160px;
+        height: 160px;
+        border-width: 4px;
+    }
+    #profilePicturePlaceholder {
+        font-size: 5rem;
+    }
 }
 
 /* ============================================================
    ADMIN / OWNER PANEL SPECIFIC STYLES
    ============================================================ */
-
-/* ----- STATS BAR ----- */
 .stats-bar {
     display: flex;
     gap: 1.5rem;
@@ -2283,7 +2551,6 @@ body {
     font-size: 1.1rem;
 }
 
-/* ----- SEARCH BAR ----- */
 .search-bar {
     display: flex;
     gap: 0.6rem;
@@ -2327,14 +2594,12 @@ body {
     box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
 }
 
-/* ----- USER GRID ----- */
 .user-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 0.8rem;
 }
 
-/* ----- USER CARD ----- */
 .user-card {
     background: #111827;
     border-radius: 10px;
@@ -2437,7 +2702,6 @@ body {
     color: #94a3b8;
 }
 
-/* ----- PROJECT GRID (admin) ----- */
 .project-grid,
 .message-grid,
 .manage-grid {
@@ -2500,7 +2764,6 @@ body {
     font-weight: 700;
 }
 
-/* ----- VIEW TOGGLE ----- */
 .view-toggle {
     display: flex;
     gap: 0.5rem;
@@ -2538,11 +2801,6 @@ body {
     cursor: not-allowed;
 }
 
-.view-toggle .btn i {
-    font-weight: 400;
-}
-
-/* ----- ROLE SELECT ----- */
 .role-select {
     background: #0f172a;
     color: #e2e8f0;
@@ -2594,7 +2852,6 @@ body {
     color: #94a3b8;
 }
 
-/* ----- TEACHER ACTIVITY FORM ----- */
 .activity-form {
     background: #0f172a;
     border-radius: 10px;
@@ -2666,7 +2923,6 @@ body {
     transition: 0.3s;
 }
 
-/* ----- OWNER PANEL DETAIL MODAL EXTRAS ----- */
 .modal-content .detail-section {
     margin-bottom: 1.2rem;
 }
@@ -2995,32 +3251,9 @@ body {
 }
 
 /* ============================================================
-   RESPONSIVE BREAKPOINTS
+   RESPONSIVE BREAKPOINTS (additional overrides)
    ============================================================ */
 @media (max-width: 768px) {
-    .header {
-        flex-direction: row;
-        flex-wrap: nowrap;
-        padding: 0.4rem 0.6rem;
-        gap: 0.3rem;
-        justify-content: space-between;
-        min-height: 52px;
-    }
-    .header-left .header-title h1 {
-        font-size: 1rem;
-        max-width: 160px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .header-left .header-title small {
-        display: none;
-    }
-    .header-left .logo-icon {
-        width: 30px;
-        height: 30px;
-        font-size: 0.9rem;
-    }
     .stats-bar {
         flex-direction: column;
         gap: 0.5rem;
@@ -3112,14 +3345,16 @@ body {
         gap: 0.5rem;
     }
     .section-header .user-info .name {
-        font-size: 0.65rem;
+        font-size: 0.6rem;
+        max-width: 60px;
     }
     .section-header .user-info {
         padding: 0.1rem 0.4rem 0.1rem 0.2rem;
         border-radius: 14px;
+        flex-shrink: 0;
     }
     .section-header .user-info .fa-user-circle {
-        font-size: 1.1rem !important;
+        font-size: 1rem !important;
     }
 }
 
@@ -3133,32 +3368,6 @@ body {
     .subject-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 0.4rem;
-    }
-    .header-left .header-title h1 {
-        font-size: 0.8rem;
-        max-width: 120px;
-    }
-    .header-left .logo-icon {
-        width: 26px;
-        height: 26px;
-        font-size: 0.75rem;
-    }
-    .header {
-        min-height: 44px;
-        padding: 0.3rem 0.5rem;
-    }
-    .section-header .user-info .name {
-        font-size: 0.55rem;
-        max-width: 60px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .section-header .user-info {
-        padding: 0.05rem 0.3rem 0.05rem 0.15rem;
-        border-radius: 12px;
-    }
-    .section-header .user-info .fa-user-circle {
-        font-size: 0.9rem !important;
     }
 }
 
