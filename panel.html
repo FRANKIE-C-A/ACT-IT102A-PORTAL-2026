@@ -46,155 +46,6 @@
             border-radius: 10px;
         }
 
-        .auth-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            background: radial-gradient(ellipse at 50% 20%, rgba(0, 255, 65, 0.04), transparent 70%), #0a0e17;
-        }
-
-        .auth-box {
-            background: #111827;
-            border-radius: 16px;
-            padding: 2.8rem 2.5rem;
-            max-width: 420px;
-            width: 100%;
-            border: 1px solid #1a3a20;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-        }
-
-        .auth-box .auth-logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .auth-box .auth-logo .logo-icon {
-            width: 72px;
-            height: 72px;
-            background: #00ff41;
-            border-radius: 18px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.2rem;
-            color: #0a0e17;
-            box-shadow: 0 8px 30px rgba(0, 255, 65, 0.2);
-            margin-bottom: 0.75rem;
-        }
-        .auth-box .auth-logo h1 {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #00ff41;
-            text-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
-            letter-spacing: 0.5px;
-        }
-        .auth-box .auth-logo p {
-            color: #6a8a7a;
-            font-size: 0.9rem;
-            margin-top: 0.2rem;
-        }
-
-        .auth-box .form-group {
-            margin-bottom: 1.2rem;
-        }
-        .auth-box .form-group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #6a8a7a;
-            margin-bottom: 0.3rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .auth-box .form-group input {
-            width: 100%;
-            padding: 0.7rem 1rem;
-            border: 1.5px solid #1a3a20;
-            border-radius: 10px;
-            font-size: 1rem;
-            background: #0f172a;
-            color: #c8d6e5;
-            transition: border 0.3s, box-shadow 0.3s;
-            outline: none;
-            font-family: inherit;
-        }
-        .auth-box .form-group input:focus {
-            border-color: #00ff41;
-            box-shadow: 0 0 0 3px rgba(0, 255, 65, 0.06);
-        }
-        .auth-box .form-group input::placeholder {
-            color: #2a4a30;
-        }
-
-        .auth-box .btn-auth {
-            width: 100%;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #00ff41;
-            color: #0a0e17;
-            box-shadow: 0 4px 15px rgba(0, 255, 65, 0.15);
-            font-family: inherit;
-            letter-spacing: 0.5px;
-        }
-        .auth-box .btn-auth:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 255, 65, 0.25);
-            background: #00e639;
-        }
-        .auth-box .btn-auth:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .auth-box .auth-error {
-            background: rgba(255, 0, 0, 0.04);
-            border: 1px solid rgba(255, 0, 0, 0.06);
-            color: #ff6b6b;
-            padding: 0.6rem 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
-            display: none;
-        }
-        .auth-box .auth-error.show {
-            display: block;
-        }
-
-        .auth-box .auth-loading {
-            display: none;
-            text-align: center;
-            padding: 0.4rem 0;
-            font-size: 0.85rem;
-            color: #6a8a7a;
-        }
-        .auth-box .auth-loading.show {
-            display: block;
-        }
-        .auth-box .auth-loading .spinner-small {
-            width: 22px;
-            height: 22px;
-            border: 2px solid rgba(0, 255, 65, 0.08);
-            border-top: 2px solid #00ff41;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            display: inline-block;
-            margin-right: 0.6rem;
-            vertical-align: middle;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
         .header {
             background: #0f172a;
             padding: 0.8rem 1.5rem;
@@ -238,26 +89,12 @@
             letter-spacing: 1px;
             margin-top: -2px;
         }
-        .header-left h1 small .role-highlight {
-            color: #fbbf24;
-        }
 
         .header-right {
             display: flex;
             align-items: center;
             gap: 0.6rem;
             flex-wrap: wrap;
-        }
-        .header-right .user-info {
-            font-size: 0.85rem;
-            color: #6a8a7a;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-        .header-right .user-info .name {
-            color: #c8d6e5;
-            font-weight: 600;
         }
         .header-right .header-btn {
             background: rgba(0, 255, 65, 0.04);
@@ -276,13 +113,13 @@
             border-color: #00ff41;
             color: #00ff41;
         }
-        .header-right .header-btn.danger {
-            color: #ff6b6b;
-            border-color: #2a1a1a;
+        .header-right .header-btn.portal-btn {
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid #00ff41;
+            color: #00ff41;
         }
-        .header-right .header-btn.danger:hover {
-            background: rgba(255, 0, 0, 0.04);
-            border-color: #ff3333;
+        .header-right .header-btn.portal-btn:hover {
+            background: rgba(0, 255, 65, 0.2);
         }
 
         .container {
@@ -1039,7 +876,6 @@
             border-color: #1a3a20;
         }
 
-        /* Teacher Activity Form */
         .activity-form {
             background: #0f172a;
             border-radius: 10px;
@@ -1156,9 +992,6 @@
                 padding: 0.3rem 0.6rem;
                 min-width: 60px;
             }
-            .auth-box {
-                padding: 2rem 1.5rem;
-            }
             .confirm-box {
                 padding: 1.5rem 1rem 1.2rem;
                 max-width: 100%;
@@ -1197,40 +1030,54 @@
         .hidden {
             display: none !important;
         }
+
+        .access-denied {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+            padding: 2rem;
+        }
+        .access-denied i {
+            font-size: 4rem;
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+        }
+        .access-denied h2 {
+            color: #ff6b6b;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .access-denied p {
+            color: #94a3b8;
+            font-size: 1rem;
+            max-width: 500px;
+        }
+        .access-denied .btn {
+            margin-top: 1.5rem;
+            padding: 0.6rem 2rem;
+            border: none;
+            border-radius: 8px;
+            background: #00ff41;
+            color: #0a0e17;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+        .access-denied .btn:hover {
+            background: #00e639;
+            transform: scale(1.02);
+        }
     </style>
 </head>
 <body>
 
-    <!-- ===== LOGIN ===== -->
-    <div id="authContainer" class="auth-container">
-        <div class="auth-box">
-            <div class="auth-logo">
-                <div class="logo-icon"><i class="fas fa-user-shield"></i></div>
-                <h1>Control Panel</h1>
-                <p>Developer / Admin / Teacher</p>
-            </div>
-
-            <div id="authError" class="auth-error"></div>
-            <div id="authLoading" class="auth-loading">
-                <span class="spinner-small"></span> Logging in...
-            </div>
-
-            <div id="loginForm">
-                <div class="form-group">
-                    <label><i class="fas fa-id-card"></i> Student ID</label>
-                    <input type="text" id="loginStudentId" placeholder="e.g., 24-9002526" />
-                </div>
-                <div class="form-group">
-                    <label><i class="fas fa-lock"></i> Password</label>
-                    <input type="password" id="loginPassword" placeholder="Enter your password" />
-                </div>
-                <button class="btn-auth" id="loginBtn">Sign In</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== MAIN APP ===== -->
-    <div id="appContent">
+    <div id="panelApp">
         <header class="header">
             <div class="header-left">
                 <div class="logo-icon"><i class="fas fa-user-shield"></i></div>
@@ -1240,16 +1087,14 @@
                 </h1>
             </div>
             <div class="header-right">
-                <span class="user-info">
-                    <i class="fas fa-user-circle"></i>
-                    <span class="name" id="userName">User</span>
-                </span>
+                <button class="header-btn portal-btn" onclick="window.location.href='index.html'">
+                    <i class="fas fa-arrow-left"></i> Portal
+                </button>
                 <button class="header-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
-                <button class="header-btn danger" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
             </div>
         </header>
 
-        <div class="container">
+        <div class="container" id="panelContent">
             <div class="stats-bar">
                 <div class="stat-item">
                     <i class="fas fa-users"></i>
@@ -1290,7 +1135,6 @@
         </div>
     </div>
 
-    <!-- ===== MODALS ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content" id="modalContent">
             <button class="modal-close" id="modalCloseBtn">&times;</button>
@@ -1315,9 +1159,6 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
-        // ============================================================
-        // FIREBASE CONFIG
-        // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyC3JbrOoBXTtDNH-7tDbCzT6tECKJCtdjE",
             authDomain: "hacked-wifi-3d8ac.firebaseapp.com",
@@ -1337,20 +1178,17 @@
         const db = firebase.firestore();
         const storage = firebase.storage();
 
-        // ============================================================
-        // DOM REFS
-        // ============================================================
-        const authContainer = document.getElementById('authContainer');
-        const authError = document.getElementById('authError');
-        const authLoading = document.getElementById('authLoading');
-        const loginStudentId = document.getElementById('loginStudentId');
-        const loginPassword = document.getElementById('loginPassword');
-        const loginBtn = document.getElementById('loginBtn');
+        auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(() => {
+                console.log('Auth persistence set to SESSION');
+            })
+            .catch((error) => {
+                console.error('Error setting persistence:', error);
+            });
 
-        const appContent = document.getElementById('appContent');
+        const panelApp = document.getElementById('panelApp');
+        const panelContent = document.getElementById('panelContent');
         const refreshBtn = document.getElementById('refreshBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const userName = document.getElementById('userName');
         const roleDisplay = document.getElementById('roleDisplay');
         const panelTitle = document.getElementById('panelTitle');
 
@@ -1389,9 +1227,6 @@
         let currentUserUid = '';
         let currentUserData = null;
 
-        // ============================================================
-        // TOAST & CONFIRMATION
-        // ============================================================
         function showToast(message, type = 'info', duration = 3500) {
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
@@ -1444,74 +1279,17 @@
             }
         });
 
-        // ============================================================
-        // AUTH
-        // ============================================================
-        function showAuthError(msg) {
-            authError.textContent = msg;
-            authError.classList.add('show');
+        function showAccessDenied() {
+            panelContent.innerHTML = `
+                <div class="access-denied">
+                    <i class="fas fa-lock"></i>
+                    <h2>Access Denied</h2>
+                    <p>You do not have permission to view the Control Panel. Only administrators, developers, and teachers have access.</p>
+                    <a href="index.html" class="btn"><i class="fas fa-arrow-left"></i> Return to Portal</a>
+                </div>
+            `;
         }
 
-        function hideAuthError() {
-            authError.classList.remove('show');
-        }
-
-        function setAuthLoading(loading) {
-            if (loading) {
-                authLoading.classList.add('show');
-                loginBtn.disabled = true;
-            } else {
-                authLoading.classList.remove('show');
-                loginBtn.disabled = false;
-            }
-        }
-
-        function cleanStudentId(id) { return id.replace(/[-\s]/g, ''); }
-
-        function isValidStudentId(id) {
-            const parts = id.split('-');
-            return parts.length === 2 && parts[0].length >= 2 && /^\d{2}/.test(parts[0]);
-        }
-
-        loginBtn.addEventListener('click', async () => {
-            const studentIdRaw = loginStudentId.value.trim();
-            const password = loginPassword.value.trim();
-
-            if (!studentIdRaw) { showAuthError('Please enter your Student ID.'); return; }
-            if (!isValidStudentId(studentIdRaw)) {
-                showAuthError('Invalid Student ID format. Must be like "24-9002526".');
-                return;
-            }
-            if (!password) { showAuthError('Please enter your password.'); return; }
-
-            hideAuthError();
-            setAuthLoading(true);
-
-            const cleaned = cleanStudentId(studentIdRaw);
-            const email = cleaned + '@school.edu';
-
-            try {
-                await auth.signInWithEmailAndPassword(email, password);
-            } catch (error) {
-                console.error('Login error:', error);
-                if (error.code === 'auth/user-not-found') {
-                    showAuthError('No account found for Student ID: ' + studentIdRaw);
-                } else if (error.code === 'auth/wrong-password') {
-                    showAuthError('Incorrect password.');
-                } else {
-                    showAuthError(error.message);
-                }
-                setAuthLoading(false);
-            }
-        });
-
-        loginPassword.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') loginBtn.click();
-        });
-
-        // ============================================================
-        // AUTH STATE OBSERVER
-        // ============================================================
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 const email = user.email;
@@ -1533,7 +1311,6 @@
                         });
                     }
 
-                    // Developer override
                     if (email === DEVELOPER_EMAIL && role !== 'developer') {
                         await db.collection('users').doc(user.uid).update({ role: 'developer' });
                         role = 'developer';
@@ -1543,25 +1320,11 @@
                     currentUserUid = user.uid;
                     currentUserData = userData;
 
-                    // Check if role is authorized
                     if (!['developer', 'admin', 'teacher'].includes(role)) {
-                        await auth.signOut();
-                        showAuthError('Access denied. You do not have permission.');
-                        authContainer.style.display = 'flex';
-                        appContent.classList.remove('show');
-                        setAuthLoading(false);
+                        showAccessDenied();
                         return;
                     }
 
-                    // Show panel
-                    authContainer.style.display = 'none';
-                    appContent.classList.add('show');
-
-                    // Set display name
-                    const displayName = userData.fullName || userData.firstName || email.split('@')[0];
-                    userName.textContent = displayName;
-
-                    // Set role display
                     const roleMap = {
                         developer: '⭐ DEVELOPER CONTROL PANEL',
                         admin: '🔧 ADMIN CONTROL PANEL',
@@ -1570,11 +1333,9 @@
                     panelTitle.textContent = roleMap[role] || 'Control Panel';
                     roleDisplay.textContent = role.charAt(0).toUpperCase() + role.slice(1);
 
-                    // Show/hide tabs based on role
                     viewManageBtn.style.display = (role === 'developer' || role === 'admin') ? 'block' : 'none';
                     viewActivitiesBtn.style.display = (role === 'teacher') ? 'block' : 'none';
 
-                    // If teacher, default to activities view
                     if (role === 'teacher') {
                         currentView = 'activities';
                         viewActivitiesBtn.classList.add('active');
@@ -1591,59 +1352,26 @@
                         searchInput.placeholder = 'Search by name, ID, or email...';
                     }
 
-                    hideAuthError();
-                    setAuthLoading(false);
-                    loginStudentId.value = '';
-                    loginPassword.value = '';
                     await loadAllData();
 
                 } catch (error) {
                     console.error('Role fetch error:', error);
-                    await auth.signOut();
-                    showAuthError('Error verifying permissions: ' + error.message);
-                    authContainer.style.display = 'flex';
-                    appContent.classList.remove('show');
-                    setAuthLoading(false);
+                    showAccessDenied();
                 }
             } else {
-                authContainer.style.display = 'flex';
-                appContent.classList.remove('show');
-                hideAuthError();
-                setAuthLoading(false);
+                showAccessDenied();
             }
         });
 
-        logoutBtn.addEventListener('click', async () => {
-            try {
-                await auth.signOut();
-                showToast('Logged out.', 'success');
-            } catch (error) {
-                showToast('Logout failed: ' + error.message, 'error');
-            }
-        });
-
-        // ============================================================
-        // PERMISSION CHECKS
-        // ============================================================
         function isDeveloper() { return currentUserRole === 'developer'; }
-
         function isAdmin() { return currentUserRole === 'admin'; }
-
         function isTeacher() { return currentUserRole === 'teacher'; }
-
         function canDelete() { return isDeveloper() || isAdmin(); }
-
         function canManageRoles() { return isDeveloper() || isAdmin(); }
-
         function canSetAdmin() { return isDeveloper(); }
-
         function canSetTeacher() { return isDeveloper() || isAdmin(); }
-
         function canSetStudent() { return isDeveloper() || isAdmin(); }
 
-        // ============================================================
-        // LOAD DATA
-        // ============================================================
         async function loadAllData() {
             try {
                 contentArea.innerHTML =
@@ -1711,9 +1439,6 @@
             loadAllData();
         });
 
-        // ============================================================
-        // VIEW TOGGLES
-        // ============================================================
         viewUsersBtn.addEventListener('click', () => {
             if (isTeacher()) return;
             currentView = 'users';
@@ -1762,9 +1487,6 @@
             if (activeBtn) activeBtn.classList.add('active');
         }
 
-        // ============================================================
-        // RENDER FUNCTIONS
-        // ============================================================
         function escapeHtml(text) {
             if (!text) return '';
             const div = document.createElement('div');
@@ -1879,9 +1601,6 @@
             contentArea.innerHTML = html;
         }
 
-        // ============================================================
-        // MANAGE VIEW – ROLE MANAGEMENT
-        // ============================================================
         function renderManage(users) {
             if (!users || users.length === 0) {
                 contentArea.innerHTML =
@@ -1909,7 +1628,6 @@
 
                 if (isDeveloper()) {
                     availableRoles = ['student', 'teacher', 'admin'];
-                    // Developer can also assign developer, but only to themselves
                     if (isDeveloperUser) availableRoles = ['developer'];
                 } else if (isAdmin()) {
                     availableRoles = ['student', 'teacher'];
@@ -1951,9 +1669,6 @@
             contentArea.innerHTML = html;
         }
 
-        // ============================================================
-        // UPDATE ROLE
-        // ============================================================
         window.updateRole = async function(uid) {
             if (!canManageRoles()) {
                 showToast('You do not have permission to manage roles.', 'error');
@@ -1975,7 +1690,6 @@
             if (!select) return;
             const newRole = select.value;
 
-            // Check permissions
             if (newRole === 'admin' && !isDeveloper()) {
                 showToast('Only a developer can assign the Admin role.', 'error');
                 return;
@@ -2000,11 +1714,7 @@
             }
         };
 
-        // ============================================================
-        // TEACHER ACTIVITIES VIEW
-        // ============================================================
         function renderTeacherActivities() {
-            // Filter projects created by this teacher
             const teacherProjects = allProjects.filter(p => p.teacherId === currentUserUid || p.owner === currentUserUid);
 
             let html = `
@@ -2097,7 +1807,6 @@
             html += '</div>';
             contentArea.innerHTML = html;
 
-            // Set default due date to 7 days from now
             const dueDateInput = document.getElementById('activityDueDate');
             if (dueDateInput) {
                 const date = new Date();
@@ -2105,13 +1814,9 @@
                 dueDateInput.value = date.toISOString().slice(0, 16);
             }
 
-            // Create activity handler
             document.getElementById('createActivityBtn').addEventListener('click', createActivity);
         }
 
-        // ============================================================
-        // CREATE ACTIVITY (Teacher)
-        // ============================================================
         async function createActivity() {
             const title = document.getElementById('activityTitle').value.trim();
             const course = document.getElementById('activityCourse').value.trim();
@@ -2150,7 +1855,6 @@
                 const projectRef = await db.collection('projects').add(projectData);
                 const projectId = projectRef.id;
 
-                // Upload files
                 let uploadedFiles = [];
                 for (const file of files) {
                     const storageRef = storage.ref('activities/' + projectId + '/' + Date.now() + '_' + file.name);
@@ -2184,9 +1888,6 @@
             }
         }
 
-        // ============================================================
-        // SEARCH (only for users)
-        // ============================================================
         function performSearch() {
             if (currentView !== 'users') return;
             const query = searchInput.value.toLowerCase().trim();
@@ -2214,9 +1915,6 @@
             if (e.key === 'Enter') performSearch();
         });
 
-        // ============================================================
-        // VIEW FUNCTIONS
-        // ============================================================
         window.viewUser = async function(uid) {
             const user = allUsers.find(u => u.uid === uid);
             if (!user) {
@@ -2475,9 +2173,6 @@
             modalOverlay.classList.add('active');
         };
 
-        // ============================================================
-        // CONFIRMATION WRAPPERS
-        // ============================================================
         window.confirmDeleteProject = function(projectId) {
             if (!canDelete()) {
                 showToast('You do not have permission to delete projects.', 'error');
@@ -2536,9 +2231,6 @@
             );
         };
 
-        // ============================================================
-        // DELETE ACTIONS
-        // ============================================================
         async function deleteProjectAction(projectId) {
             const project = allProjects.find(p => p.id === projectId);
             if (!project) return;
@@ -2628,18 +2320,12 @@
             }
         }
 
-        // ============================================================
-        // MODAL CONTROLS
-        // ============================================================
         function closeModal() { modalOverlay.classList.remove('active'); }
         modalCloseBtn.addEventListener('click', closeModal);
         modalOverlay.addEventListener('click', (e) => {
             if (e.target === modalOverlay) closeModal();
         });
 
-        // ============================================================
-        // HELPERS
-        // ============================================================
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 B';
             const k = 1024;
@@ -2648,9 +2334,8 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
         }
 
-        console.log('Control Panel ready.');
+        console.log('Control Panel ready (auto-login).');
         console.log('Developer email: ' + DEVELOPER_EMAIL);
-        console.log('Login with your Student ID and password.');
     </script>
 
 </body>

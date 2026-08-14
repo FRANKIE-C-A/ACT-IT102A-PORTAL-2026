@@ -16,6 +16,116 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="style.css" />
+
+    <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-left {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+        .header-right {
+            flex-shrink: 0;
+            margin-left: 1rem;
+        }
+        .header-right .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.2rem 0.8rem 0.2rem 0.4rem;
+            border-radius: 20px;
+            border: 1.5px solid rgba(139, 92, 246, 0.15);
+            background: rgba(15, 23, 42, 0.3);
+            transition: all 0.2s;
+        }
+        .header-right .user-info:hover {
+            background: rgba(139, 92, 246, 0.08);
+            border-color: rgba(139, 92, 246, 0.25);
+        }
+        .header-right .user-info .header-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            display: none;
+        }
+        .header-right .user-info .name {
+            color: #e2e8f0;
+            font-weight: 600;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
+        }
+        .header-right .user-info .fa-user-circle {
+            font-size: 1.4rem;
+            color: #94a3b8;
+        }
+        .section-header .user-info {
+            display: none;
+        }
+        #profileContent .management-btn {
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            background: #00ff41;
+            color: #0a0e17;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        #profileContent .management-btn:hover {
+            background: #00e639;
+            transform: scale(1.02);
+        }
+        @media (max-width: 768px) {
+            .header-right .user-info .name {
+                font-size: 0.7rem;
+                max-width: 80px;
+            }
+            .header-right .user-info .header-avatar {
+                width: 26px;
+                height: 26px;
+            }
+            .header-right .user-info .fa-user-circle {
+                font-size: 1.2rem;
+            }
+            .header-right .user-info {
+                padding: 0.1rem 0.5rem 0.1rem 0.2rem;
+                border-radius: 16px;
+            }
+            #profileContent .management-btn {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.8rem;
+            }
+        }
+        @media (max-width: 420px) {
+            .header-right .user-info .name {
+                font-size: 0.6rem;
+                max-width: 60px;
+            }
+            .header-right .user-info {
+                padding: 0.05rem 0.3rem 0.05rem 0.15rem;
+                border-radius: 14px;
+            }
+            .header-right .user-info .fa-user-circle {
+                font-size: 1rem;
+            }
+            #profileContent .management-btn {
+                font-size: 0.6rem;
+                padding: 0.2rem 0.6rem;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -36,7 +146,7 @@
             <div id="loginForm">
                 <div class="form-group">
                     <label><i class="fas fa-id-card"></i> ID Number</label>
-                    <input type="text" id="loginStudentId" placeholder="e.g., 12-34567890" />
+                    <input type="text" id="loginStudentId" placeholder="e.g., 24-34567890" />
                 </div>
                 <div class="form-group">
                     <label><i class="fas fa-lock"></i> Password</label>
@@ -51,7 +161,7 @@
             <div id="signupForm" style="display:none;">
                 <div class="form-group">
                     <label><i class="fas fa-id-card"></i> ID Number</label>
-                    <input type="text" id="signupStudentId" placeholder="e.g., 12-34567890" />
+                    <input type="text" id="signupStudentId" placeholder="e.g., 24-34567890" />
                 </div>
                 <div class="form-group">
                     <label><i class="fas fa-user"></i> First Name</label>
@@ -78,8 +188,15 @@
             <div class="header-left">
                 <div class="logo-icon"><i class="fas fa-user-secret"></i></div>
                 <div class="header-title">
-                    <h1>ACT IT102A 2026 PORTAL</h1>
+                    <h1>ACT IT102A 2026</h1>
                     <small><i class="fas fa-globe"></i> Access Anywhere, Anytime...</small>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="user-info" id="userInfo">
+                    <img id="headerProfilePic" src="" alt="Profile" class="header-avatar" />
+                    <i id="headerProfilePlaceholder" class="fas fa-user-circle"></i>
+                    <span class="name" id="userDisplayName">Student</span>
                 </div>
             </div>
         </header>
@@ -94,11 +211,6 @@
             <div id="subjectListView">
                 <div class="section-header">
                     <h2><i class="fas fa-list-ul"></i> Your Subjects</h2>
-                    <div class="user-info" id="userInfo">
-                        <img id="headerProfilePic" src="" alt="Profile" class="header-avatar" />
-                        <i id="headerProfilePlaceholder" class="fas fa-user-circle"></i>
-                        <span class="name" id="userDisplayName">Student</span>
-                    </div>
                 </div>
                 <div class="clock-row" id="headerClock"><i class="far fa-clock"></i> loading...</div>
                 <div id="subjectList" class="subject-grid"></div>
@@ -188,9 +300,10 @@
                         <label>Bio</label>
                         <textarea id="profileBio" rows="3" placeholder="Tell us about yourself..."></textarea>
                     </div>
-                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:1rem;">
+                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:1rem; align-items:center;">
                         <button class="btn btn-primary" id="saveProfileBtn"><i class="fas fa-save"></i> Save Profile</button>
                         <button class="btn btn-danger" id="logoutFromProfileBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                        <div id="managementButtonContainer" style="display:inline-block;"></div>
                     </div>
                 </div>
             </div>

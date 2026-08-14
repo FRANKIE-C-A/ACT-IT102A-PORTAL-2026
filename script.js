@@ -16,15 +16,12 @@ try {
 
 const auth = firebase.auth();
 
-// ============================================================
-// FIX: Force login every time – no session persistence
-// ============================================================
-auth.setPersistence(firebase.auth.Auth.Persistence.NONE)
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
     .then(() => {
-        console.log('✅ Auth persistence set to NONE – login required every time');
+        console.log('Auth persistence set to LOCAL');
     })
     .catch((error) => {
-        console.error('❌ Error setting persistence:', error);
+        console.error('Error setting persistence:', error);
     });
 
 const db = firebase.firestore();
@@ -32,6 +29,7 @@ const storage = firebase.storage();
 
 let currentUser = null;
 let currentUserProfile = null;
+let currentUserRole = 'student';
 let allStudents = [];
 
 const authContainer = document.getElementById('authContainer');
@@ -107,7 +105,11 @@ function formatStudentId(id) {
 
 function isValidStudentId(id) {
     const parts = id.split('-');
-    return parts.length === 2 && parts[0].length >= 2 && /^\d{2}/.test(parts[0]);
+    if (parts.length !== 2) return false;
+    const prefix = parts[0];
+    if (prefix !== '24' && prefix !== '26') return false;
+    if (!parts[1] || parts[1].length === 0) return false;
+    return true;
 }
 
 signupBtn.addEventListener('click', async () => {
@@ -118,7 +120,7 @@ signupBtn.addEventListener('click', async () => {
 
     if (!studentIdRaw) { showAuthError('Please enter your Student ID.'); return; }
     if (!isValidStudentId(studentIdRaw)) {
-        showAuthError('Invalid Student ID. Must start with two digits and contain a dash (e.g., 12-34567).');
+        showAuthError('ID does not exist in SAMS PORTAL');
         return;
     }
     const studentId = formatStudentId(studentIdRaw);
@@ -156,6 +158,7 @@ signupBtn.addEventListener('click', async () => {
             uid: user.uid,
             bio: '',
             profilePicture: '',
+            role: 'student',
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
@@ -182,7 +185,7 @@ loginBtn.addEventListener('click', async () => {
 
     if (!studentIdRaw) { showAuthError('Please enter your Student ID.'); return; }
     if (!isValidStudentId(studentIdRaw)) {
-        showAuthError('Invalid Student ID format. Must start with two digits and contain a dash.');
+        showAuthError('ID does not exist in SAMS PORTAL');
         return;
     }
     const studentId = formatStudentId(studentIdRaw);
@@ -200,7 +203,7 @@ loginBtn.addEventListener('click', async () => {
     } catch (error) {
         console.error('Login error:', error);
         if (error.code === 'auth/user-not-found') {
-            showAuthError('No account found for Student ID: ' + studentId);
+            showAuthError('ID does not exist in SAMS PORTAL');
         } else if (error.code === 'auth/wrong-password') {
             showAuthError('Incorrect password.');
         } else {
@@ -219,7 +222,9 @@ auth.onAuthStateChanged(async (user) => {
             const doc = await db.collection('users').doc(user.uid).get();
             if (doc.exists) {
                 currentUserProfile = doc.data();
+                currentUserRole = currentUserProfile.role || 'student';
                 updateHeaderUI();
+                updateManagementButton();
             } else {
                 const studentId = formatStudentId(user.email.replace('@school.edu', ''));
                 await db.collection('users').doc(user.uid).set({
@@ -231,10 +236,13 @@ auth.onAuthStateChanged(async (user) => {
                     uid: user.uid,
                     bio: '',
                     profilePicture: '',
+                    role: 'student',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 currentUserProfile = { studentId, firstName: 'Student' };
+                currentUserRole = 'student';
                 updateHeaderUI();
+                updateManagementButton();
             }
         } catch (err) {
             console.error('Error fetching profile:', err);
@@ -249,6 +257,7 @@ auth.onAuthStateChanged(async (user) => {
     } else {
         currentUser = null;
         currentUserProfile = null;
+        currentUserRole = 'student';
         authContainer.style.display = 'flex';
         appContent.classList.remove('show');
         toggleForms(true);
@@ -272,6 +281,17 @@ function updateHeaderUI() {
     }
 }
 
+function updateManagementButton() {
+    const container = document.getElementById('managementButtonContainer');
+    if (!container) return;
+    const role = currentUserRole;
+    if (role === 'admin' || role === 'developer' || role === 'teacher') {
+        container.innerHTML = `<a href="panel.html" class="management-btn"><i class="fas fa-user-cog"></i> MANAGEMENT</a>`;
+    } else {
+        container.innerHTML = '';
+    }
+}
+
 userInfo.addEventListener('click', () => {
     showView('profileView');
     loadProfile();
@@ -281,7 +301,6 @@ document.getElementById('logoutFromProfileBtn').addEventListener('click', async 
     try {
         await auth.signOut();
         showToast('Logged out successfully.', 'success');
-        // Force logout by clearing any lingering state
         authContainer.style.display = 'flex';
         appContent.classList.remove('show');
         toggleForms(true);
@@ -429,7 +448,7 @@ function setProjectLoading(loading) {
         projectListEl.innerHTML = `
             <div class="loading-container">
                 <div class="spinner"></div>
-                <p>Loading projects...</p>
+                <p>Loading Activities...</p>
             </div>
         `;
     }
@@ -752,8 +771,8 @@ uploadBtn.addEventListener('click', () => {
         <div class="form-group">
             <label><i class="fas fa-eye"></i> Visibility</label>
             <select id="uploadVisibility">
-                <option value="personal">🔒 Personal (only you can see)</option>
-                <option value="general">🌐 General (everyone can see)</option>
+                <option value="personal">🔒 Private</option>
+                <option value="general">🌐 General</option>
             </select>
         </div>
 
@@ -1123,7 +1142,7 @@ window.openCommentModal = function(projectId) {
         const timeStr = c.timestamp ? c.timestamp.toDate().toLocaleString() : '';
         const initial = c.commenterName ? c.commenterName.charAt(0).toUpperCase() : '?';
         const canDelete = (currentUser.uid === c.commenterUid);
-        const deleteBtn = canDelete ? 
+        const deleteBtn = canDelete ?
             `<span class="comment-delete-btn" onclick="deleteComment('${projectId}', ${index})"><i class="fas fa-trash-alt"></i></span>` : '';
         return `
             <div class="comment-card">
@@ -1236,10 +1255,10 @@ let currentChatType = 'private';
 
 function renderChatList() {
     if (!currentUser) return;
-    
+
     const container = chatUserList;
     container.innerHTML = '';
-    
+
     const generalItem = document.createElement('div');
     generalItem.className = `chat-user-item ${currentChatId === 'general' ? 'active' : ''}`;
     generalItem.innerHTML = `
@@ -1253,14 +1272,14 @@ function renderChatList() {
     `;
     generalItem.addEventListener('click', () => openGeneralChat());
     container.appendChild(generalItem);
-    
+
     const divider = document.createElement('div');
     divider.className = 'chat-divider';
     divider.textContent = 'Students';
     container.appendChild(divider);
-    
+
     const userList = allStudents;
-    
+
     if (userList.length === 0) {
         const empty = document.createElement('div');
         empty.className = 'empty-state';
@@ -1269,20 +1288,20 @@ function renderChatList() {
         container.appendChild(empty);
         return;
     }
-    
+
     userList.forEach(user => {
         const item = document.createElement('div');
         item.className = `chat-user-item ${currentChatParticipant === user.uid ? 'active' : ''}`;
         item.dataset.uid = user.uid;
-        
+
         const initial = (user.firstName || 'U')[0].toUpperCase();
         const avatar = user.profilePicture ?
             `<img src="${user.profilePicture}" alt="${user.firstName}" class="chat-avatar-img" />` :
             `<div class="chat-avatar-placeholder" style="background:linear-gradient(135deg, rgba(139,92,246,0.2), rgba(244,114,182,0.2));">${initial}</div>`;
-        
+
         const name = user.fullName || user.firstName + ' ' + user.lastName || 'Unknown';
         const id = user.studentId || '';
-        
+
         item.innerHTML = `
             ${avatar}
             <div class="chat-user-info">
@@ -1295,7 +1314,7 @@ function renderChatList() {
         });
         container.appendChild(item);
     });
-    
+
     const searchInput = document.getElementById('chatSearchInput');
     if (searchInput) {
         const newSearch = searchInput.cloneNode(true);
@@ -1311,19 +1330,19 @@ function filterChatUsers(query) {
     const items = document.querySelectorAll('#chatUserList .chat-user-item');
     const q = query.toLowerCase().trim();
     let visibleCount = 0;
-    
+
     items.forEach(item => {
         if (item.classList.contains('chat-divider')) return;
-        
+
         const name = item.querySelector('.chat-user-name')?.textContent?.toLowerCase() || '';
         const id = item.querySelector('.chat-user-id')?.textContent?.toLowerCase() || '';
         const isGeneral = item.querySelector('.fa-globe') !== null;
-        
+
         if (isGeneral) {
             item.style.display = 'flex';
             return;
         }
-        
+
         if (name.includes(q) || id.includes(q)) {
             item.style.display = 'flex';
             visibleCount++;
@@ -1331,12 +1350,12 @@ function filterChatUsers(query) {
             item.style.display = 'none';
         }
     });
-    
+
     const divider = document.querySelector('#chatUserList .chat-divider');
     if (divider) {
         divider.style.display = visibleCount > 0 ? 'block' : 'none';
     }
-    
+
     let noResult = document.querySelector('#chatUserList .no-results');
     if (q && visibleCount === 0) {
         if (!noResult) {
@@ -1361,7 +1380,7 @@ function openGeneralChat() {
     currentChatType = 'general';
     currentChatId = 'general';
     currentChatParticipant = null;
-    
+
     document.querySelectorAll('#chatUserList .chat-user-item').forEach(el => el.classList.remove('active'));
     const items = document.querySelectorAll('#chatUserList .chat-user-item');
     items.forEach(el => {
@@ -1369,7 +1388,7 @@ function openGeneralChat() {
             el.classList.add('active');
         }
     });
-    
+
     chatHeader.innerHTML = `<strong><i class="fas fa-globe" style="color:#fbbf24;"></i> General Chat</strong> <span style="font-size:0.7rem;color:#64748b;">Everyone</span>`;
     chatInputArea.style.display = 'flex';
 
@@ -1409,7 +1428,7 @@ function openGeneralChat() {
                 const isSent = msg.senderId === currentUser.uid;
                 const timeStr = msg.timestamp ? msg.timestamp.toDate().toLocaleTimeString() : '';
                 const senderName = msg.senderName || 'Unknown';
-                const deleteBtn = isSent ? 
+                const deleteBtn = isSent ?
                     `<span class="comment-delete-btn" onclick="deleteGeneralMessage('${doc.id}')"><i class="fas fa-trash-alt"></i></span>` : '';
                 html += `
                     <div class="message ${isSent ? 'sent' : 'received'}">
@@ -1486,7 +1505,7 @@ function openPrivateChat(chatId, otherUid) {
                 const msg = doc.data();
                 const isSent = msg.senderId === currentUser.uid;
                 const timeStr = msg.timestamp ? msg.timestamp.toDate().toLocaleTimeString() : '';
-                const deleteBtn = isSent ? 
+                const deleteBtn = isSent ?
                     `<span class="comment-delete-btn" onclick="deletePrivateMessage('${chatId}','${doc.id}')"><i class="fas fa-trash-alt"></i></span>` : '';
                 html += `
                     <div class="message ${isSent ? 'sent' : 'received'}">
@@ -1506,7 +1525,7 @@ window.startChat = async function(otherUid) {
         showToast('You cannot chat with yourself.', 'error');
         return;
     }
-    
+
     const uid = currentUser.uid;
     try {
         const snapshot = await db.collection('chats')
@@ -1631,6 +1650,8 @@ function loadProfile() {
         profilePictureImg.style.display = 'none';
         profilePicturePlaceholder.style.display = 'flex';
     }
+
+    updateManagementButton();
 }
 
 profilePictureInput.addEventListener('change', async function() {
