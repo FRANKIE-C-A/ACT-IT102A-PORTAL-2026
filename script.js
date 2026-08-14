@@ -18,7 +18,7 @@ const auth = firebase.auth();
 
 auth.setPersistence(firebase.auth.Auth.Persistence.NONE)
     .then(() => {
-        console.log('Auth persistence set to NONE - login required every time');
+        console.log('Auth persistence set to NONE');
     })
     .catch((error) => {
         console.error('Error setting persistence:', error);
@@ -224,7 +224,7 @@ auth.onAuthStateChanged(async (user) => {
                 currentUserProfile = doc.data();
                 currentUserRole = currentUserProfile.role || 'student';
                 updateHeaderUI();
-                updateManagementButton();
+                updateManagementButtons();
             } else {
                 const studentId = formatStudentId(user.email.replace('@school.edu', ''));
                 await db.collection('users').doc(user.uid).set({
@@ -242,7 +242,7 @@ auth.onAuthStateChanged(async (user) => {
                 currentUserProfile = { studentId, firstName: 'Student' };
                 currentUserRole = 'student';
                 updateHeaderUI();
-                updateManagementButton();
+                updateManagementButtons();
             }
         } catch (err) {
             console.error('Error fetching profile:', err);
@@ -281,15 +281,17 @@ function updateHeaderUI() {
     }
 }
 
-function updateManagementButton() {
-    const container = document.getElementById('managementButtonContainer');
-    if (!container) return;
+function updateManagementButtons() {
     const role = currentUserRole;
-    if (role === 'admin' || role === 'developer' || role === 'teacher') {
-        container.innerHTML = `<a href="panel.html" class="management-btn"><i class="fas fa-user-cog"></i> MANAGEMENT</a>`;
-    } else {
-        container.innerHTML = '';
-    }
+    const html = (role === 'admin' || role === 'developer' || role === 'teacher')
+        ? `<a href="panel.html" class="management-btn"><i class="fas fa-user-cog"></i> MANAGEMENT</a>`
+        : '';
+
+    const headerContainer = document.getElementById('managementButtonContainer');
+    if (headerContainer) headerContainer.innerHTML = html;
+
+    const profileContainer = document.getElementById('managementButtonContainerProfile');
+    if (profileContainer) profileContainer.innerHTML = html;
 }
 
 userInfo.addEventListener('click', () => {
@@ -1651,7 +1653,7 @@ function loadProfile() {
         profilePicturePlaceholder.style.display = 'flex';
     }
 
-    updateManagementButton();
+    updateManagementButtons();
 }
 
 profilePictureInput.addEventListener('change', async function() {
