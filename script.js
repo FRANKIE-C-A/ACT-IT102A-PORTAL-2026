@@ -16,9 +16,9 @@ try {
 
 const auth = firebase.auth();
 
-auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+auth.setPersistence(firebase.auth.Auth.Persistence.NONE)
     .then(() => {
-        console.log('Auth persistence set to LOCAL');
+        console.log('Auth persistence set to NONE - login required every time');
     })
     .catch((error) => {
         console.error('Error setting persistence:', error);
@@ -448,7 +448,7 @@ function setProjectLoading(loading) {
         projectListEl.innerHTML = `
             <div class="loading-container">
                 <div class="spinner"></div>
-                <p>Loading Activities...</p>
+                <p>Loading projects...</p>
             </div>
         `;
     }
@@ -771,8 +771,8 @@ uploadBtn.addEventListener('click', () => {
         <div class="form-group">
             <label><i class="fas fa-eye"></i> Visibility</label>
             <select id="uploadVisibility">
-                <option value="personal">🔒 Private</option>
-                <option value="general">🌐 General</option>
+                <option value="personal">🔒 Personal (only you can see)</option>
+                <option value="general">🌐 General (everyone can see)</option>
             </select>
         </div>
 

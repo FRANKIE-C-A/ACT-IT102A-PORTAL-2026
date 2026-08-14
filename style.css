@@ -11,8 +11,8 @@ html {
     width: 100%;
     height: 100%;
     touch-action: pan-y;
-    -webkit-text-size-adjust: none;
-    -ms-text-size-adjust: none;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
 }
 
 body {
@@ -22,8 +22,8 @@ body {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    font-size: 16px;
-    line-height: 1.7;
+    font-size: 18px;
+    line-height: 1.6;
     touch-action: pan-y;
     -webkit-user-select: none;
     user-select: none;
@@ -33,17 +33,14 @@ body {
     width: 6px;
     height: 6px;
 }
-
 ::-webkit-scrollbar-track {
     background: #141b2b;
 }
-
 ::-webkit-scrollbar-thumb {
     background: #8b5cf6;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
 }
-
 ::-webkit-scrollbar-thumb:hover {
     background: #7c3aed;
 }
@@ -61,8 +58,8 @@ body {
 .auth-box {
     background: #111827;
     border-radius: 16px;
-    padding: 2rem 1.5rem;
-    max-width: 400px;
+    padding: 2.5rem 2rem;
+    max-width: 420px;
     width: 100%;
     border: 1px solid rgba(139, 92, 246, 0.1);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
@@ -74,21 +71,21 @@ body {
 }
 
 .auth-box .auth-logo .logo-icon {
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
     background: linear-gradient(135deg, #f472b6, #a78bfa, #60a5fa);
-    border-radius: 16px;
+    border-radius: 18px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 2.2rem;
     color: #010704;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     margin-bottom: 0.5rem;
 }
 
 .auth-box .auth-logo h1 {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: 700;
     background: linear-gradient(135deg, #f472b6, #a78bfa, #60a5fa);
     -webkit-background-clip: text;
@@ -98,17 +95,17 @@ body {
 
 .auth-box .auth-logo p {
     color: #94a3b8;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     margin-top: 0.1rem;
 }
 
 .auth-box .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
 }
 
 .auth-box .form-group label {
     display: block;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     font-weight: 600;
     color: #94a3b8;
     margin-bottom: 0.2rem;
@@ -118,10 +115,10 @@ body {
 
 .auth-box .form-group input {
     width: 100%;
-    padding: 0.6rem 1rem;
+    padding: 0.7rem 1rem;
     border: 1.5px solid rgba(139, 92, 246, 0.12);
     border-radius: 10px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     background: rgba(15, 23, 42, 0.6);
     color: #e2e8f0;
     transition: border 0.25s, box-shadow 0.25s;
@@ -140,11 +137,11 @@ body {
 
 .auth-box .btn-auth {
     width: 100%;
-    padding: 0.7rem;
+    padding: 0.8rem;
     border: none;
     border-radius: 10px;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 1rem;
     cursor: pointer;
     transition: all 0.25s ease;
     background: linear-gradient(135deg, #8b5cf6, #7c3aed);
@@ -165,8 +162,8 @@ body {
 
 .auth-box .auth-toggle {
     text-align: center;
-    margin-top: 1rem;
-    font-size: 0.8rem;
+    margin-top: 1.2rem;
+    font-size: 0.9rem;
     color: #94a3b8;
 }
 
@@ -185,9 +182,9 @@ body {
     background: rgba(244, 114, 182, 0.1);
     border: 1px solid rgba(244, 114, 182, 0.15);
     color: #f472b6;
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1rem;
     border-radius: 8px;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     margin-bottom: 1rem;
     display: none;
 }
@@ -200,9 +197,9 @@ body {
     background: rgba(52, 211, 153, 0.1);
     border: 1px solid rgba(52, 211, 153, 0.15);
     color: #34d399;
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1rem;
     border-radius: 8px;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     margin-bottom: 1rem;
     display: none;
 }
@@ -215,7 +212,7 @@ body {
     display: none;
     text-align: center;
     padding: 0.3rem 0;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #94a3b8;
 }
 
@@ -224,8 +221,8 @@ body {
 }
 
 .auth-box .auth-loading .spinner-small {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border: 2px solid rgba(139, 92, 246, 0.1);
     border-top: 2px solid #8b5cf6;
     border-radius: 50%;
@@ -254,10 +251,9 @@ body {
     display: flex;
 }
 
-/* ========== HEADER – BIGGER TITLE ========== */
 .header {
     background: #0f172a;
-    padding: 1rem 2rem;
+    padding: 0.8rem 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -267,13 +263,13 @@ body {
     z-index: 100;
     width: 100%;
     border-radius: 0 0 12px 12px;
-    min-height: 80px;
+    min-height: 70px;
 }
 
 .header-left {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 1rem;
     flex: 1 1 auto;
     min-width: 0;
     overflow: hidden;
@@ -285,14 +281,14 @@ body {
 }
 
 .header-left .logo-icon {
-    width: 64px;
-    height: 64px;
+    width: 52px;
+    height: 52px;
     background: linear-gradient(135deg, #f472b6, #a78bfa, #60a5fa);
-    border-radius: 16px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 1.6rem;
     color: #000000;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.4), 0 0 60px rgba(139, 92, 246, 0.06);
     flex-shrink: 0;
@@ -313,7 +309,7 @@ body {
 }
 
 .header-left .header-title h1 {
-    font-size: 2.4rem;
+    font-size: 2rem;
     font-weight: 800;
     background: linear-gradient(135deg, #f472b6, #a78bfa, #60a5fa);
     -webkit-background-clip: text;
@@ -331,7 +327,7 @@ body {
 
 .header-left .header-title small {
     display: block;
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     font-weight: 600;
     -webkit-text-fill-color: #94a3b8;
     color: #94a3b8;
@@ -367,8 +363,8 @@ body {
 }
 
 .header-right .user-info .header-avatar {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid rgba(139, 92, 246, 0.2);
@@ -378,15 +374,15 @@ body {
 .header-right .user-info .name {
     color: #e2e8f0;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 140px;
+    max-width: 130px;
 }
 
 .header-right .user-info .fa-user-circle {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     color: #94a3b8;
 }
 
@@ -399,7 +395,7 @@ body {
     justify-content: center;
     gap: 0.4rem;
     flex-wrap: wrap;
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     color: #94a3b8;
     text-align: center;
     flex-shrink: 0;
@@ -408,7 +404,7 @@ body {
 
 .about-bar i {
     color: #8b5cf6;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
 }
 
 .about-bar span {
@@ -422,7 +418,7 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    padding: 0.4rem;
+    padding: 0.5rem;
 }
 
 #subjectListView {
@@ -456,20 +452,20 @@ body {
     align-items: center;
     justify-content: space-between;
     flex-wrap: nowrap;
-    gap: 0.3rem;
-    padding: 0.2rem 0.2rem 0.2rem 0.2rem;
+    gap: 0.4rem;
+    padding: 0.2rem 0.2rem;
     border-bottom: 2px solid rgba(139, 92, 246, 0.1);
     flex-shrink: 0;
     width: 100%;
 }
 
 .section-header h2 {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: #e2e8f0;
     display: flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.4rem;
     flex-shrink: 1;
     min-width: 0;
     overflow: hidden;
@@ -492,7 +488,7 @@ body {
 
 .clock-row {
     text-align: center;
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     color: #64748b;
     padding: 0.15rem 0 0.25rem 0;
     border-bottom: 1px solid rgba(148, 163, 184, 0.05);
@@ -511,7 +507,7 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: 1fr;
-    gap: 0.4rem;
+    gap: 0.5rem;
     padding: 0.2rem 0;
     overflow: hidden;
     align-content: stretch;
@@ -521,7 +517,7 @@ body {
 .subject-card {
     background: #111827;
     border-radius: 10px;
-    padding: 0.3rem 0.3rem 0.25rem;
+    padding: 0.4rem 0.4rem 0.3rem;
     border: 1px solid rgba(139, 92, 246, 0.06);
     cursor: pointer;
     transition: all 0.2s ease;
@@ -557,7 +553,7 @@ body {
 }
 
 .subject-card .subject-code {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: 700;
     color: #e2e8f0;
     letter-spacing: 0.2px;
@@ -568,7 +564,7 @@ body {
 }
 
 .subject-card .subject-teacher {
-    font-size: 0.55rem;
+    font-size: 0.6rem;
     color: #a78bfa;
     font-weight: 600;
     word-wrap: break-word;
@@ -579,11 +575,11 @@ body {
 .subject-card .subject-teacher i {
     margin-right: 0.1rem;
     color: #f472b6;
-    font-size: 0.5rem;
+    font-size: 0.55rem;
 }
 
 .subject-card .subject-types {
-    font-size: 0.45rem;
+    font-size: 0.5rem;
     color: #94a3b8;
     display: flex;
     justify-content: center;
@@ -594,17 +590,17 @@ body {
 
 .subject-card .subject-types span {
     background: rgba(148, 163, 184, 0.06);
-    padding: 0.02rem 0.25rem;
+    padding: 0.03rem 0.3rem;
     border-radius: 6px;
     border: 1px solid rgba(148, 163, 184, 0.05);
     font-weight: 600;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    font-size: 0.4rem;
+    font-size: 0.45rem;
 }
 
 .subject-card .subject-schedule {
-    font-size: 0.45rem;
+    font-size: 0.5rem;
     color: #64748b;
     display: flex;
     justify-content: center;
@@ -619,9 +615,9 @@ body {
 .subject-card .subject-badge {
     display: inline-block;
     background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(244, 114, 182, 0.1));
-    padding: 0.02rem 0.4rem;
+    padding: 0.03rem 0.5rem;
     border-radius: 10px;
-    font-size: 0.45rem;
+    font-size: 0.5rem;
     font-weight: 700;
     color: #a78bfa;
     border: 1px solid rgba(139, 92, 246, 0.1);
@@ -658,7 +654,7 @@ body {
 }
 
 .detail-center h2 {
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     font-weight: 700;
     background: linear-gradient(135deg, #f472b6, #a78bfa);
     -webkit-background-clip: text;
@@ -672,7 +668,7 @@ body {
 
 .detail-center .detail-meta {
     color: #94a3b8;
-    font-size: 0.55rem;
+    font-size: 0.6rem;
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
@@ -697,9 +693,9 @@ body {
 
 .action-buttons .btn {
     flex: 0 1 auto;
-    min-width: 100px;
-    padding: 0.3rem 0.8rem;
-    font-size: 0.65rem;
+    min-width: 120px;
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
     justify-content: center;
 }
 
@@ -725,14 +721,14 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 1.5rem;
     color: #94a3b8;
     height: 100%;
 }
 
 .spinner {
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
     border: 3px solid rgba(139, 92, 246, 0.1);
     border-top: 3px solid #8b5cf6;
     border-radius: 50%;
@@ -742,20 +738,20 @@ body {
 
 .loading-container p {
     font-weight: 600;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
 }
 
 .project-list-full {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.5rem;
     padding: 0.2rem 0;
 }
 
 .project-item-full {
     background: #111827;
     border-radius: 8px;
-    padding: 0.4rem 0.6rem;
+    padding: 0.5rem 0.7rem;
     border: 1px solid rgba(139, 92, 246, 0.08);
     transition: all 0.2s ease;
     overflow: hidden;
@@ -776,7 +772,7 @@ body {
 
 .project-item-full .project-title {
     font-weight: 700;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: #e2e8f0;
     display: flex;
     align-items: center;
@@ -791,9 +787,9 @@ body {
 }
 
 .project-item-full .project-type-badge {
-    font-size: 0.45rem;
+    font-size: 0.5rem;
     background: rgba(139, 92, 246, 0.15);
-    padding: 0.02rem 0.4rem;
+    padding: 0.03rem 0.4rem;
     border-radius: 8px;
     color: #a78bfa;
     border: 1px solid rgba(139, 92, 246, 0.1);
@@ -801,7 +797,7 @@ body {
 }
 
 .project-item-full .project-meta {
-    font-size: 0.5rem;
+    font-size: 0.55rem;
     color: #64748b;
     margin: 0.1rem 0 0.2rem;
     display: flex;
@@ -825,9 +821,9 @@ body {
 
 .project-item-full .project-actions-row .btn {
     flex: 1;
-    min-width: 60px;
-    padding: 0.2rem 0.4rem;
-    font-size: 0.6rem;
+    min-width: 70px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.65rem;
     justify-content: center;
     font-weight: 700;
 }
@@ -835,13 +831,13 @@ body {
 .file-tag {
     display: inline-block;
     background: rgba(139, 92, 246, 0.1);
-    padding: 0.02rem 0.3rem;
+    padding: 0.03rem 0.35rem;
     border-radius: 10px;
-    font-size: 0.5rem;
+    font-size: 0.55rem;
     color: #94a3b8;
     border: 1px solid rgba(139, 92, 246, 0.08);
     transition: all 0.2s;
-    margin: 0.02rem 0;
+    margin: 0.03rem 0;
     cursor: pointer;
     font-weight: 600;
     max-width: 100%;
@@ -875,9 +871,9 @@ body {
 
 .group-number-badge {
     background: rgba(244, 114, 182, 0.15);
-    padding: 0.02rem 0.4rem;
+    padding: 0.03rem 0.4rem;
     border-radius: 8px;
-    font-size: 0.45rem;
+    font-size: 0.5rem;
     color: #f472b6;
     border: 1px solid rgba(244, 114, 182, 0.1);
     font-weight: 700;
@@ -886,17 +882,17 @@ body {
 .comment-count-badge {
     background: rgba(139, 92, 246, 0.15);
     color: #a78bfa;
-    padding: 0.02rem 0.3rem;
+    padding: 0.03rem 0.35rem;
     border-radius: 8px;
-    font-size: 0.45rem;
+    font-size: 0.5rem;
     margin-left: 0.1rem;
     font-weight: 700;
 }
 
 .visibility-badge {
-    padding: 0.02rem 0.3rem;
+    padding: 0.03rem 0.35rem;
     border-radius: 8px;
-    font-size: 0.4rem;
+    font-size: 0.45rem;
     font-weight: 700;
     background: rgba(52, 211, 153, 0.1);
     color: #34d399;
@@ -910,11 +906,11 @@ body {
 }
 
 .btn {
-    padding: 0.2rem 0.6rem;
+    padding: 0.25rem 0.7rem;
     border: none;
     border-radius: 5px;
     font-weight: 700;
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     cursor: pointer;
     transition: all 0.2s ease;
     display: inline-flex;
@@ -967,14 +963,14 @@ body {
 }
 
 .btn-sm {
-    padding: 0.1rem 0.4rem;
-    font-size: 0.5rem;
+    padding: 0.12rem 0.4rem;
+    font-size: 0.55rem;
     border-radius: 4px;
 }
 
 .btn-xs {
-    padding: 0.05rem 0.25rem;
-    font-size: 0.45rem;
+    padding: 0.08rem 0.3rem;
+    font-size: 0.5rem;
     border-radius: 3px;
 }
 
@@ -1041,7 +1037,7 @@ body {
     padding: 0.3rem 0.6rem 0.3rem 1.8rem;
     border: 1px solid rgba(139, 92, 246, 0.08);
     border-radius: 6px;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     background: rgba(15, 23, 42, 0.6);
     color: #e2e8f0;
     outline: none;
@@ -1093,8 +1089,8 @@ body {
 }
 
 .chat-avatar-img {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid rgba(139, 92, 246, 0.1);
@@ -1102,13 +1098,13 @@ body {
 }
 
 .chat-avatar-placeholder {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 700;
     color: #a78bfa;
     background: rgba(139, 92, 246, 0.06);
@@ -1123,7 +1119,7 @@ body {
 
 .chat-user-name {
     font-weight: 700;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: #e2e8f0;
     white-space: nowrap;
     overflow: hidden;
@@ -1131,7 +1127,7 @@ body {
 }
 
 .chat-user-id {
-    font-size: 0.55rem;
+    font-size: 0.6rem;
     color: #64748b;
     white-space: nowrap;
     overflow: hidden;
@@ -1141,7 +1137,7 @@ body {
 
 .chat-divider {
     padding: 0.2rem 0.6rem;
-    font-size: 0.5rem;
+    font-size: 0.55rem;
     color: #64748b;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -1155,7 +1151,7 @@ body {
     border-bottom: 1px solid rgba(139, 92, 246, 0.06);
     flex-shrink: 0;
     color: #94a3b8;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     min-height: 40px;
 }
 
@@ -1174,9 +1170,9 @@ body {
 
 .message {
     max-width: 80%;
-    padding: 0.3rem 0.6rem;
+    padding: 0.3rem 0.7rem;
     border-radius: 8px;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     word-break: break-word;
     position: relative;
 }
@@ -1197,14 +1193,14 @@ body {
 }
 
 .message .msg-sender {
-    font-size: 0.5rem;
+    font-size: 0.55rem;
     font-weight: 700;
     color: #a78bfa;
     margin-bottom: 0.02rem;
 }
 
 .message .msg-time {
-    font-size: 0.4rem;
+    font-size: 0.45rem;
     color: rgba(255, 255, 255, 0.3);
     display: block;
     margin-top: 0.05rem;
@@ -1220,7 +1216,7 @@ body {
     position: absolute;
     top: 0.05rem;
     right: 0.2rem;
-    font-size: 0.4rem;
+    font-size: 0.45rem;
     color: rgba(255, 255, 255, 0.2);
     cursor: pointer;
     opacity: 0;
@@ -1252,7 +1248,7 @@ body {
     padding: 0.3rem 0.6rem;
     border: 1px solid rgba(139, 92, 246, 0.08);
     border-radius: 6px;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     background: rgba(15, 23, 42, 0.6);
     color: #e2e8f0;
     outline: none;
@@ -1269,11 +1265,11 @@ body {
 }
 
 #chatInputArea .btn {
-    padding: 0.3rem 0.6rem;
+    padding: 0.3rem 0.7rem;
     border: none;
     border-radius: 6px;
     font-weight: 700;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     cursor: pointer;
     background: linear-gradient(135deg, #8b5cf6, #7c3aed);
     color: #fff;
@@ -1290,14 +1286,14 @@ body {
     bottom: 1.5rem;
     right: 1.5rem;
     z-index: 999;
-    width: 48px;
-    height: 48px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background: linear-gradient(135deg, #8b5cf6, #7c3aed);
     color: #fff;
     border: none;
     box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
@@ -1346,13 +1342,13 @@ body {
     right: 0.5rem;
     background: rgba(239, 68, 68, 0.1);
     border: none;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     color: #94a3b8;
     cursor: pointer;
     transition: all 0.2s;
     line-height: 1;
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1368,7 +1364,7 @@ body {
 
 .modal-content .modal-title {
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.1rem;
     margin-bottom: 0.3rem;
     color: #e2e8f0;
     text-align: center;
@@ -1397,7 +1393,7 @@ body {
         border-radius: 8px;
     }
     .modal-content .modal-title {
-        font-size: 0.85rem;
+        font-size: 0.95rem;
     }
 }
 
@@ -1408,7 +1404,7 @@ body {
         max-width: 780px;
     }
     .modal-content .modal-title {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
     }
 }
 
@@ -1418,7 +1414,7 @@ body {
 
 .modal-content .form-group label {
     display: block;
-    font-size: 0.55rem;
+    font-size: 0.6rem;
     font-weight: 700;
     color: #94a3b8;
     margin-bottom: 0.1rem;
@@ -1430,10 +1426,10 @@ body {
 .modal-content .form-group textarea,
 .modal-content .form-group select {
     width: 100%;
-    padding: 0.3rem 0.5rem;
+    padding: 0.35rem 0.5rem;
     border: 1px solid rgba(139, 92, 246, 0.15);
     border-radius: 6px;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     background: rgba(15, 23, 42, 0.6);
     color: #e2e8f0;
     transition: border 0.2s, box-shadow 0.2s;
@@ -1442,7 +1438,7 @@ body {
 
 .modal-content .form-group textarea {
     resize: vertical;
-    min-height: 40px;
+    min-height: 45px;
 }
 
 .modal-content .form-group input:focus,
@@ -1466,7 +1462,7 @@ body {
     background: linear-gradient(135deg, #8b5cf6, #7c3aed);
     color: #fff;
     font-weight: 700;
-    font-size: 0.55rem;
+    font-size: 0.6rem;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     margin-right: 0.3rem;
@@ -1493,14 +1489,14 @@ body {
 
 .modal-content .modal-actions .btn {
     flex: 1;
-    min-width: 60px;
+    min-width: 65px;
     font-weight: 700;
 }
 
 .member-list-item {
     display: flex;
     align-items: center;
-    padding: 0.2rem 0.4rem;
+    padding: 0.25rem 0.4rem;
     border-bottom: 1px solid rgba(148, 163, 184, 0.05);
     gap: 0.4rem;
 }
@@ -1510,19 +1506,19 @@ body {
 }
 
 .member-list-item input[type="checkbox"] {
-    width: 14px;
-    height: 14px;
+    width: 15px;
+    height: 15px;
     accent-color: #8b5cf6;
     cursor: pointer;
 }
 
 .member-list-item .member-name {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 700;
 }
 
 .member-list-item .member-id {
-    font-size: 0.55rem;
+    font-size: 0.6rem;
     color: #64748b;
     margin-left: auto;
     font-weight: 600;
@@ -1537,9 +1533,9 @@ body {
 
 .selected-member-tag {
     background: rgba(139, 92, 246, 0.1);
-    padding: 0.02rem 0.4rem;
+    padding: 0.03rem 0.4rem;
     border-radius: 10px;
-    font-size: 0.5rem;
+    font-size: 0.55rem;
     color: #a78bfa;
     border: 1px solid rgba(139, 92, 246, 0.1);
     display: flex;
@@ -1551,7 +1547,7 @@ body {
 .selected-member-tag .remove-member {
     cursor: pointer;
     color: #f472b6;
-    font-size: 0.45rem;
+    font-size: 0.5rem;
     font-weight: 700;
 }
 
@@ -1565,7 +1561,7 @@ body {
     background: rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     overflow: hidden;
-    min-height: 150px;
+    min-height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1596,9 +1592,9 @@ body {
     background: rgba(0, 0, 0, 0.5);
     border: none;
     color: #fff;
-    font-size: 1rem;
-    width: 28px;
-    height: 28px;
+    font-size: 1.1rem;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     cursor: pointer;
     transition: background 0.2s;
@@ -1610,7 +1606,7 @@ body {
 
 .slide-counter {
     text-align: center;
-    font-size: 0.55rem;
+    font-size: 0.6rem;
     color: #94a3b8;
     margin: 0.1rem 0;
     font-weight: 700;
@@ -1620,7 +1616,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     color: #94a3b8;
     padding: 0.1rem 0;
     border-top: 1px solid rgba(148, 163, 184, 0.05);
@@ -1630,8 +1626,8 @@ body {
 }
 
 .file-info-bar .btn {
-    font-size: 0.5rem;
-    padding: 0.05rem 0.3rem;
+    font-size: 0.55rem;
+    padding: 0.08rem 0.35rem;
     font-weight: 700;
 }
 
@@ -1645,9 +1641,9 @@ body {
 
 .modal-action-buttons .btn {
     flex: 1;
-    min-width: 80px;
-    padding: 0.3rem 0.8rem;
-    font-size: 0.7rem;
+    min-width: 90px;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.75rem;
     font-weight: 700;
 }
 
@@ -1667,7 +1663,7 @@ body {
 #commentModalBody .comment-card {
     background: rgba(15, 23, 42, 0.5);
     border-radius: 6px;
-    padding: 0.2rem 0.4rem;
+    padding: 0.25rem 0.4rem;
     border-left: 3px solid #8b5cf6;
     display: flex;
     justify-content: space-between;
@@ -1676,7 +1672,7 @@ body {
 }
 
 #commentModalBody .comment-card .comment-text {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     color: #e2e8f0;
     flex: 1;
 }
@@ -1686,21 +1682,21 @@ body {
 }
 
 #commentModalBody .comment-card .comment-time {
-    font-size: 0.4rem;
+    font-size: 0.45rem;
     color: #64748b;
     white-space: nowrap;
     font-weight: 600;
 }
 
 #commentModalBody .comment-card .comment-avatar {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     background: linear-gradient(135deg, #f472b6, #8b5cf6);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.45rem;
+    font-size: 0.5rem;
     color: #fff;
     flex-shrink: 0;
     font-weight: 700;
@@ -1714,10 +1710,10 @@ body {
 
 #commentModalBody .comment-input-area input {
     flex: 1;
-    padding: 0.2rem 0.4rem;
+    padding: 0.25rem 0.4rem;
     border: 1px solid rgba(139, 92, 246, 0.15);
     border-radius: 5px;
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     background: rgba(15, 23, 42, 0.6);
     color: #e2e8f0;
     outline: none;
@@ -1729,13 +1725,13 @@ body {
 }
 
 #commentModalBody .comment-input-area button {
-    padding: 0.1rem 0.5rem;
+    padding: 0.12rem 0.5rem;
     border: none;
     border-radius: 5px;
     background: linear-gradient(135deg, #8b5cf6, #7c3aed);
     color: #fff;
     font-weight: 700;
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     cursor: pointer;
 }
 
@@ -1753,14 +1749,14 @@ body {
 
 #commentModalBody .modal-actions .btn {
     flex: 1;
-    min-width: 50px;
+    min-width: 55px;
     font-weight: 700;
 }
 
 .comment-delete-btn {
     color: #f472b6;
     cursor: pointer;
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     margin-left: 0.2rem;
     transition: color 0.2s;
     font-weight: 700;
@@ -1791,11 +1787,11 @@ body {
 
 #newChatModalBody .student-list-item .student-name {
     font-weight: 700;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
 }
 
 #newChatModalBody .student-list-item .student-id {
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     color: #64748b;
     font-weight: 600;
 }
@@ -1808,17 +1804,17 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
-    max-width: 300px;
+    max-width: 320px;
     width: 100%;
 }
 
 .toast {
     background: #111827;
     color: #e2e8f0;
-    padding: 0.3rem 0.6rem;
+    padding: 0.35rem 0.7rem;
     border-radius: 6px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     display: flex;
     align-items: center;
     gap: 0.3rem;
@@ -1858,20 +1854,20 @@ body {
         max-width: none;
     }
     .toast {
-        font-size: 0.55rem;
+        font-size: 0.6rem;
         padding: 0.25rem 0.5rem;
     }
 }
 
 .empty-state {
     text-align: center;
-    padding: 1rem;
+    padding: 1.5rem;
     color: #64748b;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
 }
 
 .empty-state i {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     margin-bottom: 0.1rem;
     opacity: 0.4;
 }
@@ -1897,15 +1893,15 @@ body {
     background: rgba(15, 23, 42, 0.4);
     border-radius: 4px;
     border: 1px solid rgba(139, 92, 246, 0.05);
-    max-height: 40px;
+    max-height: 45px;
     overflow-y: auto;
 }
 
 .file-name-preview .file-tag {
     background: rgba(139, 92, 246, 0.1);
-    padding: 0.02rem 0.25rem;
+    padding: 0.03rem 0.3rem;
     border-radius: 6px;
-    font-size: 0.45rem;
+    font-size: 0.5rem;
     color: #94a3b8;
     border: 1px solid rgba(139, 92, 246, 0.05);
     font-weight: 600;
@@ -1922,8 +1918,8 @@ body {
 }
 
 #profilePictureContainer {
-    width: 110px;
-    height: 110px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     overflow: hidden;
     border: 3px solid rgba(139, 92, 246, 0.2);
@@ -1950,7 +1946,7 @@ body {
 }
 
 #profilePicturePlaceholder {
-    font-size: 3.5rem;
+    font-size: 4rem;
     color: #475569;
     display: flex;
     align-items: center;
@@ -1961,12 +1957,12 @@ body {
 }
 
 #profileContent .form-group {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
 }
 
 #profileContent .form-group label {
     display: block;
-    font-size: 0.55rem;
+    font-size: 0.6rem;
     font-weight: 700;
     color: #94a3b8;
     margin-bottom: 0.1rem;
@@ -1980,7 +1976,7 @@ body {
     padding: 0.4rem 0.6rem;
     border: 1px solid rgba(139, 92, 246, 0.15);
     border-radius: 6px;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     background: rgba(15, 23, 42, 0.6);
     color: #e2e8f0;
     outline: none;
@@ -2002,60 +1998,110 @@ body {
 
 #profileContent .form-group textarea {
     resize: vertical;
-    min-height: 60px;
+    min-height: 70px;
+}
+
+#profileContent .profile-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+#profileContent .profile-actions .btn {
+    flex: 0 1 auto;
+    padding: 0.3rem 0.9rem;
+    font-size: 0.75rem;
+    min-width: 0;
+}
+
+#profileContent .profile-actions .management-btn {
+    display: inline-block;
+    padding: 0.3rem 0.9rem;
+    background: #00ff41;
+    color: #0a0e17;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.75rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#profileContent .profile-actions .management-btn:hover {
+    background: #00e639;
+    transform: scale(1.02);
 }
 
 @media (max-width: 768px) {
     #profilePictureContainer {
-        width: 90px;
-        height: 90px;
+        width: 100px;
+        height: 100px;
     }
     #profilePicturePlaceholder {
-        font-size: 2.8rem;
+        font-size: 3.2rem;
     }
     #profileContent .form-group input,
     #profileContent .form-group textarea {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.5rem;
+    }
+    #profileContent .profile-actions .btn,
+    #profileContent .profile-actions .management-btn {
         font-size: 0.7rem;
-        padding: 0.3rem 0.5rem;
+        padding: 0.25rem 0.7rem;
     }
 }
 
 @media (max-width: 480px) {
     #profilePictureContainer {
-        width: 75px;
-        height: 75px;
+        width: 80px;
+        height: 80px;
         border-width: 2px;
     }
     #profilePicturePlaceholder {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
     }
     #profileContent .form-group input,
     #profileContent .form-group textarea {
-        font-size: 0.65rem;
+        font-size: 0.7rem;
         padding: 0.25rem 0.4rem;
     }
     #profileContent .form-group label {
-        font-size: 0.45rem;
+        font-size: 0.5rem;
+    }
+    #profileContent .profile-actions .btn,
+    #profileContent .profile-actions .management-btn {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.6rem;
     }
 }
 
 @media (min-width: 1025px) {
     #profilePictureContainer {
-        width: 140px;
-        height: 140px;
+        width: 150px;
+        height: 150px;
         border-width: 4px;
     }
     #profilePicturePlaceholder {
-        font-size: 4.5rem;
+        font-size: 5rem;
+    }
+    #profileContent .profile-actions .btn,
+    #profileContent .profile-actions .management-btn {
+        font-size: 0.85rem;
+        padding: 0.35rem 1.2rem;
     }
 }
 
 .stats-bar {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
     margin-bottom: 0.8rem;
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1.2rem;
     background: #111827;
     border-radius: 8px;
     border: 1px solid rgba(139, 92, 246, 0.06);
@@ -2067,14 +2113,14 @@ body {
 .stats-bar .stat-item {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    font-size: 0.75rem;
+    gap: 0.5rem;
+    font-size: 0.8rem;
     color: #94a3b8;
 }
 
 .stats-bar .stat-item .stat-value {
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.1rem;
     background: linear-gradient(135deg, #f472b6, #a78bfa);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -2083,7 +2129,7 @@ body {
 
 .stats-bar .stat-item i {
     color: #8b5cf6;
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 .search-bar {
@@ -2100,7 +2146,7 @@ body {
     padding: 0.4rem 0.8rem;
     border: 1px solid rgba(139, 92, 246, 0.06);
     border-radius: 6px;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     background: #0f172a;
     color: #e2e8f0;
     outline: none;
@@ -2124,7 +2170,7 @@ body {
     background: linear-gradient(135deg, #8b5cf6, #7c3aed);
     color: #fff;
     font-weight: 700;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     cursor: pointer;
     transition: all 0.3s;
     flex-shrink: 0;
@@ -2136,7 +2182,7 @@ body {
 
 .user-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
     gap: 0.5rem;
     overflow-x: hidden;
     width: 100%;
@@ -2162,8 +2208,8 @@ body {
 }
 
 .user-card .user-avatar {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     object-fit: cover;
     background: #0f172a;
@@ -2177,15 +2223,15 @@ body {
 }
 
 .user-card .user-avatar-placeholder {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background: #0f172a;
     border: 2px solid rgba(139, 92, 246, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: #94a3b8;
     flex-shrink: 0;
 }
@@ -2197,7 +2243,7 @@ body {
 
 .user-card .user-info .user-name {
     font-weight: 700;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: #e2e8f0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -2205,13 +2251,13 @@ body {
 }
 
 .user-card .user-info .user-id {
-    font-size: 0.55rem;
+    font-size: 0.6rem;
     color: #94a3b8;
     font-weight: 600;
 }
 
 .user-card .user-info .user-email {
-    font-size: 0.5rem;
+    font-size: 0.55rem;
     color: #64748b;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -2219,7 +2265,7 @@ body {
 }
 
 .user-card .user-badge {
-    font-size: 0.4rem;
+    font-size: 0.45rem;
     padding: 0.05rem 0.4rem;
     border-radius: 8px;
     background: rgba(139, 92, 246, 0.04);
@@ -2252,7 +2298,7 @@ body {
 .message-grid,
 .manage-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 0.5rem;
     overflow-x: hidden;
     width: 100%;
@@ -2282,13 +2328,13 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     word-wrap: break-word;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
 }
 
 .project-card .project-meta,
 .message-card .message-meta,
 .manage-card .manage-meta {
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     color: #94a3b8;
     display: flex;
     gap: 0.4rem;
@@ -2328,16 +2374,16 @@ body {
 }
 
 .view-toggle .btn {
-    padding: 0.3rem 1rem;
+    padding: 0.35rem 1.2rem;
     border: 1px solid rgba(139, 92, 246, 0.06);
     border-radius: 6px;
     background: transparent;
     color: #94a3b8;
     cursor: pointer;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     transition: 0.3s;
     flex: 1;
-    min-width: 60px;
+    min-width: 65px;
     text-align: center;
 }
 
@@ -2363,7 +2409,7 @@ body {
     border: 1px solid rgba(139, 92, 246, 0.06);
     border-radius: 5px;
     padding: 0.15rem 0.4rem;
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     cursor: pointer;
     outline: none;
 }
@@ -2382,7 +2428,7 @@ body {
     display: inline-block;
     padding: 0.05rem 0.4rem;
     border-radius: 8px;
-    font-size: 0.45rem;
+    font-size: 0.5rem;
     font-weight: 700;
     text-transform: uppercase;
     border: 1px solid rgba(139, 92, 246, 0.06);
@@ -2411,7 +2457,7 @@ body {
 .activity-form {
     background: #0f172a;
     border-radius: 8px;
-    padding: 0.6rem;
+    padding: 0.7rem;
     border: 1px solid rgba(139, 92, 246, 0.06);
     margin-bottom: 0.6rem;
     overflow-x: hidden;
@@ -2432,7 +2478,7 @@ body {
 
 .activity-form .form-group label {
     display: block;
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     font-weight: 700;
     color: #94a3b8;
     margin-bottom: 0.1rem;
@@ -2444,10 +2490,10 @@ body {
 .activity-form .form-group textarea,
 .activity-form .form-group select {
     width: 100%;
-    padding: 0.3rem 0.5rem;
+    padding: 0.35rem 0.5rem;
     border: 1px solid rgba(139, 92, 246, 0.06);
     border-radius: 5px;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     background: #0f172a;
     color: #e2e8f0;
     outline: none;
@@ -2463,7 +2509,7 @@ body {
 
 .activity-form .form-group textarea {
     resize: vertical;
-    min-height: 50px;
+    min-height: 55px;
 }
 
 .activity-form .form-actions {
@@ -2474,11 +2520,11 @@ body {
 }
 
 .activity-form .form-actions .btn {
-    padding: 0.3rem 1rem;
+    padding: 0.35rem 1rem;
     border: none;
     border-radius: 5px;
     font-weight: 700;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     cursor: pointer;
     transition: 0.3s;
 }
@@ -2494,7 +2540,7 @@ body {
 }
 
 .modal-content .detail-section h3 {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 700;
     color: #94a3b8;
     margin-bottom: 0.2rem;
@@ -2512,13 +2558,13 @@ body {
 .modal-content .detail-section .detail-row {
     display: flex;
     padding: 0.15rem 0;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     flex-wrap: wrap;
 }
 
 .modal-content .detail-section .detail-row .label {
     color: #94a3b8;
-    width: 100px;
+    width: 110px;
     flex-shrink: 0;
     font-weight: 700;
 }
@@ -2531,9 +2577,9 @@ body {
 .modal-content .detail-section .file-item,
 .modal-content .detail-section .msg-item,
 .modal-content .detail-section .project-item {
-    padding: 0.2rem 0.4rem;
+    padding: 0.25rem 0.4rem;
     border-bottom: 1px solid rgba(148, 163, 184, 0.04);
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -2548,7 +2594,7 @@ body {
 
 .modal-content .detail-section .file-item .file-size {
     color: #64748b;
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     font-weight: 600;
 }
 
@@ -2559,7 +2605,7 @@ body {
 
 .modal-content .detail-section .msg-item .msg-meta {
     color: #64748b;
-    font-size: 0.55rem;
+    font-size: 0.6rem;
     font-weight: 600;
 }
 
@@ -2570,8 +2616,8 @@ body {
 
 .modal-content .detail-section .project-item .project-actions .btn,
 .modal-content .detail-section .msg-item .msg-actions .btn {
-    padding: 0.05rem 0.4rem;
-    font-size: 0.55rem;
+    padding: 0.08rem 0.4rem;
+    font-size: 0.6rem;
     border: none;
     border-radius: 3px;
     cursor: pointer;
@@ -2612,11 +2658,11 @@ body {
 }
 
 .modal-content .detail-actions .btn {
-    padding: 0.3rem 1rem;
+    padding: 0.35rem 1rem;
     border: none;
     border-radius: 6px;
     font-weight: 700;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     cursor: pointer;
     transition: 0.3s;
 }
@@ -2635,7 +2681,7 @@ body {
     background: #ef4444;
     color: #fff;
     font-weight: 700;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     padding: 0.5rem 1.2rem;
     border: none;
     border-radius: 6px;
@@ -2818,7 +2864,7 @@ body {
         flex-direction: column;
         gap: 0.3rem;
         align-items: center;
-        padding: 0.3rem 0.6rem;
+        padding: 0.35rem 0.6rem;
     }
     .user-grid,
     .project-grid,
@@ -2844,9 +2890,9 @@ body {
         flex: 1;
     }
     .view-toggle .btn {
-        font-size: 0.6rem;
-        padding: 0.2rem 0.5rem;
-        min-width: 50px;
+        font-size: 0.65rem;
+        padding: 0.25rem 0.6rem;
+        min-width: 55px;
     }
     .auth-box {
         padding: 1.5rem 1rem;
@@ -2903,36 +2949,36 @@ body {
     }
     .subject-grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: 0.3rem;
+        gap: 0.4rem;
     }
     .section-header .user-info {
         display: none;
     }
     .header {
-        padding: 0.6rem 1.2rem;
-        min-height: 64px;
+        padding: 0.5rem 1rem;
+        min-height: 58px;
     }
     .header-left .logo-icon {
-        width: 48px;
-        height: 48px;
-        font-size: 1.4rem;
+        width: 42px;
+        height: 42px;
+        font-size: 1.2rem;
     }
     .header-left .header-title h1 {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
     }
     .header-left .header-title small {
-        font-size: 0.65rem;
+        font-size: 0.6rem;
     }
     .header-right .user-info .name {
-        font-size: 0.75rem;
-        max-width: 100px;
+        font-size: 0.7rem;
+        max-width: 90px;
     }
     .header-right .user-info .header-avatar {
-        width: 30px;
-        height: 30px;
+        width: 28px;
+        height: 28px;
     }
     .header-right .user-info .fa-user-circle {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
     }
     .header-right .user-info {
         padding: 0.1rem 0.6rem 0.1rem 0.2rem;
@@ -2952,61 +2998,61 @@ body {
         gap: 0.3rem;
     }
     .subject-card .subject-code {
-        font-size: 0.65rem;
+        font-size: 0.7rem;
     }
     .subject-card .subject-teacher {
-        font-size: 0.45rem;
-    }
-    .subject-card .subject-types {
-        font-size: 0.38rem;
-    }
-    .subject-card .subject-types span {
-        font-size: 0.32rem;
-    }
-    .subject-card .subject-schedule {
-        font-size: 0.38rem;
-    }
-    .subject-card .subject-badge {
-        font-size: 0.38rem;
-        padding: 0.02rem 0.25rem;
-    }
-    .header {
-        padding: 0.4rem 0.8rem;
-        min-height: 54px;
-    }
-    .header-left .logo-icon {
-        width: 36px;
-        height: 36px;
-        font-size: 1.1rem;
-    }
-    .header-left .header-title h1 {
-        font-size: 1.2rem;
-    }
-    .header-left .header-title small {
         font-size: 0.5rem;
     }
+    .subject-card .subject-types {
+        font-size: 0.42rem;
+    }
+    .subject-card .subject-types span {
+        font-size: 0.36rem;
+    }
+    .subject-card .subject-schedule {
+        font-size: 0.42rem;
+    }
+    .subject-card .subject-badge {
+        font-size: 0.42rem;
+        padding: 0.03rem 0.3rem;
+    }
+    .header {
+        padding: 0.35rem 0.6rem;
+        min-height: 48px;
+    }
+    .header-left .logo-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 0.95rem;
+    }
+    .header-left .header-title h1 {
+        font-size: 1.1rem;
+    }
+    .header-left .header-title small {
+        font-size: 0.45rem;
+    }
     .header-right .user-info .name {
-        font-size: 0.6rem;
-        max-width: 70px;
+        font-size: 0.55rem;
+        max-width: 60px;
     }
     .header-right .user-info .fa-user-circle {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
     .header-right .user-info {
         padding: 0.05rem 0.4rem 0.05rem 0.15rem;
         border-radius: 14px;
     }
     .section-header h2 {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
     }
     .clock-row {
-        font-size: 0.5rem;
+        font-size: 0.55rem;
         padding: 0.1rem 0 0.15rem;
     }
     .action-buttons .btn {
-        min-width: 70px;
-        font-size: 0.55rem;
-        padding: 0.2rem 0.5rem;
+        min-width: 80px;
+        font-size: 0.6rem;
+        padding: 0.25rem 0.6rem;
     }
 }
 
@@ -3016,59 +3062,59 @@ body {
         gap: 0.2rem;
     }
     .subject-card {
-        padding: 0.15rem 0.15rem 0.1rem;
+        padding: 0.2rem 0.15rem 0.12rem;
         border-radius: 6px;
     }
     .subject-card .subject-code {
-        font-size: 0.55rem;
+        font-size: 0.6rem;
     }
     .subject-card .subject-teacher {
-        font-size: 0.38rem;
+        font-size: 0.42rem;
     }
     .subject-card .subject-types {
-        font-size: 0.32rem;
-        gap: 0.1rem;
+        font-size: 0.35rem;
+        gap: 0.08rem;
     }
     .subject-card .subject-types span {
-        font-size: 0.28rem;
+        font-size: 0.3rem;
         padding: 0.02rem 0.15rem;
     }
     .subject-card .subject-schedule {
-        font-size: 0.32rem;
-        gap: 0.1rem;
+        font-size: 0.35rem;
+        gap: 0.08rem;
     }
     .subject-card .subject-badge {
-        font-size: 0.32rem;
+        font-size: 0.35rem;
         padding: 0.02rem 0.2rem;
     }
     .header-left .header-title h1 {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
     .header-left .header-title small {
-        font-size: 0.4rem;
+        font-size: 0.38rem;
     }
     .header-left .logo-icon {
-        width: 30px;
-        height: 30px;
-        font-size: 0.9rem;
+        width: 26px;
+        height: 26px;
+        font-size: 0.8rem;
     }
     .header {
-        padding: 0.25rem 0.5rem;
-        min-height: 44px;
+        padding: 0.2rem 0.4rem;
+        min-height: 40px;
     }
     .header-right .user-info .name {
-        font-size: 0.5rem;
-        max-width: 50px;
+        font-size: 0.45rem;
+        max-width: 45px;
     }
     .header-right .user-info .fa-user-circle {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
     .header-right .user-info {
-        padding: 0.02rem 0.25rem 0.02rem 0.1rem;
+        padding: 0.03rem 0.25rem 0.03rem 0.1rem;
         border-radius: 12px;
     }
     .section-header h2 {
-        font-size: 0.65rem;
+        font-size: 0.7rem;
     }
 }
 
