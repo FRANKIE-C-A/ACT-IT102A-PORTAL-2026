@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=3.0, maximum-scale=3.1, user-scalable=yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
     <title>ACT IT102A Portal</title>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js">
@@ -16,137 +16,29 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="style.css" />
-
-    <style>
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header-left {
-            flex: 1 1 auto;
-            min-width: 0;
-        }
-        .header-right {
-            flex-shrink: 0;
-            margin-left: 1rem;
-        }
-        .header-right .user-info {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            padding: 0.2rem 0.8rem 0.2rem 0.4rem;
-            border-radius: 20px;
-            border: 1.5px solid rgba(139, 92, 246, 0.15);
-            background: rgba(15, 23, 42, 0.3);
-            transition: all 0.2s;
-        }
-        .header-right .user-info:hover {
-            background: rgba(139, 92, 246, 0.08);
-            border-color: rgba(139, 92, 246, 0.25);
-        }
-        .header-right .user-info .header-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(139, 92, 246, 0.2);
-            display: none;
-        }
-        .header-right .user-info .name {
-            color: #e2e8f0;
-            font-weight: 600;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 120px;
-        }
-        .header-right .user-info .fa-user-circle {
-            font-size: 1.4rem;
-            color: #94a3b8;
-        }
-        .section-header .user-info {
-            display: none;
-        }
-        #profileContent .management-btn {
-            display: inline-block;
-            padding: 0.4rem 1.2rem;
-            background: #00ff41;
-            color: #0a0e17;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.85rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        #profileContent .management-btn:hover {
-            background: #00e639;
-            transform: scale(1.02);
-        }
-        @media (max-width: 768px) {
-            .header-right .user-info .name {
-                font-size: 0.7rem;
-                max-width: 80px;
-            }
-            .header-right .user-info .header-avatar {
-                width: 26px;
-                height: 26px;
-            }
-            .header-right .user-info .fa-user-circle {
-                font-size: 1.2rem;
-            }
-            .header-right .user-info {
-                padding: 0.1rem 0.5rem 0.1rem 0.2rem;
-                border-radius: 16px;
-            }
-            #profileContent .management-btn {
-                font-size: 0.7rem;
-                padding: 0.3rem 0.8rem;
-            }
-        }
-        @media (max-width: 420px) {
-            .header-right .user-info .name {
-                font-size: 0.6rem;
-                max-width: 60px;
-            }
-            .header-right .user-info {
-                padding: 0.05rem 0.3rem 0.05rem 0.15rem;
-                border-radius: 14px;
-            }
-            .header-right .user-info .fa-user-circle {
-                font-size: 1rem;
-            }
-            #profileContent .management-btn {
-                font-size: 0.6rem;
-                padding: 0.2rem 0.6rem;
-            }
-        }
-    </style>
 </head>
 <body>
 
+    <!-- ========== AUTH ========== -->
     <div id="authContainer" class="auth-container">
         <div class="auth-box">
             <div class="auth-logo">
                 <div class="logo-icon"><i class="fas fa-user-secret"></i></div>
                 <h1>BSIT PORTAL</h1>
-                <p>Login</p>
+                <p>Sign in to continue</p>
             </div>
 
             <div id="authError" class="auth-error"></div>
             <div id="authSuccess" class="auth-success"></div>
             <div id="authLoading" class="auth-loading">
-                <span class="spinner-small"></span> Processing...
+                <span class="spinner-small"></span> Processing…
             </div>
 
+            <!-- LOGIN -->
             <div id="loginForm">
                 <div class="form-group">
                     <label><i class="fas fa-id-card"></i> ID Number</label>
-                    <input type="text" id="loginStudentId" placeholder="e.g., 24-34567890" />
+                    <input type="text" id="loginStudentId" placeholder="e.g. 24-34567890" />
                 </div>
                 <div class="form-group">
                     <label><i class="fas fa-lock"></i> Password</label>
@@ -158,10 +50,11 @@
                 </div>
             </div>
 
+            <!-- SIGNUP -->
             <div id="signupForm" style="display:none;">
                 <div class="form-group">
                     <label><i class="fas fa-id-card"></i> ID Number</label>
-                    <input type="text" id="signupStudentId" placeholder="e.g., 24-34567890" />
+                    <input type="text" id="signupStudentId" placeholder="e.g. 24-34567890" />
                 </div>
                 <div class="form-group">
                     <label><i class="fas fa-user"></i> First Name</label>
@@ -183,13 +76,16 @@
         </div>
     </div>
 
+    <!-- ========== MAIN APP ========== -->
     <div id="appContent">
+
+        <!-- HEADER -->
         <header class="header">
             <div class="header-left">
                 <div class="logo-icon"><i class="fas fa-user-secret"></i></div>
                 <div class="header-title">
                     <h1>ACT IT102A 2026</h1>
-                    <small><i class="fas fa-globe"></i> Access Anywhere, Anytime...</small>
+                    <small><i class="fas fa-globe"></i> Access Anywhere, Anytime</small>
                 </div>
             </div>
             <div class="header-right">
@@ -201,21 +97,21 @@
             </div>
         </header>
 
-        <div class="about-bar">
-            <i class="fas fa-code"></i>
-            <span>Developed By : Frankie Core Adaro</span>
-        </div>
-
         <div class="container">
 
+            <!-- SUBJECT LIST -->
             <div id="subjectListView">
                 <div class="section-header">
                     <h2><i class="fas fa-list-ul"></i> Your Subjects</h2>
+                    <button class="btn btn-primary chat-header-btn" id="fabChatBtn">
+                        <i class="fas fa-comment-dots"></i> Chat
+                    </button>
                 </div>
-                <div class="clock-row" id="headerClock"><i class="far fa-clock"></i> loading...</div>
+                <div class="clock-row" id="headerClock"><i class="far fa-clock"></i> loading…</div>
                 <div id="subjectList" class="subject-grid"></div>
             </div>
 
+            <!-- PROJECT DETAIL -->
             <div id="projectDetailView" style="display:none;">
                 <div class="detail-header">
                     <div class="detail-center">
@@ -224,31 +120,34 @@
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <button class="btn btn-primary" id="uploadProjectBtn"><i class="fas fa-upload"></i> Upload Project</button>
+                    <button class="btn btn-primary" id="uploadProjectBtn"><i class="fas fa-upload"></i> Upload</button>
                     <button class="btn btn-outline" id="backToSubjectsBtn"><i class="fas fa-arrow-left"></i> Back</button>
                 </div>
                 <div id="projectList" class="project-list-full">
                     <div class="loading-container" id="projectLoadingSpinner">
                         <div class="spinner"></div>
-                        <p>Loading projects...</p>
+                        <p>Loading projects…</p>
                     </div>
                 </div>
             </div>
 
+            <!-- CHAT VIEW (left title, right back) -->
             <div id="chatView" style="display:none;">
-                <div class="detail-header">
-                    <div class="detail-center">
+                <div class="detail-header chat-detail-header">
+                    <div class="chat-header-left">
                         <h2><i class="fas fa-comment-dots"></i> Chat</h2>
                         <p class="detail-meta">Message your classmates</p>
                     </div>
-                    <button class="btn btn-outline" id="chatBackToListBtn" style="display:none;"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="btn btn-outline" id="backFromChatBtn"><i class="fas fa-arrow-left"></i> Back</button>
+                    <div class="chat-header-right">
+                        <button class="btn btn-outline" id="chatBackToListBtn" style="display:none;"><i class="fas fa-arrow-left"></i> Back</button>
+                        <button class="btn btn-outline" id="backFromChatBtn"><i class="fas fa-arrow-left"></i> Back</button>
+                    </div>
                 </div>
 
                 <div id="chatContainer">
                     <div id="chatListContainer">
                         <div class="chat-search-wrapper">
-                            <input type="text" id="chatSearchInput" placeholder="Search users..." />
+                            <input type="text" id="chatSearchInput" placeholder="Search users…" />
                             <i class="fas fa-search"></i>
                         </div>
                         <div id="chatUserList"></div>
@@ -258,13 +157,14 @@
                         <div id="chatHeader"></div>
                         <div id="messagesList"></div>
                         <div id="chatInputArea" style="display:none;">
-                            <input type="text" id="chatMessageInput" placeholder="Type a message..." />
+                            <input type="text" id="chatMessageInput" placeholder="Type a message…" />
                             <button class="btn btn-primary" id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- PROFILE VIEW -->
             <div id="profileView" style="display:none;">
                 <div class="detail-header">
                     <div class="detail-center">
@@ -273,12 +173,12 @@
                     <button class="btn btn-outline" id="backFromProfileBtn"><i class="fas fa-arrow-left"></i> Back</button>
                 </div>
                 <div id="profileContent">
-                    <div style="display:flex; flex-direction:column; align-items:center; margin-bottom:1rem;">
+                    <div class="profile-avatar-wrap">
                         <div id="profilePictureContainer">
                             <img id="profilePictureImg" src="" alt="Profile" />
                             <i id="profilePicturePlaceholder" class="fas fa-user"></i>
                         </div>
-                        <label class="btn btn-primary btn-sm" style="cursor:pointer;">
+                        <label class="btn btn-primary btn-sm upload-photo-btn">
                             <i class="fas fa-camera"></i> Upload Photo
                             <input type="file" id="profilePictureInput" accept="image/*" style="display:none;" />
                         </label>
@@ -298,21 +198,27 @@
                     </div>
                     <div class="form-group">
                         <label>Bio</label>
-                        <textarea id="profileBio" rows="3" placeholder="Tell us about yourself..."></textarea>
+                        <textarea id="profileBio" rows="3" placeholder="Tell us about yourself…"></textarea>
                     </div>
-                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:1rem; align-items:center;">
-                        <button class="btn btn-primary" id="saveProfileBtn"><i class="fas fa-save"></i> Save Profile</button>
+                    <div class="profile-actions">
+                        <button class="btn btn-primary" id="saveProfileBtn"><i class="fas fa-save"></i> Save</button>
                         <button class="btn btn-danger" id="logoutFromProfileBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
                         <div id="managementButtonContainer" style="display:inline-block;"></div>
                     </div>
                 </div>
             </div>
 
+        </div><!-- /.container -->
+
+        <!-- DEVELOPER CREDIT -->
+        <div class="about-bar">
+            <i class="fas fa-code"></i>
+            <span>Developed By : Frankie Core Adaro</span>
         </div>
 
-        <button class="fab-chat" id="fabChatBtn"><i class="fas fa-comment-dots"></i></button>
-    </div>
+    </div><!-- /#appContent -->
 
+    <!-- ========== MODALS ========== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content" id="modalContent">
             <button class="modal-close" id="modalCloseBtn">&times;</button>
