@@ -103,13 +103,9 @@ function formatStudentId(id) {
     return id.trim();
 }
 
+// NEW STRICT ID VALIDATION: must start with 24- or 26- followed by digits
 function isValidStudentId(id) {
-    const parts = id.split('-');
-    if (parts.length !== 2) return false;
-    const prefix = parts[0];
-    if (prefix !== '24' && prefix !== '26') return false;
-    if (!parts[1] || parts[1].length === 0) return false;
-    return true;
+    return /^(24|26)-\d+$/.test(id);
 }
 
 signupBtn.addEventListener('click', async () => {
@@ -120,7 +116,7 @@ signupBtn.addEventListener('click', async () => {
 
     if (!studentIdRaw) { showAuthError('Please enter your Student ID.'); return; }
     if (!isValidStudentId(studentIdRaw)) {
-        showAuthError('ID does not exist in SAMS PORTAL');
+        showAuthError('ID must be in format 24-xxxxx or 26-xxxxx (digits only after hyphen).');
         return;
     }
     const studentId = formatStudentId(studentIdRaw);
@@ -185,7 +181,7 @@ loginBtn.addEventListener('click', async () => {
 
     if (!studentIdRaw) { showAuthError('Please enter your Student ID.'); return; }
     if (!isValidStudentId(studentIdRaw)) {
-        showAuthError('ID does not exist in SAMS PORTAL');
+        showAuthError('ID must be in format 24-xxxxx or 26-xxxxx (digits only after hyphen).');
         return;
     }
     const studentId = formatStudentId(studentIdRaw);
@@ -504,6 +500,14 @@ function showView(viewId) {
     if (viewId) {
         document.getElementById(viewId).style.display = 'block';
     }
+
+    // Chat button visibility (the one in the header)
+    if (viewId === 'chatView') {
+        fabChatBtn.style.display = 'none';
+    } else {
+        fabChatBtn.style.display = 'inline-flex';
+    }
+
     if (viewId !== 'chatView') {
         resetChatMobileView();
     }
@@ -590,7 +594,6 @@ function renderSubjects() {
         card.addEventListener('click', () => openSubject(subject.code));
         subjectListEl.appendChild(card);
     });
-    subjectCount.textContent = `${SUBJECTS.length} subjects`;
 }
 
 async function openSubject(code) {
@@ -1721,13 +1724,3 @@ function updateClock() {
 }
 updateClock();
 setInterval(updateClock, 1000);
-
-if (firebaseConfig.apiKey === 'YOUR_API_KEY') {
-    document.querySelector('.container').innerHTML = `
-        <div class="empty-state" style="padding:2rem;text-align:center;">
-            <i class="fas fa-triangle-exclamation" style="color:#ff6b6b;font-size:2.5rem;"></i>
-            <h3 style="color:#c8d6e5;">Firebase Not Configured</h3>
-            <p style="color:#6a8a7a;">Replace the firebaseConfig object in script.js with your own credentials.</p>
-        </div>
-    `;
-}

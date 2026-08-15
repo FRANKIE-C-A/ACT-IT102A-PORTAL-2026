@@ -21,6 +21,7 @@ body {
     width: 100%;
     font-size: 16px;
     line-height: 1.7;
+    padding-bottom: 60px; /* space for fixed footer */
 }
 
 ::-webkit-scrollbar {
@@ -561,7 +562,7 @@ body {
     }
 }
 
-/* ---------- DEVELOPER CREDIT (BOTTOM) ---------- */
+/* ---------- FIXED FOOTER (Developer Credit) ---------- */
 .about-bar {
     background: #111827;
     padding: 0.8rem 1rem;
@@ -576,8 +577,17 @@ body {
     text-align: center;
     overflow-x: hidden;
     width: 100%;
-    margin-top: 1.5rem;
+
+    /* Fixed at bottom */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.3);
 }
+
 .about-bar i {
     color: #8b5cf6;
     font-size: 0.9rem;
@@ -585,11 +595,11 @@ body {
 .about-bar span {
     font-weight: 600;
 }
+
 @media (max-width: 768px) {
     .about-bar {
         padding: 0.6rem 0.5rem;
         font-size: 0.7rem;
-        margin-top: 1rem;
     }
 }
 
@@ -598,17 +608,20 @@ body {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0.6rem;
+    padding-bottom: 80px; /* extra bottom space so footer doesn't overlap */
     overflow-x: hidden;
     width: 100%;
 }
 @media (min-width: 1025px) {
     .container {
         padding: 1.5rem;
+        padding-bottom: 90px;
     }
 }
 @media (max-width: 768px) {
     .container {
         padding: 0.4rem 0.4rem;
+        padding-bottom: 70px;
         overflow-x: hidden;
         width: 100%;
     }
