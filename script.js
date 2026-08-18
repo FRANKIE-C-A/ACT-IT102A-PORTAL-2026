@@ -494,11 +494,19 @@ function renderProjects(projects) {
         const userSubmission = comments.find(c => c.commenterUid === currentUser.uid);
         const hasSubmitted = !!userSubmission;
 
+        // ---- ACTION BUTTON (fixed) ----
         let actionButton = '';
         const isTeacher = ['developer', 'admin', 'teacher'].includes(currentUserRole);
+
         if (isTeacher) {
+            // Teachers always see "View Submissions"
             actionButton = `<button class="btn btn-outline" onclick="viewSubmissions('${p.id}')"><i class="fas fa-eye"></i> View Submissions</button>`;
+            // Also show "Submit" if not submitted
+            if (!hasSubmitted) {
+                actionButton += ` <button class="btn btn-primary" onclick="openCommentModal('${p.id}')"><i class="fas fa-paper-plane"></i> Submit</button>`;
+            }
         } else {
+            // Students: if submitted show View, else Submit
             if (hasSubmitted) {
                 actionButton = `<button class="btn btn-outline" onclick="viewSubmissions('${p.id}')"><i class="fas fa-eye"></i> View Submissions</button>`;
             } else {
@@ -658,6 +666,7 @@ window.openFilePreview = function(url, name, mimeType) {
 window.openCommentModal = function(projectId) {
     const project = projectsCache[currentSubject]?.find(p => p.id === projectId);
     if (!project) { showToast('Activity not found.', 'error'); return; }
+    // Check if user already submitted
     const userSubmission = project.comments?.find(c => c.commenterUid === currentUser.uid);
     if (userSubmission) {
         showToast('You have already submitted.', 'info');
