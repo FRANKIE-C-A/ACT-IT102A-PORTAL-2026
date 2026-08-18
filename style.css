@@ -1173,6 +1173,26 @@ body {
     }
 }
 
+/* ---------- COMPACT BUTTONS FOR MOBILE ---------- */
+@media (max-width: 768px) {
+    .project-item-full .project-actions-row .btn {
+        padding: 0.15rem 0.3rem;
+        font-size: 0.6rem;
+        min-width: 60px;
+        border-radius: 4px;
+    }
+    .project-item-full .project-actions-row {
+        gap: 0.3rem;
+    }
+    /* file view buttons compact */
+    .file-view-btn {
+        padding: 0.1rem 0.4rem;
+        font-size: 0.55rem;
+        min-width: 40px;
+        border-radius: 4px;
+    }
+}
+
 /* ---------- CHAT ---------- */
 #chatContainer {
     display: flex;

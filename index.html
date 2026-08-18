@@ -4,16 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
     <title>ACT IT102A Portal</title>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js">
-    </script>
-
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="style.css" />
 </head>
@@ -118,7 +112,6 @@
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <!-- Upload button: visible only to teachers/admins/developers -->
                     <button class="btn btn-primary" id="uploadProjectBtn" style="display:none;">
                         <i class="fas fa-upload"></i> Upload Activity
                     </button>
@@ -202,6 +195,7 @@
                     <div class="profile-actions">
                         <button class="btn btn-primary" id="saveProfileBtn"><i class="fas fa-save"></i> Save</button>
                         <button class="btn btn-danger" id="logoutFromProfileBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                        <!-- MANAGEMENT BUTTON CONTAINER -->
                         <div id="managementButtonContainer" style="display:inline-block;"></div>
                     </div>
                 </div>
@@ -224,28 +218,12 @@
             <div id="modalBody"></div>
         </div>
     </div>
-
     <div class="modal-overlay" id="commentModalOverlay">
         <div class="modal-content" id="commentModalContent">
             <button class="modal-close" id="commentModalCloseBtn">&times;</button>
             <div id="commentModalBody"></div>
         </div>
     </div>
-
-    <div class="modal-overlay" id="newChatModalOverlay">
-        <div class="modal-content" id="newChatModalContent">
-            <button class="modal-close" id="newChatModalCloseBtn">&times;</button>
-            <div id="newChatModalBody"></div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="addMembersModalOverlay">
-        <div class="modal-content" id="addMembersModalContent">
-            <button class="modal-close" id="addMembersModalCloseBtn">&times;</button>
-            <div id="addMembersModalBody"></div>
-        </div>
-    </div>
-
     <div class="toast-container" id="toastContainer"></div>
 
     <script src="script.js"></script>

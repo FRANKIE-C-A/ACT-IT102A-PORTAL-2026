@@ -494,14 +494,25 @@ function renderProjects(projects) {
         const userSubmission = comments.find(c => c.commenterUid === currentUser.uid);
         const hasSubmitted = !!userSubmission;
 
-        // Always show View Submissions button
-        const viewBtn = `<button class="btn btn-outline" onclick="viewSubmissions('${p.id}')"><i class="fas fa-eye"></i> View Submissions</button>`;
-        // Submit button if not submitted
-        let submitBtn = '';
-        if (!hasSubmitted) {
-            submitBtn = `<button class="btn btn-primary" onclick="openCommentModal('${p.id}')"><i class="fas fa-paper-plane"></i> Submit</button>`;
+        let actionButton = '';
+        const isTeacher = ['developer', 'admin', 'teacher'].includes(currentUserRole);
+        if (isTeacher) {
+            actionButton = `<button class="btn btn-outline" onclick="viewSubmissions('${p.id}')"><i class="fas fa-eye"></i> View Submissions</button>`;
         } else {
-            submitBtn = `<span style="color:#34d399;font-size:0.8rem;font-weight:600;"><i class="fas fa-check-circle"></i> Submitted</span>`;
+            if (hasSubmitted) {
+                actionButton = `<button class="btn btn-outline" onclick="viewSubmissions('${p.id}')"><i class="fas fa-eye"></i> View Submissions</button>`;
+            } else {
+                actionButton = `<button class="btn btn-primary" onclick="openCommentModal('${p.id}')"><i class="fas fa-paper-plane"></i> Submit</button>`;
+            }
+        }
+
+        let fileButtons = '';
+        if (files.length > 0) {
+            fileButtons = files.map(f => `
+                <button class="btn btn-sm btn-outline file-view-btn" onclick="openFilePreview('${f.url}','${escapeHtml(f.name)}','${escapeHtml(f.mimeType || '')}')">
+                    <i class="fas fa-file"></i> View
+                </button>
+            `).join('');
         }
 
         return `
@@ -526,22 +537,16 @@ function renderProjects(projects) {
                     <span><i class="fas fa-comment"></i> ${comments.length} submission${comments.length !== 1 ? 's' : ''}</span>
                     ${dateStr ? `<span><i class="far fa-calendar-alt"></i> ${dateStr}</span>` : ''}
                 </div>
-                ${files.length > 0 ? `<div style="margin:0.15rem 0;display:flex;flex-wrap:wrap;gap:0.2rem;">${files.map(f => `
-                    <button class="btn btn-sm btn-outline" onclick="openFilePreview('${f.url}','${escapeHtml(f.name)}','${escapeHtml(f.mimeType || '')}')">
-                        <i class="fas fa-file"></i> ${escapeHtml(f.name)}
-                    </button>
-                `).join('')}</div>` : ''}
+                ${fileButtons ? `<div style="margin:0.15rem 0;display:flex;flex-wrap:wrap;gap:0.2rem;">${fileButtons}</div>` : ''}
                 <hr style="border-color:rgba(139,92,246,0.1);margin:0.4rem 0;">
                 <div class="project-actions-row" style="margin-top:0.3rem;">
-                    ${viewBtn}
-                    ${submitBtn}
+                    ${actionButton}
                 </div>
             </div>
         `;
     }).join('');
 }
 
-// Upload Activity (Teachers/Admins/Developers)
 uploadBtn.addEventListener('click', () => {
     if (!currentSubject) { showToast('Please select a subject first.', 'error'); return; }
     if (!['developer', 'admin', 'teacher'].includes(currentUserRole)) { showToast('Only teachers can upload activities.', 'error'); return; }
@@ -611,7 +616,6 @@ uploadBtn.addEventListener('click', () => {
     });
 });
 
-// Open file preview
 window.openFilePreview = function(url, name, mimeType) {
     const isImage = mimeType && mimeType.startsWith('image/');
     const isVideo = mimeType && mimeType.startsWith('video/');
@@ -651,11 +655,9 @@ window.openFilePreview = function(url, name, mimeType) {
     document.getElementById('closeModalBtn').addEventListener('click', function() { closeModal(); });
 };
 
-// Submit (Comment) Modal – student can submit text + files
 window.openCommentModal = function(projectId) {
     const project = projectsCache[currentSubject]?.find(p => p.id === projectId);
     if (!project) { showToast('Activity not found.', 'error'); return; }
-    // Check if user already submitted – if so, prevent new submission (though button is hidden, but just in case)
     const userSubmission = project.comments?.find(c => c.commenterUid === currentUser.uid);
     if (userSubmission) {
         showToast('You have already submitted.', 'info');
@@ -690,7 +692,6 @@ window.openCommentModal = function(projectId) {
                     showToast(`Storage limit exceeded! Skipping ${file.name}`, 'error');
                     continue;
                 }
-                // Store submissions in project's submissions folder
                 const storageRef = storage.ref('projects/' + projectId + '/submissions/' + Date.now() + '_' + file.name);
                 await storageRef.put(file);
                 const downloadURL = await storageRef.getDownloadURL();
@@ -725,7 +726,6 @@ window.openCommentModal = function(projectId) {
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitBtn.click(); });
 };
 
-// View all submissions for an activity
 window.viewSubmissions = function(projectId) {
     const project = projectsCache[currentSubject]?.find(p => p.id === projectId);
     if (!project) { showToast('Activity not found.', 'error'); return; }
@@ -734,7 +734,6 @@ window.viewSubmissions = function(projectId) {
         showToast('No submissions yet.', 'info');
         return;
     }
-    // Build HTML for each submission (newest first)
     let html = `<div class="modal-title"><i class="fas fa-users"></i> Submissions for "${escapeHtml(project.title)}"</div>`;
     html += `<div style="max-height:400px;overflow-y:auto;margin:0.5rem 0;">`;
     comments.slice().reverse().forEach((c, idx) => {
@@ -767,7 +766,6 @@ window.viewSubmissions = function(projectId) {
     modalOverlay.classList.add('active');
 };
 
-// Delete Comment (owner or teacher/admin/developer)
 window.deleteComment = async function(projectId, commentIndex) {
     if (!confirm('Delete this submission?')) return;
     try {
@@ -776,7 +774,6 @@ window.deleteComment = async function(projectId, commentIndex) {
         if (!doc.exists) return;
         const data = doc.data();
         const comments = data.comments || [];
-        // commentIndex is the index in the reversed array; convert to original index
         const originalIndex = comments.length - 1 - commentIndex;
         if (originalIndex < 0 || originalIndex >= comments.length) return;
         const commentToRemove = comments[originalIndex];
@@ -796,7 +793,6 @@ window.deleteComment = async function(projectId, commentIndex) {
     }
 };
 
-// ---------- Students list (for chat) ----------
 async function loadAllStudents() {
     try {
         const snapshot = await db.collection('users').get();
@@ -815,7 +811,6 @@ async function loadAllStudents() {
     } catch (error) { console.error('Error loading students:', error); }
 }
 
-// ---------- Chat ----------
 let currentChatId = null, currentChatParticipant = null, currentChatType = 'private';
 function renderChatList() {
     if (!currentUser) return;
@@ -1017,7 +1012,6 @@ sendMessageBtn.addEventListener('click', async () => {
 });
 chatMessageInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendMessageBtn.click(); });
 
-// ---------- Profile ----------
 function loadProfile() {
     if (!currentUserProfile) return;
     profileStudentId.value = currentUserProfile.studentId || '';
@@ -1070,7 +1064,6 @@ saveProfileBtn.addEventListener('click', async function() {
     } catch (error) { showToast('Failed to save profile: ' + error.message, 'error'); }
 });
 
-// ---------- Clock ----------
 function updateClock() {
     const now = new Date();
     const clockEl = document.getElementById('headerClock');
