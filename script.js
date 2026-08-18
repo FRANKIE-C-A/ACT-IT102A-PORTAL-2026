@@ -494,41 +494,14 @@ function renderProjects(projects) {
         const userSubmission = comments.find(c => c.commenterUid === currentUser.uid);
         const hasSubmitted = !!userSubmission;
 
-        // Build submissions list with student names
-        let submissionsHtml = '';
-        if (comments.length > 0) {
-            submissionsHtml = comments.map((c, idx) => {
-                const commenter = allStudents.find(s => s.uid === c.commenterUid);
-                const displayName = commenter ? (commenter.fullName || commenter.firstName + ' ' + commenter.lastName) : (c.commenterName || 'Unknown');
-                const timeStr = c.timestamp ? new Date(c.timestamp.seconds * 1000).toLocaleString() : '';
-                const hasFiles = c.files && c.files.length > 0;
-                let fileButtons = '';
-                if (hasFiles) {
-                    fileButtons = c.files.map(f => `
-                        <button class="btn btn-primary btn-sm" onclick="openFilePreview('${f.url}','${escapeHtml(f.name)}','${escapeHtml(f.mimeType || '')}')">
-                            <i class="fas fa-file"></i> ${escapeHtml(f.name)}
-                        </button>
-                    `).join('');
-                }
-                const canDelete = (currentUser.uid === c.commenterUid) || ['developer', 'admin', 'teacher'].includes(currentUserRole);
-                const deleteBtn = canDelete ? `<span class="comment-delete-btn" onclick="deleteComment('${p.id}', ${idx})"><i class="fas fa-trash-alt"></i></span>` : '';
-                return `
-                    <div class="submission-item" style="background:rgba(15,23,42,0.3);border-radius:6px;padding:0.4rem 0.6rem;margin:0.2rem 0;border-left:2px solid #8b5cf6;">
-                        <div style="font-weight:700;color:#a78bfa;">${escapeHtml(displayName)}</div>
-                        <div style="font-size:0.8rem;color:#e2e8f0;">${escapeHtml(c.text || '')}</div>
-                        ${fileButtons ? `<div style="margin-top:0.2rem;display:flex;gap:0.3rem;flex-wrap:wrap;">${fileButtons}</div>` : ''}
-                        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">${timeStr}</div>
-                        ${deleteBtn}
-                    </div>
-                `;
-            }).join('');
-        }
-
-        let actionButton = '';
-        if (hasSubmitted) {
-            actionButton = `<button class="btn btn-success" onclick="viewSubmission('${p.id}')"><i class="fas fa-eye"></i> View</button>`;
+        // Always show View Submissions button
+        const viewBtn = `<button class="btn btn-outline" onclick="viewSubmissions('${p.id}')"><i class="fas fa-eye"></i> View Submissions</button>`;
+        // Submit button if not submitted
+        let submitBtn = '';
+        if (!hasSubmitted) {
+            submitBtn = `<button class="btn btn-primary" onclick="openCommentModal('${p.id}')"><i class="fas fa-paper-plane"></i> Submit</button>`;
         } else {
-            actionButton = `<button class="btn btn-primary" onclick="openCommentModal('${p.id}')"><i class="fas fa-paper-plane"></i> Submit</button>`;
+            submitBtn = `<span style="color:#34d399;font-size:0.8rem;font-weight:600;"><i class="fas fa-check-circle"></i> Submitted</span>`;
         }
 
         return `
@@ -559,14 +532,9 @@ function renderProjects(projects) {
                     </button>
                 `).join('')}</div>` : ''}
                 <hr style="border-color:rgba(139,92,246,0.1);margin:0.4rem 0;">
-                <div style="margin-top:0.3rem;">
-                    <div style="font-weight:600;color:#94a3b8;font-size:0.75rem;margin-bottom:0.2rem;">
-                        <i class="fas fa-comments"></i> Submissions (${comments.length})
-                    </div>
-                    ${submissionsHtml || '<div style="font-size:0.7rem;color:#4a6a5a;">No submissions yet.</div>'}
-                </div>
                 <div class="project-actions-row" style="margin-top:0.3rem;">
-                    ${actionButton}
+                    ${viewBtn}
+                    ${submitBtn}
                 </div>
             </div>
         `;
@@ -687,10 +655,10 @@ window.openFilePreview = function(url, name, mimeType) {
 window.openCommentModal = function(projectId) {
     const project = projectsCache[currentSubject]?.find(p => p.id === projectId);
     if (!project) { showToast('Activity not found.', 'error'); return; }
-    // Check if user already submitted – if so, redirect to view
+    // Check if user already submitted – if so, prevent new submission (though button is hidden, but just in case)
     const userSubmission = project.comments?.find(c => c.commenterUid === currentUser.uid);
     if (userSubmission) {
-        viewSubmission(projectId);
+        showToast('You have already submitted.', 'info');
         return;
     }
 
@@ -757,40 +725,45 @@ window.openCommentModal = function(projectId) {
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitBtn.click(); });
 };
 
-// View Submission – shows the user's own submission with their name
-window.viewSubmission = function(projectId) {
+// View all submissions for an activity
+window.viewSubmissions = function(projectId) {
     const project = projectsCache[currentSubject]?.find(p => p.id === projectId);
     if (!project) { showToast('Activity not found.', 'error'); return; }
-    const submission = project.comments?.find(c => c.commenterUid === currentUser.uid);
-    if (!submission) { showToast('You have not submitted yet.', 'error'); return; }
-    const text = submission.text || '';
-    const files = submission.files || [];
-    const studentName = currentUserProfile?.fullName || currentUserProfile?.firstName + ' ' + currentUserProfile?.lastName || 'You';
-    let filesHtml = '';
-    if (files.length > 0) {
-        filesHtml = files.map(f => `
-            <div style="display:flex;align-items:center;gap:0.5rem;padding:0.2rem 0;">
-                <i class="fas fa-file" style="color:#a78bfa;"></i>
-                <span>${escapeHtml(f.name)}</span>
-                <button class="btn btn-sm btn-primary" onclick="openFilePreview('${f.url}','${escapeHtml(f.name)}','${escapeHtml(f.mimeType || '')}')">
-                    <i class="fas fa-eye"></i> Open
-                </button>
-            </div>
-        `).join('');
-    } else {
-        filesHtml = '<p style="color:#4a6a5a;">No files attached.</p>';
+    const comments = project.comments || [];
+    if (comments.length === 0) {
+        showToast('No submissions yet.', 'info');
+        return;
     }
-    modalBody.innerHTML = `
-        <div class="modal-title"><i class="fas fa-file-alt"></i> Your Submission</div>
-        <div style="margin-bottom:0.3rem;font-weight:700;color:#a78bfa;">Student: ${escapeHtml(studentName)}</div>
-        <div style="margin-bottom:0.5rem;font-weight:600;color:#94a3b8;">Text:</div>
-        <div style="background:#0f172a;padding:0.5rem;border-radius:6px;border:1px solid #1a3a20;color:#e2e8f0;word-wrap:break-word;white-space:pre-wrap;margin-bottom:0.5rem;">${escapeHtml(text)}</div>
-        <div style="font-weight:600;color:#94a3b8;margin-bottom:0.2rem;">Attached Files (${files.length}):</div>
-        ${filesHtml}
-        <div class="modal-actions" style="margin-top:0.8rem;">
-            <button class="btn btn-outline" onclick="closeModal()">Close</button>
-        </div>
-    `;
+    // Build HTML for each submission (newest first)
+    let html = `<div class="modal-title"><i class="fas fa-users"></i> Submissions for "${escapeHtml(project.title)}"</div>`;
+    html += `<div style="max-height:400px;overflow-y:auto;margin:0.5rem 0;">`;
+    comments.slice().reverse().forEach((c, idx) => {
+        const commenter = allStudents.find(s => s.uid === c.commenterUid);
+        const displayName = commenter ? (commenter.fullName || commenter.firstName + ' ' + commenter.lastName) : (c.commenterName || 'Unknown');
+        const timeStr = c.timestamp ? new Date(c.timestamp.seconds * 1000).toLocaleString() : '';
+        const hasFiles = c.files && c.files.length > 0;
+        let fileButtons = '';
+        if (hasFiles) {
+            fileButtons = c.files.map(f => `
+                <button class="btn btn-primary btn-sm" onclick="openFilePreview('${f.url}','${escapeHtml(f.name)}','${escapeHtml(f.mimeType || '')}')">
+                    <i class="fas fa-file"></i> ${escapeHtml(f.name)}
+                </button>
+            `).join('');
+        }
+        const canDelete = (currentUser.uid === c.commenterUid) || ['developer', 'admin', 'teacher'].includes(currentUserRole);
+        const deleteBtn = canDelete ? `<span class="comment-delete-btn" onclick="deleteComment('${projectId}', ${idx})"><i class="fas fa-trash-alt"></i></span>` : '';
+        html += `
+            <div class="submission-item" style="background:rgba(15,23,42,0.3);border-radius:6px;padding:0.4rem 0.6rem;margin:0.2rem 0;border-left:2px solid #8b5cf6;">
+                <div style="font-weight:700;color:#a78bfa;">${escapeHtml(displayName)}</div>
+                <div style="font-size:0.8rem;color:#e2e8f0;">${escapeHtml(c.text || '')}</div>
+                ${fileButtons ? `<div style="margin-top:0.2rem;display:flex;gap:0.3rem;flex-wrap:wrap;">${fileButtons}</div>` : ''}
+                <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">${timeStr}</div>
+                ${deleteBtn}
+            </div>
+        `;
+    });
+    html += `</div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Close</button></div>`;
+    modalBody.innerHTML = html;
     modalOverlay.classList.add('active');
 };
 
@@ -803,6 +776,7 @@ window.deleteComment = async function(projectId, commentIndex) {
         if (!doc.exists) return;
         const data = doc.data();
         const comments = data.comments || [];
+        // commentIndex is the index in the reversed array; convert to original index
         const originalIndex = comments.length - 1 - commentIndex;
         if (originalIndex < 0 || originalIndex >= comments.length) return;
         const commentToRemove = comments[originalIndex];
