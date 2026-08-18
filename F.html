@@ -1,0 +1,2657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Control Panel</title>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js">
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Fira Code', 'Courier New', monospace;
+            background: #0a0e17;
+            color: #c8d6e5;
+            min-height: 100vh;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #141b2b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00ff41;
+            border-radius: 10px;
+        }
+
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background: radial-gradient(ellipse at 50% 20%, rgba(0, 255, 65, 0.04), transparent 70%), #0a0e17;
+        }
+
+        .auth-box {
+            background: #111827;
+            border-radius: 16px;
+            padding: 2.8rem 2.5rem;
+            max-width: 420px;
+            width: 100%;
+            border: 1px solid #1a3a20;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .auth-box .auth-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .auth-box .auth-logo .logo-icon {
+            width: 72px;
+            height: 72px;
+            background: #00ff41;
+            border-radius: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: #0a0e17;
+            box-shadow: 0 8px 30px rgba(0, 255, 65, 0.2);
+            margin-bottom: 0.75rem;
+        }
+        .auth-box .auth-logo h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #00ff41;
+            text-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+            letter-spacing: 0.5px;
+        }
+        .auth-box .auth-logo p {
+            color: #6a8a7a;
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+        }
+
+        .auth-box .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .auth-box .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6a8a7a;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .auth-box .form-group input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1.5px solid #1a3a20;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #0f172a;
+            color: #c8d6e5;
+            transition: border 0.3s, box-shadow 0.3s;
+            outline: none;
+            font-family: inherit;
+        }
+        .auth-box .form-group input:focus {
+            border-color: #00ff41;
+            box-shadow: 0 0 0 3px rgba(0, 255, 65, 0.06);
+        }
+        .auth-box .form-group input::placeholder {
+            color: #2a4a30;
+        }
+
+        .auth-box .btn-auth {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #00ff41;
+            color: #0a0e17;
+            box-shadow: 0 4px 15px rgba(0, 255, 65, 0.15);
+            font-family: inherit;
+            letter-spacing: 0.5px;
+        }
+        .auth-box .btn-auth:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 255, 65, 0.25);
+            background: #00e639;
+        }
+        .auth-box .btn-auth:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .auth-box .auth-error {
+            background: rgba(255, 0, 0, 0.04);
+            border: 1px solid rgba(255, 0, 0, 0.06);
+            color: #ff6b6b;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        .auth-box .auth-error.show {
+            display: block;
+        }
+
+        .auth-box .auth-loading {
+            display: none;
+            text-align: center;
+            padding: 0.4rem 0;
+            font-size: 0.85rem;
+            color: #6a8a7a;
+        }
+        .auth-box .auth-loading.show {
+            display: block;
+        }
+        .auth-box .auth-loading .spinner-small {
+            width: 22px;
+            height: 22px;
+            border: 2px solid rgba(0, 255, 65, 0.08);
+            border-top: 2px solid #00ff41;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+            margin-right: 0.6rem;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .header {
+            background: #0f172a;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
+            border-bottom: 1px solid #1a3a20;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .header-left .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #00ff41;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: #0a0e17;
+            box-shadow: 0 4px 20px rgba(0, 255, 65, 0.15);
+        }
+        .header-left h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #00ff41;
+        }
+        .header-left h1 small {
+            display: block;
+            font-size: 0.55rem;
+            color: #6a8a7a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: -2px;
+        }
+        .header-left h1 small .role-highlight {
+            color: #fbbf24;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+        .header-right .user-info {
+            font-size: 0.85rem;
+            color: #6a8a7a;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .header-right .user-info .name {
+            color: #c8d6e5;
+            font-weight: 600;
+        }
+        .header-right .header-btn {
+            background: rgba(0, 255, 65, 0.04);
+            border: 1px solid #1a3a20;
+            color: #6a8a7a;
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.25s;
+            font-family: inherit;
+            font-weight: 500;
+        }
+        .header-right .header-btn:hover {
+            background: rgba(0, 255, 65, 0.06);
+            border-color: #00ff41;
+            color: #00ff41;
+        }
+        .header-right .header-btn.danger {
+            color: #ff6b6b;
+            border-color: #2a1a1a;
+        }
+        .header-right .header-btn.danger:hover {
+            background: rgba(255, 0, 0, 0.04);
+            border-color: #ff3333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            padding: 0.8rem 1.2rem;
+            background: #111827;
+            border-radius: 10px;
+            border: 1px solid #1a3a20;
+        }
+        .stats-bar .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.85rem;
+            color: #6a8a7a;
+        }
+        .stats-bar .stat-item .stat-value {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #00ff41;
+        }
+        .stats-bar .stat-item i {
+            color: #34d399;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 0.6rem;
+            margin-bottom: 1.2rem;
+        }
+        .search-bar input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: 1.5px solid #1a3a20;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            background: #0f172a;
+            color: #c8d6e5;
+            outline: none;
+            font-family: inherit;
+            transition: border 0.3s;
+        }
+        .search-bar input:focus {
+            border-color: #00ff41;
+        }
+        .search-bar input::placeholder {
+            color: #2a4a30;
+        }
+        .search-bar .btn {
+            padding: 0.5rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            background: #00ff41;
+            color: #0a0e17;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+        .search-bar .btn:hover {
+            background: #00e639;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .view-toggle .btn {
+            padding: 0.4rem 1.2rem;
+            border: 1px solid #1a3a20;
+            border-radius: 8px;
+            background: transparent;
+            color: #6a8a7a;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.8rem;
+            transition: 0.3s;
+            flex: 1;
+            min-width: 80px;
+            text-align: center;
+        }
+        .view-toggle .btn.active {
+            background: rgba(0, 255, 65, 0.04);
+            border-color: #00ff41;
+            color: #00ff41;
+        }
+        .view-toggle .btn:hover {
+            border-color: #00ff41;
+            color: #c8d6e5;
+        }
+        .view-toggle .btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .user-grid,
+        .project-grid,
+        .message-grid,
+        .manage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .user-card,
+        .project-card,
+        .message-card,
+        .manage-card {
+            background: #111827;
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            border: 1px solid #1a3a20;
+            transition: 0.3s;
+        }
+        .user-card:hover,
+        .project-card:hover,
+        .message-card:hover,
+        .manage-card:hover {
+            border-color: #00ff41;
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+        }
+        .user-card .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #0f172a;
+            border: 2px solid #1a3a20;
+            flex-shrink: 0;
+        }
+        .user-card .user-avatar-placeholder {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #0f172a;
+            border: 2px solid #1a3a20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #6a8a7a;
+            flex-shrink: 0;
+        }
+        .user-card .user-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .user-card .user-info .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #c8d6e5;
+        }
+        .user-card .user-info .user-id {
+            font-size: 0.7rem;
+            color: #6a8a7a;
+        }
+        .user-card .user-info .user-email {
+            font-size: 0.65rem;
+            color: #4a6a5a;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .user-card .user-badge {
+            font-size: 0.5rem;
+            padding: 0.1rem 0.5rem;
+            border-radius: 10px;
+            background: rgba(0, 255, 65, 0.04);
+            border: 1px solid #1a3a20;
+            color: #6a8a7a;
+            flex-shrink: 0;
+        }
+        .user-card .user-badge.developer {
+            color: #fbbf24;
+            border-color: #fbbf24;
+        }
+        .user-card .user-badge.admin {
+            color: #60a5fa;
+            border-color: #60a5fa;
+        }
+        .user-card .user-badge.teacher {
+            color: #34d399;
+            border-color: #34d399;
+        }
+        .user-card .user-badge.student {
+            color: #6a8a7a;
+            border-color: #1a3a20;
+        }
+
+        .project-card .project-title,
+        .message-card .message-text {
+            font-weight: 600;
+            color: #c8d6e5;
+        }
+        .project-card .project-meta,
+        .message-card .message-meta,
+        .manage-card .manage-meta {
+            font-size: 0.7rem;
+            color: #6a8a7a;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 0.2rem 0;
+        }
+        .project-card .project-actions,
+        .message-card .message-actions,
+        .manage-card .manage-actions {
+            margin-top: 0.4rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .project-card .project-actions .btn,
+        .message-card .message-actions .btn,
+        .manage-card .manage-actions .btn {
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        .btn-danger {
+            background: #ff3333;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: #cc0000;
+        }
+        .btn-success {
+            background: #34d399;
+            color: #0a0e17;
+        }
+        .btn-success:hover {
+            background: #2dbf8e;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #1a3a20;
+            color: #6a8a7a;
+        }
+        .btn-outline:hover {
+            border-color: #00ff41;
+            color: #00ff41;
+        }
+        .btn-primary {
+            background: #00ff41;
+            color: #0a0e17;
+        }
+        .btn-primary:hover {
+            background: #00e639;
+        }
+        .btn-warning {
+            background: #fbbf24;
+            color: #0a0e17;
+        }
+        .btn-warning:hover {
+            background: #f59e0b;
+        }
+
+        .loading-spinner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: #6a8a7a;
+        }
+        .loading-spinner .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid #1a3a20;
+            border-top: 3px solid #00ff41;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #4a6a5a;
+        }
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.4;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #111827;
+            border-radius: 14px;
+            max-width: 820px;
+            width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            position: relative;
+            border: 1px solid #1a3a20;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            animation: zoomIn 0.25s ease;
+        }
+        .modal-content .modal-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.6rem;
+            background: rgba(255, 0, 0, 0.02);
+            border: none;
+            font-size: 1.5rem;
+            color: #6a8a7a;
+            cursor: pointer;
+            transition: 0.25s;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .modal-content .modal-close:hover {
+            background: rgba(255, 0, 0, 0.04);
+            color: #ff6b6b;
+            transform: rotate(90deg);
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-content .modal-title {
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #00ff41;
+        }
+
+        .modal-content .detail-section {
+            margin-bottom: 1.2rem;
+        }
+        .modal-content .detail-section h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #6a8a7a;
+            margin-bottom: 0.3rem;
+            border-bottom: 1px solid #1a3a20;
+            padding-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .modal-content .detail-section h3 i {
+            color: #00ff41;
+        }
+        .modal-content .detail-section .detail-row {
+            display: flex;
+            padding: 0.2rem 0;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+        }
+        .modal-content .detail-section .detail-row .label {
+            color: #6a8a7a;
+            width: 120px;
+            flex-shrink: 0;
+        }
+        .modal-content .detail-section .detail-row .value {
+            color: #c8d6e5;
+            word-break: break-word;
+        }
+
+        .modal-content .detail-section .file-item,
+        .modal-content .detail-section .msg-item,
+        .modal-content .detail-section .project-item {
+            padding: 0.3rem 0.6rem;
+            border-bottom: 1px solid #1a3a20;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+        }
+        .modal-content .detail-section .file-item .file-name {
+            color: #c8d6e5;
+        }
+        .modal-content .detail-section .file-item .file-size {
+            color: #4a6a5a;
+            font-size: 0.7rem;
+        }
+        .modal-content .detail-section .msg-item .msg-text {
+            color: #c8d6e5;
+            word-break: break-word;
+        }
+        .modal-content .detail-section .msg-item .msg-meta {
+            color: #4a6a5a;
+            font-size: 0.65rem;
+        }
+        .modal-content .detail-section .project-item .project-title {
+            color: #c8d6e5;
+            font-weight: 500;
+        }
+        .modal-content .detail-section .project-item .project-actions .btn,
+        .modal-content .detail-section .msg-item .msg-actions .btn {
+            padding: 0.1rem 0.6rem;
+            font-size: 0.65rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        .modal-content .detail-actions {
+            display: flex;
+            gap: 0.6rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            border-top: 1px solid #1a3a20;
+            padding-top: 1rem;
+        }
+        .modal-content .detail-actions .btn {
+            padding: 0.4rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+        .modal-content .detail-actions .btn-danger {
+            background: #ff3333;
+            color: #0a0e17;
+        }
+        .modal-content .detail-actions .btn-danger:hover {
+            background: #e62e2e;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
+        }
+        .modal-content .detail-actions .btn-danger-delete {
+            background: #ff0000;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+        }
+        .modal-content .detail-actions .btn-danger-delete:hover {
+            background: #cc0000;
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+        }
+        .modal-content .detail-actions .btn-outline {
+            background: transparent;
+            border: 1px solid #1a3a20;
+            color: #6a8a7a;
+        }
+        .modal-content .detail-actions .btn-outline:hover {
+            border-color: #00ff41;
+            color: #00ff41;
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            max-width: 340px;
+            width: 100%;
+        }
+        @media (max-width: 480px) {
+            .toast-container {
+                left: 0.6rem;
+                right: 0.6rem;
+                bottom: 0.6rem;
+                max-width: none;
+            }
+        }
+        .toast {
+            background: #111827;
+            color: #c8d6e5;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: slideUp 0.25s ease;
+            border-left: 4px solid #00ff41;
+            backdrop-filter: blur(8px);
+        }
+        .toast.success {
+            border-left-color: #34d399;
+        }
+        .toast.error {
+            border-left-color: #ff6b6b;
+        }
+        .toast.warning {
+            border-left-color: #fbbf24;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.2s ease;
+        }
+        .confirm-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .confirm-box {
+            background: #111827;
+            border-radius: 16px;
+            max-width: 440px;
+            width: 100%;
+            padding: 1.8rem 1.5rem 1.5rem;
+            border: 1px solid #2a1a1a;
+            box-shadow: 0 0 60px rgba(255, 0, 0, 0.05);
+            animation: popIn 0.25s ease;
+            text-align: center;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .confirm-box .skull-icon {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+            animation: pulseSkull 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulseSkull {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.08);
+            }
+        }
+
+        .confirm-box .confirm-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ff3333;
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.5px;
+        }
+
+        .confirm-box .confirm-subtitle {
+            font-size: 0.85rem;
+            color: #6a8a7a;
+            margin-bottom: 0.3rem;
+        }
+
+        .confirm-box .confirm-details {
+            font-size: 0.75rem;
+            color: #4a6a5a;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            background: #0f172a;
+            border-radius: 8px;
+            border: 1px solid #1a3a20;
+            word-break: break-word;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+
+        .confirm-box .confirm-details .highlight {
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+
+        .confirm-box .confirm-actions {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .confirm-box .confirm-actions .btn {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.3s;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .confirm-box .confirm-actions .btn-confirm {
+            background: #ff0000;
+            color: #fff;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.1);
+        }
+        .confirm-box .confirm-actions .btn-confirm:hover {
+            background: #cc0000;
+            transform: scale(1.02);
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.2);
+        }
+        .confirm-box .confirm-actions .btn-confirm:active {
+            transform: scale(0.98);
+        }
+
+        .confirm-box .confirm-actions .btn-cancel {
+            background: transparent;
+            border: 1px solid #1a3a20;
+            color: #6a8a7a;
+        }
+        .confirm-box .confirm-actions .btn-cancel:hover {
+            border-color: #00ff41;
+            color: #c8d6e5;
+        }
+
+        .confirm-box .confirm-warning {
+            font-size: 0.6rem;
+            color: #4a6a5a;
+            margin-top: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .role-select {
+            background: #0f172a;
+            color: #c8d6e5;
+            border: 1px solid #1a3a20;
+            border-radius: 6px;
+            padding: 0.2rem 0.5rem;
+            font-family: inherit;
+            font-size: 0.7rem;
+            cursor: pointer;
+            outline: none;
+        }
+        .role-select:focus {
+            border-color: #00ff41;
+        }
+        .role-select option {
+            background: #0f172a;
+            color: #c8d6e5;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 0.1rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.55rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            border: 1px solid #1a3a20;
+            color: #6a8a7a;
+        }
+        .role-badge.developer {
+            color: #fbbf24;
+            border-color: #fbbf24;
+        }
+        .role-badge.admin {
+            color: #60a5fa;
+            border-color: #60a5fa;
+        }
+        .role-badge.teacher {
+            color: #34d399;
+            border-color: #34d399;
+        }
+        .role-badge.student {
+            color: #6a8a7a;
+            border-color: #1a3a20;
+        }
+
+        /* Teacher Activity Form */
+        .activity-form {
+            background: #0f172a;
+            border-radius: 10px;
+            padding: 1rem;
+            border: 1px solid #1a3a20;
+            margin-bottom: 1rem;
+        }
+        .activity-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+            margin-bottom: 0.6rem;
+        }
+        .activity-form .form-group {
+            margin-bottom: 0.6rem;
+        }
+        .activity-form .form-group label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #6a8a7a;
+            margin-bottom: 0.15rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .activity-form .form-group input,
+        .activity-form .form-group textarea,
+        .activity-form .form-group select {
+            width: 100%;
+            padding: 0.4rem 0.6rem;
+            border: 1.5px solid #1a3a20;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            background: #0f172a;
+            color: #c8d6e5;
+            outline: none;
+            font-family: inherit;
+            transition: border 0.3s;
+        }
+        .activity-form .form-group input:focus,
+        .activity-form .form-group textarea:focus,
+        .activity-form .form-group select:focus {
+            border-color: #00ff41;
+        }
+        .activity-form .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        .activity-form .form-group input[type="file"] {
+            padding: 0.3rem 0.4rem;
+        }
+        .activity-form .form-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .activity-form .form-actions .btn {
+            padding: 0.4rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+
+        @media (max-width: 600px) {
+            .activity-form .form-row {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 0.6rem 1rem;
+            }
+            .header-left {
+                justify-content: center;
+            }
+            .header-right {
+                justify-content: center;
+            }
+            .stats-bar {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: center;
+            }
+            .user-grid,
+            .project-grid,
+            .message-grid,
+            .manage-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .modal-content {
+                padding: 1rem;
+                margin: 0.4rem;
+                max-height: 95vh;
+            }
+            .modal-content .detail-section .detail-row {
+                flex-direction: column;
+            }
+            .modal-content .detail-section .detail-row .label {
+                width: auto;
+            }
+            .search-bar {
+                flex-wrap: wrap;
+            }
+            .search-bar .btn {
+                flex: 1;
+            }
+            .view-toggle .btn {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.6rem;
+                min-width: 60px;
+            }
+            .auth-box {
+                padding: 2rem 1.5rem;
+            }
+            .confirm-box {
+                padding: 1.5rem 1rem 1.2rem;
+                max-width: 100%;
+                margin: 0 0.5rem;
+            }
+            .confirm-box .skull-icon {
+                font-size: 3rem;
+            }
+            .confirm-box .confirm-title {
+                font-size: 0.95rem;
+            }
+            .confirm-box .confirm-subtitle {
+                font-size: 0.75rem;
+            }
+            .confirm-box .confirm-details {
+                font-size: 0.7rem;
+                max-height: 80px;
+                padding: 0.4rem;
+            }
+            .confirm-box .confirm-actions .btn {
+                font-size: 0.7rem;
+                padding: 0.4rem 0.6rem;
+                min-width: 60px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .user-grid,
+            .project-grid,
+            .message-grid,
+            .manage-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== LOGIN ===== -->
+    <div id="authContainer" class="auth-container">
+        <div class="auth-box">
+            <div class="auth-logo">
+                <div class="logo-icon"><i class="fas fa-user-shield"></i></div>
+                <h1>Control Panel</h1>
+                <p>Developer / Admin / Teacher</p>
+            </div>
+
+            <div id="authError" class="auth-error"></div>
+            <div id="authLoading" class="auth-loading">
+                <span class="spinner-small"></span> Logging in...
+            </div>
+
+            <div id="loginForm">
+                <div class="form-group">
+                    <label><i class="fas fa-id-card"></i> Student ID</label>
+                    <input type="text" id="loginStudentId" placeholder="e.g., 24-9002526" />
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" />
+                </div>
+                <button class="btn-auth" id="loginBtn">Sign In</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN APP ===== -->
+    <div id="appContent">
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-icon"><i class="fas fa-user-shield"></i></div>
+                <h1>
+                    <span id="panelTitle">Control Panel</span>
+                    <small id="roleDisplay">Loading...</small>
+                </h1>
+            </div>
+            <div class="header-right">
+                <span class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span class="name" id="userName">User</span>
+                </span>
+                <button class="header-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
+                <button class="header-btn danger" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <span>Total Users:</span>
+                    <span class="stat-value" id="totalUsers">0</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Total Projects:</span>
+                    <span class="stat-value" id="totalProjects">0</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-comment"></i>
+                    <span>Total Messages:</span>
+                    <span class="stat-value" id="totalMessages">0</span>
+                </div>
+            </div>
+
+            <div class="view-toggle" id="viewToggle">
+                <button class="btn active" data-view="users" id="viewUsersBtn"><i class="fas fa-users"></i> Users</button>
+                <button class="btn" data-view="projects" id="viewProjectsBtn"><i class="fas fa-folder-open"></i> Projects</button>
+                <button class="btn" data-view="messages" id="viewMessagesBtn"><i class="fas fa-comment"></i> Messages</button>
+                <button class="btn" data-view="manage" id="viewManageBtn" style="display:none;"><i class="fas fa-user-cog"></i> Manage</button>
+                <button class="btn" data-view="activities" id="viewActivitiesBtn" style="display:none;"><i class="fas fa-tasks"></i> Activities</button>
+            </div>
+
+            <div class="search-bar" id="searchBar">
+                <input type="text" id="searchInput" placeholder="Search..." />
+                <button class="btn" id="searchBtn"><i class="fas fa-search"></i> Search</button>
+            </div>
+
+            <div id="contentArea">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODALS ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent">
+            <button class="modal-close" id="modalCloseBtn">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-box">
+            <span class="skull-icon">💀</span>
+            <div class="confirm-title" id="confirmTitle">PERMANENT DELETE</div>
+            <div class="confirm-subtitle" id="confirmSubtitle">This action cannot be undone.</div>
+            <div class="confirm-details" id="confirmDetails">Are you sure?</div>
+            <div class="confirm-actions">
+                <button class="btn btn-cancel" id="confirmCancelBtn"><i class="fas fa-times"></i> Cancel</button>
+                <button class="btn btn-confirm" id="confirmConfirmBtn"><i class="fas fa-skull-crossbones"></i> Delete</button>
+            </div>
+            <div class="confirm-warning">⚠️ All associated data will be permanently removed.</div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // ============================================================
+        // FIREBASE CONFIG
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyC3JbrOoBXTtDNH-7tDbCzT6tECKJCtdjE",
+            authDomain: "hacked-wifi-3d8ac.firebaseapp.com",
+            projectId: "hacked-wifi-3d8ac",
+            storageBucket: "hacked-wifi-3d8ac.firebasestorage.app",
+            messagingSenderId: "893227799683",
+            appId: "1:893227799683:web:8e556a16a23c21ce4a77b6",
+            measurementId: "G-1DXKC8TQQ7"
+        };
+
+        const DEVELOPER_EMAIL = "249002526@school.edu";
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+        } catch (e) { console.warn(e); }
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // ============================================================
+        // DOM REFS
+        // ============================================================
+        const authContainer = document.getElementById('authContainer');
+        const authError = document.getElementById('authError');
+        const authLoading = document.getElementById('authLoading');
+        const loginStudentId = document.getElementById('loginStudentId');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginBtn = document.getElementById('loginBtn');
+
+        const appContent = document.getElementById('appContent');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userName = document.getElementById('userName');
+        const roleDisplay = document.getElementById('roleDisplay');
+        const panelTitle = document.getElementById('panelTitle');
+
+        const totalUsers = document.getElementById('totalUsers');
+        const totalProjects = document.getElementById('totalProjects');
+        const totalMessages = document.getElementById('totalMessages');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const viewUsersBtn = document.getElementById('viewUsersBtn');
+        const viewProjectsBtn = document.getElementById('viewProjectsBtn');
+        const viewMessagesBtn = document.getElementById('viewMessagesBtn');
+        const viewManageBtn = document.getElementById('viewManageBtn');
+        const viewActivitiesBtn = document.getElementById('viewActivitiesBtn');
+        const contentArea = document.getElementById('contentArea');
+        const searchBar = document.getElementById('searchBar');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalBody = document.getElementById('modalBody');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const toastContainer = document.getElementById('toastContainer');
+
+        const confirmOverlay = document.getElementById('confirmOverlay');
+        const confirmTitle = document.getElementById('confirmTitle');
+        const confirmSubtitle = document.getElementById('confirmSubtitle');
+        const confirmDetails = document.getElementById('confirmDetails');
+        const confirmConfirmBtn = document.getElementById('confirmConfirmBtn');
+        const confirmCancelBtn = document.getElementById('confirmCancelBtn');
+
+        let allUsers = [];
+        let allProjects = [];
+        let allMessages = [];
+        let allPrivateMessages = [];
+        let currentView = 'users';
+        let pendingDeleteAction = null;
+        let currentUserRole = '';
+        let currentUserEmail = '';
+        let currentUserUid = '';
+        let currentUserData = null;
+
+        // ============================================================
+        // TOAST & CONFIRMATION
+        // ============================================================
+        function showToast(message, type = 'info', duration = 3500) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const iconMap = { info: 'fa-circle-info', success: 'fa-check-circle', error: 'fa-exclamation-circle',
+                warning: 'fa-triangle-exclamation' };
+            toast.innerHTML = `<i class="fas ${iconMap[type] || iconMap.info}"></i> ${message}`;
+            toastContainer.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(20px)';
+                toast.style.transition = 'all 0.2s ease';
+                setTimeout(() => toast.remove(), 250);
+            }, duration);
+        }
+
+        function showConfirm(title, subtitle, details, confirmText, onConfirm) {
+            confirmTitle.textContent = title || 'PERMANENT DELETE';
+            confirmSubtitle.textContent = subtitle || 'This action cannot be undone.';
+            confirmDetails.innerHTML = details || 'Are you sure?';
+            confirmConfirmBtn.innerHTML = `<i class="fas fa-skull-crossbones"></i> ${confirmText || 'Delete'}`;
+            pendingDeleteAction = onConfirm;
+            confirmOverlay.classList.add('active');
+        }
+
+        function closeConfirm() {
+            confirmOverlay.classList.remove('active');
+            pendingDeleteAction = null;
+        }
+
+        confirmCancelBtn.addEventListener('click', closeConfirm);
+        confirmOverlay.addEventListener('click', (e) => {
+            if (e.target === confirmOverlay) closeConfirm();
+        });
+
+        confirmConfirmBtn.addEventListener('click', async function() {
+            if (pendingDeleteAction) {
+                try {
+                    await pendingDeleteAction();
+                } catch (error) {
+                    showToast('Delete failed: ' + error.message, 'error');
+                }
+            }
+            closeConfirm();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeConfirm();
+                closeModal();
+            }
+        });
+
+        // ============================================================
+        // AUTH
+        // ============================================================
+        function showAuthError(msg) {
+            authError.textContent = msg;
+            authError.classList.add('show');
+        }
+
+        function hideAuthError() {
+            authError.classList.remove('show');
+        }
+
+        function setAuthLoading(loading) {
+            if (loading) {
+                authLoading.classList.add('show');
+                loginBtn.disabled = true;
+            } else {
+                authLoading.classList.remove('show');
+                loginBtn.disabled = false;
+            }
+        }
+
+        function cleanStudentId(id) { return id.replace(/[-\s]/g, ''); }
+
+        function isValidStudentId(id) {
+            const parts = id.split('-');
+            return parts.length === 2 && parts[0].length >= 2 && /^\d{2}/.test(parts[0]);
+        }
+
+        loginBtn.addEventListener('click', async () => {
+            const studentIdRaw = loginStudentId.value.trim();
+            const password = loginPassword.value.trim();
+
+            if (!studentIdRaw) { showAuthError('Please enter your Student ID.'); return; }
+            if (!isValidStudentId(studentIdRaw)) {
+                showAuthError('Invalid Student ID format. Must be like "24-9002526".');
+                return;
+            }
+            if (!password) { showAuthError('Please enter your password.'); return; }
+
+            hideAuthError();
+            setAuthLoading(true);
+
+            const cleaned = cleanStudentId(studentIdRaw);
+            const email = cleaned + '@school.edu';
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+            } catch (error) {
+                console.error('Login error:', error);
+                if (error.code === 'auth/user-not-found') {
+                    showAuthError('No account found for Student ID: ' + studentIdRaw);
+                } else if (error.code === 'auth/wrong-password') {
+                    showAuthError('Incorrect password.');
+                } else {
+                    showAuthError(error.message);
+                }
+                setAuthLoading(false);
+            }
+        });
+
+        loginPassword.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') loginBtn.click();
+        });
+
+        // ============================================================
+        // AUTH STATE OBSERVER
+        // ============================================================
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                const email = user.email;
+                currentUserEmail = email;
+
+                try {
+                    const doc = await db.collection('users').doc(user.uid).get();
+                    let role = 'student';
+                    let userData = {};
+
+                    if (doc.exists) {
+                        userData = doc.data();
+                        role = userData.role || 'student';
+                    } else {
+                        await db.collection('users').doc(user.uid).set({
+                            email: email,
+                            role: 'student',
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    }
+
+                    // Developer override
+                    if (email === DEVELOPER_EMAIL && role !== 'developer') {
+                        await db.collection('users').doc(user.uid).update({ role: 'developer' });
+                        role = 'developer';
+                    }
+
+                    currentUserRole = role;
+                    currentUserUid = user.uid;
+                    currentUserData = userData;
+
+                    // Check if role is authorized
+                    if (!['developer', 'admin', 'teacher'].includes(role)) {
+                        await auth.signOut();
+                        showAuthError('Access denied. You do not have permission.');
+                        authContainer.style.display = 'flex';
+                        appContent.classList.remove('show');
+                        setAuthLoading(false);
+                        return;
+                    }
+
+                    // Show panel
+                    authContainer.style.display = 'none';
+                    appContent.classList.add('show');
+
+                    // Set display name
+                    const displayName = userData.fullName || userData.firstName || email.split('@')[0];
+                    userName.textContent = displayName;
+
+                    // Set role display
+                    const roleMap = {
+                        developer: '⭐ DEVELOPER CONTROL PANEL',
+                        admin: '🔧 ADMIN CONTROL PANEL',
+                        teacher: '📚 TEACHER CONTROL PANEL'
+                    };
+                    panelTitle.textContent = roleMap[role] || 'Control Panel';
+                    roleDisplay.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+
+                    // Show/hide tabs based on role
+                    viewManageBtn.style.display = (role === 'developer' || role === 'admin') ? 'block' : 'none';
+                    viewActivitiesBtn.style.display = (role === 'teacher') ? 'block' : 'none';
+
+                    // If teacher, default to activities view
+                    if (role === 'teacher') {
+                        currentView = 'activities';
+                        viewActivitiesBtn.classList.add('active');
+                        viewUsersBtn.classList.remove('active');
+                        viewProjectsBtn.classList.remove('active');
+                        viewMessagesBtn.classList.remove('active');
+                        viewManageBtn.classList.remove('active');
+                        searchBar.style.display = 'none';
+                    } else {
+                        currentView = 'users';
+                        viewUsersBtn.classList.add('active');
+                        viewActivitiesBtn.classList.remove('active');
+                        searchBar.style.display = 'flex';
+                        searchInput.placeholder = 'Search by name, ID, or email...';
+                    }
+
+                    hideAuthError();
+                    setAuthLoading(false);
+                    loginStudentId.value = '';
+                    loginPassword.value = '';
+                    await loadAllData();
+
+                } catch (error) {
+                    console.error('Role fetch error:', error);
+                    await auth.signOut();
+                    showAuthError('Error verifying permissions: ' + error.message);
+                    authContainer.style.display = 'flex';
+                    appContent.classList.remove('show');
+                    setAuthLoading(false);
+                }
+            } else {
+                authContainer.style.display = 'flex';
+                appContent.classList.remove('show');
+                hideAuthError();
+                setAuthLoading(false);
+            }
+        });
+
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                showToast('Logged out.', 'success');
+            } catch (error) {
+                showToast('Logout failed: ' + error.message, 'error');
+            }
+        });
+
+        // ============================================================
+        // PERMISSION CHECKS
+        // ============================================================
+        function isDeveloper() { return currentUserRole === 'developer'; }
+
+        function isAdmin() { return currentUserRole === 'admin'; }
+
+        function isTeacher() { return currentUserRole === 'teacher'; }
+
+        function canDelete() { return isDeveloper() || isAdmin(); }
+
+        function canManageRoles() { return isDeveloper() || isAdmin(); }
+
+        function canSetAdmin() { return isDeveloper(); }
+
+        function canSetTeacher() { return isDeveloper() || isAdmin(); }
+
+        function canSetStudent() { return isDeveloper() || isAdmin(); }
+
+        // ============================================================
+        // LOAD DATA
+        // ============================================================
+        async function loadAllData() {
+            try {
+                contentArea.innerHTML =
+                    `<div class="loading-spinner"><div class="spinner"></div><p>Loading data...</p></div>`;
+
+                const usersSnap = await db.collection('users').get();
+                allUsers = [];
+                usersSnap.forEach(doc => {
+                    const data = doc.data();
+                    const firstName = data.firstName || '';
+                    const lastName = data.lastName || '';
+                    const fullName = data.fullName || '';
+                    const nameValid = (firstName && firstName !== 'Unknown') ||
+                        (lastName && lastName !== 'Unknown') ||
+                        (fullName && fullName !== 'Unknown');
+                    if (nameValid) {
+                        allUsers.push({ uid: doc.id, ...data });
+                    }
+                });
+
+                const projectsSnap = await db.collection('projects').get();
+                allProjects = [];
+                projectsSnap.forEach(doc => {
+                    allProjects.push({ id: doc.id, ...doc.data() });
+                });
+
+                const msgSnap = await db.collection('generalMessages').get();
+                allMessages = [];
+                msgSnap.forEach(doc => {
+                    allMessages.push({ id: doc.id, ...doc.data() });
+                });
+
+                allPrivateMessages = [];
+                let totalPrivateMsgs = 0;
+                const chatsSnap = await db.collection('chats').get();
+                for (const chatDoc of chatsSnap.docs) {
+                    const msgsSnap = await chatDoc.ref.collection('messages').get();
+                    msgsSnap.forEach(doc => {
+                        allPrivateMessages.push({ id: doc.id, chatId: chatDoc.id, ...doc.data() });
+                    });
+                    totalPrivateMsgs += msgsSnap.size;
+                }
+
+                totalUsers.textContent = allUsers.length;
+                totalProjects.textContent = allProjects.length;
+                totalMessages.textContent = allMessages.length + totalPrivateMsgs;
+
+                if (isTeacher()) {
+                    renderTeacherActivities();
+                } else if (currentView === 'users') renderUsers(allUsers);
+                else if (currentView === 'projects') renderProjects(allProjects);
+                else if (currentView === 'messages') renderMessages(allMessages, allPrivateMessages);
+                else if (currentView === 'manage') renderManage(allUsers);
+
+            } catch (error) {
+                console.error('Load error:', error);
+                showToast('Failed to load data: ' + error.message, 'error');
+                contentArea.innerHTML =
+                    `<div class="empty-state"><i class="fas fa-triangle-exclamation" style="color:#ff6b6b;"></i><p style="color:#ff6b6b;">Error loading data</p><p style="font-size:0.8rem;color:#4a6a5a;">${escapeHtml(error.message)}</p><button class="btn" style="margin-top:0.5rem;padding:0.4rem 1rem;border:none;border-radius:6px;background:#00ff41;color:#0a0e17;cursor:pointer;font-family:inherit;" onclick="loadAllData()"><i class="fas fa-sync-alt"></i> Retry</button></div>`;
+            }
+        }
+
+        refreshBtn.addEventListener('click', () => {
+            showToast('Refreshing...', 'info', 1000);
+            loadAllData();
+        });
+
+        // ============================================================
+        // VIEW TOGGLES
+        // ============================================================
+        viewUsersBtn.addEventListener('click', () => {
+            if (isTeacher()) return;
+            currentView = 'users';
+            setActiveTab(viewUsersBtn);
+            searchBar.style.display = 'flex';
+            searchInput.placeholder = 'Search by name, ID, or email...';
+            renderUsers(allUsers);
+        });
+
+        viewProjectsBtn.addEventListener('click', () => {
+            if (isTeacher()) return;
+            currentView = 'projects';
+            setActiveTab(viewProjectsBtn);
+            searchBar.style.display = 'none';
+            renderProjects(allProjects);
+        });
+
+        viewMessagesBtn.addEventListener('click', () => {
+            if (isTeacher()) return;
+            currentView = 'messages';
+            setActiveTab(viewMessagesBtn);
+            searchBar.style.display = 'none';
+            renderMessages(allMessages, allPrivateMessages);
+        });
+
+        viewManageBtn.addEventListener('click', () => {
+            if (!canManageRoles()) return;
+            currentView = 'manage';
+            setActiveTab(viewManageBtn);
+            searchBar.style.display = 'none';
+            renderManage(allUsers);
+        });
+
+        viewActivitiesBtn.addEventListener('click', () => {
+            if (!isTeacher()) return;
+            currentView = 'activities';
+            setActiveTab(viewActivitiesBtn);
+            searchBar.style.display = 'none';
+            renderTeacherActivities();
+        });
+
+        function setActiveTab(activeBtn) {
+            [viewUsersBtn, viewProjectsBtn, viewMessagesBtn, viewManageBtn, viewActivitiesBtn].forEach(b => {
+                b.classList.remove('active');
+            });
+            if (activeBtn) activeBtn.classList.add('active');
+        }
+
+        // ============================================================
+        // RENDER FUNCTIONS
+        // ============================================================
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function renderUsers(users) {
+            if (!users || users.length === 0) {
+                contentArea.innerHTML =
+                    `<div class="empty-state"><i class="fas fa-users"></i><p>No valid users found.</p></div>`;
+                return;
+            }
+
+            let html = '<div class="user-grid">';
+            users.forEach(user => {
+                const isDeveloper = user.email === DEVELOPER_EMAIL;
+                const role = user.role || 'student';
+                const badgeClass = role === 'developer' ? 'developer' : (role === 'admin' ? 'admin' : (role ===
+                    'teacher' ? 'teacher' : ''));
+                const avatar = user.profilePicture ?
+                    `<img src="${user.profilePicture}" alt="Avatar" class="user-avatar" />` :
+                    `<div class="user-avatar-placeholder"><i class="fas fa-user"></i></div>`;
+
+                html += `
+                    <div class="user-card" onclick="viewUser('${user.uid}')">
+                        ${avatar}
+                        <div class="user-info">
+                            <div class="user-name">${escapeHtml(user.fullName || user.firstName + ' ' + user.lastName || 'Unknown')}</div>
+                            <div class="user-id">${escapeHtml(user.studentId || 'N/A')}</div>
+                            <div class="user-email">${escapeHtml(user.email || '')}</div>
+                        </div>
+                        <span class="user-badge ${badgeClass}">${role.toUpperCase()}</span>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            contentArea.innerHTML = html;
+        }
+
+        function renderProjects(projects) {
+            if (!projects || projects.length === 0) {
+                contentArea.innerHTML =
+                    `<div class="empty-state"><i class="fas fa-folder-open"></i><p>No projects found.</p></div>`;
+                return;
+            }
+
+            let html = '<div class="project-grid">';
+            projects.forEach(p => {
+                const owner = allUsers.find(u => u.uid === p.owner);
+                const ownerName = owner ? (owner.fullName || owner.firstName) : 'Unknown';
+                const visibility = p.visibility || 'personal';
+                const visBadge = visibility === 'general' ? 'General' : 'Personal';
+                const fileCount = (p.files || []).length;
+                const commentCount = (p.comments || []).length;
+
+                html += `
+                    <div class="project-card">
+                        <div class="project-title">${escapeHtml(p.title || 'Untitled')}</div>
+                        <div class="project-meta">
+                            <span><i class="fas fa-user"></i> ${escapeHtml(ownerName)}</span>
+                            <span><i class="fas fa-file"></i> ${fileCount}</span>
+                            <span><i class="fas fa-comment"></i> ${commentCount}</span>
+                            <span>${visBadge}</span>
+                        </div>
+                        <div class="project-actions">
+                            <button class="btn btn-outline" onclick="viewProject('${p.id}')"><i class="fas fa-eye"></i> View</button>
+                            ${canDelete() ? `<button class="btn btn-danger" onclick="confirmDeleteProject('${p.id}')"><i class="fas fa-trash-alt"></i> Delete</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            contentArea.innerHTML = html;
+        }
+
+        function renderMessages(generalMsgs, privateMsgs) {
+            const allMsgs = [...generalMsgs, ...privateMsgs].sort((a, b) =>
+                (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0)
+            );
+
+            if (!allMsgs || allMsgs.length === 0) {
+                contentArea.innerHTML =
+                    `<div class="empty-state"><i class="fas fa-comment"></i><p>No messages found.</p></div>`;
+                return;
+            }
+
+            let html = '<div class="message-grid">';
+            allMsgs.forEach(m => {
+                const sender = allUsers.find(u => u.uid === m.senderId);
+                const senderName = sender ? (sender.fullName || sender.firstName) : (m.senderName || 'Unknown');
+                const time = m.timestamp ? new Date(m.timestamp.seconds * 1000).toLocaleString() : '';
+                const type = m.chatId ? 'Private' : 'General';
+                const text = m.text || '';
+
+                html += `
+                    <div class="message-card">
+                        <div class="message-text">${escapeHtml(text.substring(0, 100))}${text.length > 100 ? '...' : ''}</div>
+                        <div class="message-meta">
+                            <span><i class="fas fa-user"></i> ${escapeHtml(senderName)}</span>
+                            <span><i class="fas fa-tag"></i> ${type}</span>
+                            <span><i class="far fa-clock"></i> ${time}</span>
+                        </div>
+                        <div class="message-actions">
+                            <button class="btn btn-outline" onclick="viewMessage('${m.id}', '${m.chatId || 'general'}')"><i class="fas fa-eye"></i> View</button>
+                            ${canDelete() ? `<button class="btn btn-danger" onclick="confirmDeleteMessage('${m.id}', '${m.chatId || 'general'}')"><i class="fas fa-trash-alt"></i> Delete</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            contentArea.innerHTML = html;
+        }
+
+        // ============================================================
+        // MANAGE VIEW – ROLE MANAGEMENT
+        // ============================================================
+        function renderManage(users) {
+            if (!users || users.length === 0) {
+                contentArea.innerHTML =
+                    `<div class="empty-state"><i class="fas fa-user-cog"></i><p>No users to manage.</p></div>`;
+                return;
+            }
+
+            let html = `
+                <div style="margin-bottom:1rem;padding:0.8rem;background:#0f172a;border-radius:8px;border:1px solid #1a3a20;">
+                    <p style="color:#6a8a7a;font-size:0.8rem;">
+                        <i class="fas fa-info-circle"></i> 
+                        ${isDeveloper() ? 'You are a <strong style="color:#fbbf24;">DEVELOPER</strong> – you can assign Admin, Teacher, or Student roles.' : 'You are an <strong style="color:#60a5fa;">ADMIN</strong> – you can assign Teacher or Student roles.'}
+                    </p>
+                </div>
+                <div class="manage-grid">
+            `;
+
+            users.forEach(user => {
+                const currentRole = user.role || 'student';
+                const isSelf = user.email === currentUserEmail;
+                const isDeveloperUser = user.email === DEVELOPER_EMAIL;
+
+                let options = '';
+                let availableRoles = [];
+
+                if (isDeveloper()) {
+                    availableRoles = ['student', 'teacher', 'admin'];
+                    // Developer can also assign developer, but only to themselves
+                    if (isDeveloperUser) availableRoles = ['developer'];
+                } else if (isAdmin()) {
+                    availableRoles = ['student', 'teacher'];
+                }
+
+                availableRoles.forEach(r => {
+                    const selected = r === currentRole ? 'selected' : '';
+                    const disabled = (isSelf && r !== currentRole) ? 'disabled' : '';
+                    options += `<option value="${r}" ${selected} ${disabled}>${r.toUpperCase()}</option>`;
+                });
+
+                html += `
+                    <div class="manage-card">
+                        <div class="user-info">
+                            <div class="user-name">${escapeHtml(user.fullName || user.firstName + ' ' + user.lastName || 'Unknown')} ${isSelf ? ' (You)' : ''}</div>
+                            <div class="user-id">${escapeHtml(user.studentId || 'N/A')}</div>
+                            <div class="user-email">${escapeHtml(user.email || '')}</div>
+                        </div>
+                        <div class="manage-meta">
+                            <span>Role: <span class="role-badge ${currentRole}">${currentRole.toUpperCase()}</span></span>
+                        </div>
+                        <div class="manage-actions">
+                            ${!isSelf && !isDeveloperUser ? `
+                                <select class="role-select" id="roleSelect_${user.uid}">
+                                    ${options}
+                                </select>
+                                <button class="btn btn-success" onclick="updateRole('${user.uid}')"><i class="fas fa-save"></i> Save</button>
+                            ` : isDeveloperUser ? `
+                                <span style="color:#fbbf24;font-size:0.7rem;"><i class="fas fa-star"></i> Developer</span>
+                            ` : `
+                                <span style="color:#4a6a5a;font-size:0.7rem;">(You cannot change your own role)</span>
+                            `}
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            contentArea.innerHTML = html;
+        }
+
+        // ============================================================
+        // UPDATE ROLE
+        // ============================================================
+        window.updateRole = async function(uid) {
+            if (!canManageRoles()) {
+                showToast('You do not have permission to manage roles.', 'error');
+                return;
+            }
+
+            const user = allUsers.find(u => u.uid === uid);
+            if (!user) {
+                showToast('User not found.', 'error');
+                return;
+            }
+
+            if (user.email === DEVELOPER_EMAIL) {
+                showToast('Cannot change the developer\'s role.', 'error');
+                return;
+            }
+
+            const select = document.getElementById('roleSelect_' + uid);
+            if (!select) return;
+            const newRole = select.value;
+
+            // Check permissions
+            if (newRole === 'admin' && !isDeveloper()) {
+                showToast('Only a developer can assign the Admin role.', 'error');
+                return;
+            }
+            if (newRole === 'teacher' && !canSetTeacher()) {
+                showToast('You do not have permission to assign Teacher roles.', 'error');
+                return;
+            }
+
+            if (!confirm(`Change role of ${user.fullName || user.firstName} to ${newRole.toUpperCase()}?`)) {
+                return;
+            }
+
+            try {
+                await db.collection('users').doc(uid).update({ role: newRole });
+                showToast(`Role updated to ${newRole.toUpperCase()} for ${user.fullName || user.firstName}.`, 'success');
+                await loadAllData();
+                if (currentView === 'manage') renderManage(allUsers);
+            } catch (error) {
+                console.error('Role update error:', error);
+                showToast('Failed to update role: ' + error.message, 'error');
+            }
+        };
+
+        // ============================================================
+        // TEACHER ACTIVITIES VIEW
+        // ============================================================
+        function renderTeacherActivities() {
+            // Filter projects created by this teacher
+            const teacherProjects = allProjects.filter(p => p.teacherId === currentUserUid || p.owner === currentUserUid);
+
+            let html = `
+                <div style="margin-bottom:1rem;">
+                    <h3 style="color:#34d399;font-size:1.1rem;margin-bottom:0.5rem;">
+                        <i class="fas fa-tasks"></i> My Activities
+                    </h3>
+                    <p style="color:#6a8a7a;font-size:0.8rem;">Create and manage activities for your students.</p>
+                </div>
+
+                <div class="activity-form" id="activityForm">
+                    <h4 style="color:#c8d6e5;margin-bottom:0.5rem;font-size:0.9rem;">
+                        <i class="fas fa-plus-circle"></i> Create New Activity
+                    </h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Activity Title</label>
+                            <input type="text" id="activityTitle" placeholder="e.g., Quiz 1 - Programming" />
+                        </div>
+                        <div class="form-group">
+                            <label>Subject / Course</label>
+                            <input type="text" id="activityCourse" placeholder="e.g., IT102A" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="activityDescription" rows="2" placeholder="Describe the activity..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Due Date</label>
+                            <input type="datetime-local" id="activityDueDate" />
+                        </div>
+                        <div class="form-group">
+                            <label>Visibility</label>
+                            <select id="activityVisibility">
+                                <option value="general">General (All Students)</option>
+                                <option value="class">Class Only (IT102A)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Attach Files (optional)</label>
+                        <input type="file" id="activityFiles" multiple />
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-primary" id="createActivityBtn"><i class="fas fa-plus"></i> Create Activity</button>
+                        <button class="btn btn-outline" onclick="document.getElementById('activityForm').querySelectorAll('input,textarea').forEach(el => el.value='')">Clear</button>
+                    </div>
+                </div>
+
+                <div style="margin-top:1.5rem;">
+                    <h4 style="color:#6a8a7a;font-size:0.85rem;margin-bottom:0.5rem;">
+                        <i class="fas fa-list"></i> Existing Activities (${teacherProjects.length})
+                    </h4>
+            `;
+
+            if (teacherProjects.length === 0) {
+                html += `<div class="empty-state" style="padding:1rem;"><p>No activities created yet.</p></div>`;
+            } else {
+                html += '<div class="project-grid">';
+                teacherProjects.forEach(p => {
+                    const files = p.files || [];
+                    const comments = p.comments || [];
+                    const visibility = p.visibility || 'general';
+                    const visBadge = visibility === 'general' ? 'General' : 'Class Only';
+                    const dueDate = p.dueDate ? new Date(p.dueDate).toLocaleString() : 'No due date';
+
+                    html += `
+                        <div class="project-card">
+                            <div class="project-title">${escapeHtml(p.title || 'Untitled')}</div>
+                            <div class="project-meta">
+                                <span><i class="fas fa-book"></i> ${escapeHtml(p.course || 'N/A')}</span>
+                                <span><i class="fas fa-file"></i> ${files.length} files</span>
+                                <span><i class="fas fa-comment"></i> ${comments.length}</span>
+                                <span>${visBadge}</span>
+                                <span><i class="far fa-calendar-alt"></i> ${dueDate}</span>
+                            </div>
+                            ${p.description ? `<div style="font-size:0.7rem;color:#6a8a7a;margin:0.1rem 0;">${escapeHtml(p.description)}</div>` : ''}
+                            <div class="project-actions">
+                                <button class="btn btn-outline" onclick="viewProject('${p.id}')"><i class="fas fa-eye"></i> View</button>
+                                <button class="btn btn-danger" onclick="confirmDeleteProject('${p.id}')"><i class="fas fa-trash-alt"></i> Delete</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+
+            html += '</div>';
+            contentArea.innerHTML = html;
+
+            // Set default due date to 7 days from now
+            const dueDateInput = document.getElementById('activityDueDate');
+            if (dueDateInput) {
+                const date = new Date();
+                date.setDate(date.getDate() + 7);
+                dueDateInput.value = date.toISOString().slice(0, 16);
+            }
+
+            // Create activity handler
+            document.getElementById('createActivityBtn').addEventListener('click', createActivity);
+        }
+
+        // ============================================================
+        // CREATE ACTIVITY (Teacher)
+        // ============================================================
+        async function createActivity() {
+            const title = document.getElementById('activityTitle').value.trim();
+            const course = document.getElementById('activityCourse').value.trim();
+            const description = document.getElementById('activityDescription').value.trim();
+            const dueDate = document.getElementById('activityDueDate').value;
+            const visibility = document.getElementById('activityVisibility').value;
+            const files = document.getElementById('activityFiles').files;
+
+            if (!title) {
+                showToast('Please enter an activity title.', 'error');
+                return;
+            }
+            if (!course) {
+                showToast('Please enter a course/subject.', 'error');
+                return;
+            }
+
+            try {
+                showToast('Creating activity...', 'warning', 2000);
+
+                const projectData = {
+                    title: title,
+                    course: course,
+                    description: description,
+                    owner: currentUserUid,
+                    teacherId: currentUserUid,
+                    visibility: visibility,
+                    type: 'activity',
+                    dueDate: dueDate || null,
+                    files: [],
+                    links: [],
+                    comments: [],
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                const projectRef = await db.collection('projects').add(projectData);
+                const projectId = projectRef.id;
+
+                // Upload files
+                let uploadedFiles = [];
+                for (const file of files) {
+                    const storageRef = storage.ref('activities/' + projectId + '/' + Date.now() + '_' + file.name);
+                    await storageRef.put(file);
+                    const downloadURL = await storageRef.getDownloadURL();
+                    uploadedFiles.push({
+                        name: file.name,
+                        url: downloadURL,
+                        size: file.size,
+                        mimeType: file.type
+                    });
+                }
+
+                if (uploadedFiles.length > 0) {
+                    await db.collection('projects').doc(projectId).update({
+                        files: firebase.firestore.FieldValue.arrayUnion(...uploadedFiles)
+                    });
+                }
+
+                showToast(`✅ Activity "${title}" created successfully!`, 'success');
+                document.getElementById('activityTitle').value = '';
+                document.getElementById('activityCourse').value = '';
+                document.getElementById('activityDescription').value = '';
+                document.getElementById('activityFiles').value = '';
+                await loadAllData();
+                if (isTeacher()) renderTeacherActivities();
+
+            } catch (error) {
+                console.error('Create activity error:', error);
+                showToast('Failed to create activity: ' + error.message, 'error');
+            }
+        }
+
+        // ============================================================
+        // SEARCH (only for users)
+        // ============================================================
+        function performSearch() {
+            if (currentView !== 'users') return;
+            const query = searchInput.value.toLowerCase().trim();
+            if (!query) {
+                renderUsers(allUsers);
+                return;
+            }
+
+            const filtered = allUsers.filter(user => {
+                const name = (user.fullName || user.firstName || '').toLowerCase();
+                const id = (user.studentId || '').toLowerCase();
+                const email = (user.email || '').toLowerCase();
+                return name.includes(query) || id.includes(query) || email.includes(query);
+            });
+
+            renderUsers(filtered);
+            if (filtered.length === 0) {
+                contentArea.innerHTML =
+                    `<div class="empty-state"><i class="fas fa-search"></i><p>No users match "${escapeHtml(query)}"</p></div>`;
+            }
+        }
+
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+
+        // ============================================================
+        // VIEW FUNCTIONS
+        // ============================================================
+        window.viewUser = async function(uid) {
+            const user = allUsers.find(u => u.uid === uid);
+            if (!user) {
+                showToast('User not found.', 'error');
+                return;
+            }
+
+            const userProjects = allProjects.filter(p =>
+                p.owner === uid || (p.participants && p.participants.includes(uid))
+            );
+
+            const userMessages = allMessages.filter(m => m.senderId === uid);
+
+            let privateMessages = [];
+            const chatsSnap = await db.collection('chats')
+                .where('participants', 'array-contains', uid)
+                .get();
+            for (const chatDoc of chatsSnap.docs) {
+                const msgsSnap = await chatDoc.ref.collection('messages')
+                    .where('senderId', '==', uid)
+                    .get();
+                msgsSnap.forEach(doc => {
+                    privateMessages.push({
+                        id: doc.id,
+                        chatId: chatDoc.id,
+                        ...doc.data()
+                    });
+                });
+            }
+
+            const isDeveloperUser = user.email === DEVELOPER_EMAIL;
+            const role = user.role || 'student';
+
+            let projectsHtml = '';
+            if (userProjects.length === 0) {
+                projectsHtml = '<p style="color:#4a6a5a;font-size:0.8rem;">No projects.</p>';
+            } else {
+                userProjects.forEach(p => {
+                    const files = p.files || [];
+                    const fileCount = files.length;
+                    projectsHtml += `
+                        <div class="project-item">
+                            <span class="project-title">${escapeHtml(p.title || 'Untitled')} (${fileCount} file${fileCount !== 1 ? 's' : ''})</span>
+                            ${canDelete() ? `<div class="project-actions"><button class="btn btn-danger" onclick="confirmDeleteProject('${p.id}')"><i class="fas fa-trash-alt"></i> Delete</button></div>` : ''}
+                        </div>
+                    `;
+                });
+            }
+
+            let filesHtml = '';
+            if (userProjects.length === 0) {
+                filesHtml = '<p style="color:#4a6a5a;font-size:0.8rem;">No files uploaded.</p>';
+            } else {
+                userProjects.forEach(p => {
+                    if (p.files && p.files.length > 0) {
+                        p.files.forEach(f => {
+                            filesHtml += `
+                                <div class="file-item">
+                                    <span class="file-name"><i class="fas fa-file"></i> ${escapeHtml(f.name)}</span>
+                                    <span class="file-size">${formatFileSize(f.size || 0)}</span>
+                                </div>
+                            `;
+                        });
+                    }
+                });
+                if (!filesHtml) {
+                    filesHtml = '<p style="color:#4a6a5a;font-size:0.8rem;">No files uploaded.</p>';
+                }
+            }
+
+            const allUserMessages = [...userMessages, ...privateMessages].sort((a, b) =>
+                (a.timestamp?.seconds || 0) - (b.timestamp?.seconds || 0)
+            );
+            let messagesHtml = '';
+            if (allUserMessages.length === 0) {
+                messagesHtml = '<p style="color:#4a6a5a;font-size:0.8rem;">No messages sent.</p>';
+            } else {
+                allUserMessages.forEach(m => {
+                    const time = m.timestamp ? new Date(m.timestamp.seconds * 1000).toLocaleString() : '';
+                    const isPrivate = m.chatId ? 'Private' : 'General';
+                    messagesHtml += `
+                        <div class="msg-item">
+                            <span class="msg-text">${escapeHtml(m.text || '')}</span>
+                            <span class="msg-meta">${isPrivate} • ${time}</span>
+                        </div>
+                    `;
+                });
+            }
+
+            modalBody.innerHTML = `
+                <div class="modal-title">
+                    <i class="fas fa-user-circle"></i> ${escapeHtml(user.fullName || user.firstName + ' ' + user.lastName || 'Unknown')}
+                    <span class="role-badge ${role}">${role.toUpperCase()}</span>
+                    ${isDeveloperUser ? ' <span style="font-size:0.7rem;color:#fbbf24;">(Developer)</span>' : ''}
+                </div>
+
+                <div class="detail-section">
+                    <h3><i class="fas fa-id-card"></i> Profile</h3>
+                    <div class="detail-row"><span class="label">Student ID</span><span class="value">${escapeHtml(user.studentId || 'N/A')}</span></div>
+                    <div class="detail-row"><span class="label">Email</span><span class="value">${escapeHtml(user.email || 'N/A')}</span></div>
+                    <div class="detail-row"><span class="label">Full Name</span><span class="value">${escapeHtml(user.fullName || user.firstName + ' ' + user.lastName || 'N/A')}</span></div>
+                    <div class="detail-row"><span class="label">Bio</span><span class="value">${escapeHtml(user.bio || 'No bio set.')}</span></div>
+                    <div class="detail-row"><span class="label">Member Since</span><span class="value">${user.createdAt ? new Date(user.createdAt.seconds * 1000).toLocaleDateString() : 'N/A'}</span></div>
+                </div>
+
+                <div class="detail-section">
+                    <h3><i class="fas fa-folder-open"></i> Projects (${userProjects.length})</h3>
+                    ${projectsHtml}
+                </div>
+
+                <div class="detail-section">
+                    <h3><i class="fas fa-file"></i> Files</h3>
+                    ${filesHtml}
+                </div>
+
+                <div class="detail-section">
+                    <h3><i class="fas fa-comment"></i> Messages (${allUserMessages.length})</h3>
+                    ${messagesHtml}
+                </div>
+
+                <div class="detail-actions">
+                    ${!isDeveloperUser && canDelete() ? `
+                        <button class="btn btn-danger-delete" onclick="confirmDeleteUser('${user.uid}')">
+                            <i class="fas fa-skull-crossbones"></i> DELETE USER PERMANENTLY
+                        </button>
+                        <span style="font-size:0.6rem;color:#ff6b6b;width:100%;text-align:center;">
+                            Deletes: profile, picture, projects, files, messages & chats.
+                        </span>
+                        <span style="font-size:0.55rem;color:#4a6a5a;width:100%;text-align:center;">
+                            Auth account remains.
+                        </span>
+                    ` : isDeveloperUser ? `
+                        <span style="color:#fbbf24;font-size:0.8rem;width:100%;text-align:center;">
+                            <i class="fas fa-info-circle"></i> Developer account cannot be deleted.
+                        </span>
+                    ` : `
+                        <span style="color:#4a6a5a;font-size:0.8rem;width:100%;text-align:center;">
+                            <i class="fas fa-info-circle"></i> You do not have permission to delete users.
+                        </span>
+                    `}
+                    <button class="btn btn-outline" onclick="closeModal()" style="width:100%;">Close</button>
+                </div>
+            `;
+
+            modalOverlay.classList.add('active');
+        };
+
+        window.viewProject = async function(projectId) {
+            const project = allProjects.find(p => p.id === projectId);
+            if (!project) {
+                showToast('Project not found.', 'error');
+                return;
+            }
+
+            const owner = allUsers.find(u => u.uid === project.owner);
+            const ownerName = owner ? (owner.fullName || owner.firstName) : 'Unknown';
+            const files = project.files || [];
+            const comments = project.comments || [];
+
+            let filesHtml = '';
+            if (files.length === 0) {
+                filesHtml = '<p style="color:#4a6a5a;font-size:0.8rem;">No files.</p>';
+            } else {
+                files.forEach(f => {
+                    filesHtml += `
+                        <div class="file-item">
+                            <span class="file-name"><i class="fas fa-file"></i> ${escapeHtml(f.name)}</span>
+                            <span class="file-size">${formatFileSize(f.size || 0)}</span>
+                        </div>
+                    `;
+                });
+            }
+
+            let commentsHtml = '';
+            if (comments.length === 0) {
+                commentsHtml = '<p style="color:#4a6a5a;font-size:0.8rem;">No comments.</p>';
+            } else {
+                comments.forEach(c => {
+                    const time = c.timestamp ? new Date(c.timestamp.seconds * 1000).toLocaleString() : '';
+                    commentsHtml += `
+                        <div class="msg-item">
+                            <span class="msg-text">${escapeHtml(c.text || '')}</span>
+                            <span class="msg-meta">${escapeHtml(c.commenterName || 'Unknown')} • ${time}</span>
+                        </div>
+                    `;
+                });
+            }
+
+            modalBody.innerHTML = `
+                <div class="modal-title"><i class="fas fa-folder-open"></i> ${escapeHtml(project.title || 'Untitled')}</div>
+                <div class="detail-section">
+                    <h3><i class="fas fa-info-circle"></i> Details</h3>
+                    <div class="detail-row"><span class="label">Owner</span><span class="value">${escapeHtml(ownerName)}</span></div>
+                    <div class="detail-row"><span class="label">Visibility</span><span class="value">${project.visibility || 'Personal'}</span></div>
+                    <div class="detail-row"><span class="label">Type</span><span class="value">${project.type || 'Individual'}</span></div>
+                    <div class="detail-row"><span class="label">Course</span><span class="value">${escapeHtml(project.course || 'N/A')}</span></div>
+                    ${project.dueDate ? `<div class="detail-row"><span class="label">Due Date</span><span class="value">${new Date(project.dueDate).toLocaleString()}</span></div>` : ''}
+                </div>
+                <div class="detail-section">
+                    <h3><i class="fas fa-file"></i> Files (${files.length})</h3>
+                    ${filesHtml}
+                </div>
+                <div class="detail-section">
+                    <h3><i class="fas fa-comment"></i> Comments (${comments.length})</h3>
+                    ${commentsHtml}
+                </div>
+                <div class="detail-actions">
+                    ${canDelete() ? `<button class="btn btn-danger" onclick="confirmDeleteProject('${projectId}')"><i class="fas fa-trash-alt"></i> Delete Project</button>` : ''}
+                    <button class="btn btn-outline" onclick="closeModal()">Close</button>
+                </div>
+            `;
+
+            modalOverlay.classList.add('active');
+        };
+
+        window.viewMessage = async function(messageId, chatId) {
+            let message;
+            let type;
+
+            if (chatId === 'general') {
+                message = allMessages.find(m => m.id === messageId);
+                type = 'General';
+            } else {
+                message = allPrivateMessages.find(m => m.id === messageId);
+                type = 'Private';
+            }
+
+            if (!message) {
+                showToast('Message not found.', 'error');
+                return;
+            }
+
+            const sender = allUsers.find(u => u.uid === message.senderId);
+            const senderName = sender ? (sender.fullName || sender.firstName) : (message.senderName || 'Unknown');
+            const time = message.timestamp ? new Date(message.timestamp.seconds * 1000).toLocaleString() : '';
+
+            modalBody.innerHTML = `
+                <div class="modal-title"><i class="fas fa-comment"></i> Message</div>
+                <div class="detail-section">
+                    <h3><i class="fas fa-info-circle"></i> Details</h3>
+                    <div class="detail-row"><span class="label">Type</span><span class="value">${type}</span></div>
+                    <div class="detail-row"><span class="label">From</span><span class="value">${escapeHtml(senderName)}</span></div>
+                    <div class="detail-row"><span class="label">Time</span><span class="value">${time}</span></div>
+                    ${message.chatId ? `<div class="detail-row"><span class="label">Chat ID</span><span class="value">${escapeHtml(message.chatId)}</span></div>` : ''}
+                </div>
+                <div class="detail-section">
+                    <h3><i class="fas fa-comment-dots"></i> Content</h3>
+                    <div style="padding:0.5rem;background:#0f172a;border-radius:6px;border:1px solid #1a3a20;color:#c8d6e5;word-wrap:break-word;white-space:pre-wrap;">${escapeHtml(message.text || '')}</div>
+                </div>
+                <div class="detail-actions">
+                    ${canDelete() ? `<button class="btn btn-danger" onclick="confirmDeleteMessage('${messageId}', '${chatId}')"><i class="fas fa-trash-alt"></i> Delete Message</button>` : ''}
+                    <button class="btn btn-outline" onclick="closeModal()">Close</button>
+                </div>
+            `;
+
+            modalOverlay.classList.add('active');
+        };
+
+        // ============================================================
+        // CONFIRMATION WRAPPERS
+        // ============================================================
+        window.confirmDeleteProject = function(projectId) {
+            if (!canDelete()) {
+                showToast('You do not have permission to delete projects.', 'error');
+                return;
+            }
+            const project = allProjects.find(p => p.id === projectId);
+            if (!project) {
+                showToast('Project not found.', 'error');
+                return;
+            }
+            const name = project.title || 'Untitled';
+            showConfirm(
+                'DELETE PROJECT',
+                'This will permanently delete this project and all its files.',
+                `<span class="highlight">"${escapeHtml(name)}"</span><br>This action cannot be undone.`,
+                'Delete Project',
+                async function() { await deleteProjectAction(projectId); }
+            );
+        };
+
+        window.confirmDeleteMessage = function(messageId, chatId) {
+            if (!canDelete()) {
+                showToast('You do not have permission to delete messages.', 'error');
+                return;
+            }
+            showConfirm(
+                'DELETE MESSAGE',
+                'This will permanently delete this message.',
+                'This message will be removed from the database.<br>This action cannot be undone.',
+                'Delete Message',
+                async function() { await deleteMessageAction(messageId, chatId); }
+            );
+        };
+
+        window.confirmDeleteUser = function(uid) {
+            if (!canDelete()) {
+                showToast('You do not have permission to delete users.', 'error');
+                return;
+            }
+            const user = allUsers.find(u => u.uid === uid);
+            if (!user) {
+                showToast('User not found.', 'error');
+                return;
+            }
+            if (user.email === DEVELOPER_EMAIL) {
+                showToast('Cannot delete the developer.', 'error');
+                return;
+            }
+            const name = user.fullName || user.firstName || 'Unknown';
+            showConfirm(
+                'DELETE USER PERMANENTLY',
+                'All user data will be permanently removed.',
+                `<span class="highlight">${escapeHtml(name)}</span><br>ID: ${escapeHtml(user.studentId || 'N/A')}<br><br>Deletes: profile, picture, projects, files, messages & chats.<br>⚠️ Auth account remains.`,
+                'Delete User',
+                async function() { await deleteUserAction(uid); }
+            );
+        };
+
+        // ============================================================
+        // DELETE ACTIONS
+        // ============================================================
+        async function deleteProjectAction(projectId) {
+            const project = allProjects.find(p => p.id === projectId);
+            if (!project) return;
+
+            try {
+                showToast('Deleting project...', 'warning', 3000);
+                const files = project.files || [];
+                for (const f of files) {
+                    try { const ref = storage.refFromURL(f.url);
+                        await ref.delete(); } catch (e) {}
+                }
+                await db.collection('projects').doc(projectId).delete();
+                showToast(`Project "${project.title || 'Untitled'}" deleted.`, 'success');
+                closeModal();
+                await loadAllData();
+            } catch (error) {
+                console.error('Delete project error:', error);
+                showToast('Failed to delete project: ' + error.message, 'error');
+            }
+        }
+
+        async function deleteMessageAction(messageId, chatId) {
+            try {
+                if (chatId === 'general') {
+                    await db.collection('generalMessages').doc(messageId).delete();
+                } else {
+                    await db.collection('chats').doc(chatId).collection('messages').doc(messageId).delete();
+                }
+                showToast('Message deleted.', 'success');
+                closeModal();
+                await loadAllData();
+            } catch (error) {
+                console.error('Delete message error:', error);
+                showToast('Failed to delete message: ' + error.message, 'error');
+            }
+        }
+
+        async function deleteUserAction(uid) {
+            const user = allUsers.find(u => u.uid === uid);
+            if (!user || user.email === DEVELOPER_EMAIL) return;
+
+            try {
+                showToast('Deleting user...', 'warning', 5000);
+
+                if (user.profilePicture) {
+                    try { const ref = storage.refFromURL(user.profilePicture);
+                        await ref.delete(); } catch (e) {}
+                }
+
+                const userProjects = allProjects.filter(p =>
+                    p.owner === uid || (p.participants && p.participants.includes(uid))
+                );
+
+                for (const p of userProjects) {
+                    if (p.files) {
+                        for (const f of p.files) {
+                            try { const ref = storage.refFromURL(f.url);
+                                await ref.delete(); } catch (e) {}
+                        }
+                    }
+                    await db.collection('projects').doc(p.id).delete();
+                }
+
+                const userMessages = allMessages.filter(m => m.senderId === uid);
+                for (const m of userMessages) {
+                    await db.collection('generalMessages').doc(m.id).delete();
+                }
+
+                const chatsSnap = await db.collection('chats')
+                    .where('participants', 'array-contains', uid)
+                    .get();
+                for (const chatDoc of chatsSnap.docs) {
+                    const msgsSnap = await chatDoc.ref.collection('messages').get();
+                    for (const msgDoc of msgsSnap.docs) {
+                        await msgDoc.ref.delete();
+                    }
+                    await chatDoc.ref.delete();
+                }
+
+                await db.collection('users').doc(uid).delete();
+                showToast(`User "${user.fullName || user.firstName}" deleted.`, 'success');
+                closeModal();
+                await loadAllData();
+            } catch (error) {
+                console.error('Delete user error:', error);
+                showToast('Deletion failed: ' + error.message, 'error');
+            }
+        }
+
+        // ============================================================
+        // MODAL CONTROLS
+        // ============================================================
+        function closeModal() { modalOverlay.classList.remove('active'); }
+        modalCloseBtn.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        // ============================================================
+        // HELPERS
+        // ============================================================
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        console.log('Control Panel ready.');
+        console.log('Developer email: ' + DEVELOPER_EMAIL);
+        console.log('Login with your Student ID and password.');
+    </script>
+
+</body>
+</html>
